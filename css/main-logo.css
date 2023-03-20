@@ -1,0 +1,64 @@
+.svg-main-logo {
+ width: 60px;
+ height: auto;
+}
+@media screen and (max-width: 991px) {
+ .svg-main-logo {
+  width: 60px;
+  height: auto;
+ }
+}
+/*Footer Default BG*/
+.home-page-one.menu-bg-overlay {
+ background: #272732;
+}
+.topapp-main .main-header.fixed-header {
+ display: none;
+}
+.home-page-one .menu-bg-overlay {
+ display: none;
+}
+.header-navigation.stricky-fixed {
+ display: none;
+}
+.galaxy .sticky {
+ display: none !important;
+}
+.menu-bg-overlay {
+ display: none;
+}
+.saas_two_main_header.saas_2-menu-bg-overlay {
+ display: none;
+}
+.main-header-eight.eisticky-menu-bg-overlay {
+ display: none;
+}
+.appseo-main-header.appseo-sticky-header-overlay {
+ display: none;
+}
+.dia-main-header.dia-sticky-menu {
+ display: none;
+}
+.appl-sticky-menu {
+ display: none;
+}
+.host-app-header-section .navbar.sticky {
+ display: none;
+}
+.pm-main-header.pm-sticky-menu {
+ display: none;
+}
+.soft-m-sticky-menu {
+ display: none;
+}
+.hrm-sticky-menu {
+ display: none;
+}
+.crm-sticky-menu {
+ display: none;
+}
+.recentcomments a {
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
+ }

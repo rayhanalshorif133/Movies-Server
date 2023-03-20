@@ -1,0 +1,21 @@
+[
+  {
+   "bangladeshi": [
+      {
+        "id": 0,
+        "name": "Password",
+								"image_url": "https://1.bp.blogspot.com/-fO97YDGgfoU/X0S5Ex_7qgI/AAAAAAAAC6I/mBY_oR09vMQ-yGbbdnOrVd8RJpLMTUUDwCLcBGAsYHQ/s960/password%2Bmovie.jpg",
+								"release_date": "2019",
+								"movie_url": "https://www.imdb.com/title/tt10048342/"
+      },
+						{
+							"id": 1,
+        "name": "Nabab",
+								"image_url": "https://lh3.googleusercontent.com/-NXeCgSC3yZo/YIlxWPtrzxI/AAAAAAAAAIc/MIfI0utFE7kFugCFJxtAKjApszwLrxSAQCLcBGAsYHQ/image.png",
+								"release_date": "2017",
+								"movie_url": "https://www.imdb.com/title/tt10048342/"
+						}
+      
+    ]
+  }
+]

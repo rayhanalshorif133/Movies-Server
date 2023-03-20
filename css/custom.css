@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+#movies__name{
+    font-family: 'Roboto', sans-serif!important;
+    font-size: 24px!important;
+    font-weight: 700!important;
+    line-height: 27px!important;
+    color: #fff!important;
+}
+#movies__name span:nth-child(1){
+    color: azure!important;
+}
+#movies__name span:nth-child(2){
+    color: #ff0000!important;
+}
+#movies__name span:nth-child(3){
+    color: #4c00ff!important;
+}
+#movies__name span:nth-child(4){
+    color: azure!important;
+}
+#movies__name span:nth-child(5){
+    color: #ff0000!important;
+}

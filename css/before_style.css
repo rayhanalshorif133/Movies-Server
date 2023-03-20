@@ -1,0 +1,61 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+.myfont li a {
+	font-size: large;
+}
+.home_icon {
+	font-size: 400%;
+}
+.text-heading {
+	background-color: yellow;
+}
+.bd-flim {
+	margin-top: 30px;
+	background: url(../img/logo/bd\ flim\ logo.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	cursor: pointer;
+	position: relative;
+}
+.bd-flim h2 {
+	padding: 80px;
+	box-shadow: white;
+}
+
+.kolkata-flim {
+	margin-top: 30px;
+	background: url(../img/logo/indian\ flim\ logo.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	cursor: pointer;
+}
+.kolkata-flim h2 {
+	padding: 80px;
+	box-shadow: white;
+}
+.title_tag_top {
+	margin-top: 1000px;
+}
+
+.hindi-flim {
+	margin-top: 30px;
+	background: url(../img/logo/hindi-movies-full.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	cursor: pointer;
+	position: relative;
+}
+.hindi-flim h2 {
+	padding: 80px;
+	box-shadow: white;
+}
+
+a {
+	cursor: pointer;
+}
