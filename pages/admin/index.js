@@ -1,19 +1,18 @@
+'use client' 
+
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-
 export default function Home() {
-
   const router = useRouter();
 
-  const handleNavigation = (action) => {
-    router.push(`${action}`);
-  };
+  useEffect(() => {
+    router.push('/login');
+  }, [router]);
 
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className}`}
-    >
-      Admin
+    <div className="flex items-center justify-center min-h-screen">
+       <p>Redirecting to login...</p>
     </div>
   );
 }
