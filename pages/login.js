@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const router = useRouter();
 
     const handleLogin = async () => {
         const res = await fetch('/api/login', {
@@ -17,12 +19,12 @@ export default function LoginPage() {
 
         const data = await res.json();
 
-       
+
 
         if (data.status) {
-            console.log(data);
+            router.push('/admin/dashboard');
         } else {
-             console.log('error',data);
+            console.log('error', data);
         }
     }
 
