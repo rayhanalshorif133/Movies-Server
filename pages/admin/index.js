@@ -1,17 +1,14 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/components/Navbar";
+import { useRouter } from "next/navigation";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export default function Home() {
+
+  const router = useRouter();
+
+  const handleNavigation = (action) => {
+    router.push(`${action}`);
+  };
+
   return (
     <div
       className={`${geistSans.className} ${geistMono.className}`}

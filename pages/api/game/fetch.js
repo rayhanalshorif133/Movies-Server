@@ -1,11 +1,8 @@
-import { createClient } from '@supabase/supabase-js'
-import { NextResponse } from 'next/server'
+import { supabaseClient } from "@/utils/supabase/client";
+
 export default async function handler(req, res) {
 
-    const supabase = createClient(
-        process.env.NEXT_SUPABASE_URL,
-        process.env.NEXT_SUPABASE_SERVICE_ROLE_KEY
-    )
+    const supabase = supabaseClient();
 
     const { data, error } = await supabase
         .from('games')
