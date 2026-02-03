@@ -16,7 +16,7 @@ export default function Home() {
     <div
       className={`${geistSans.className} ${geistMono.className}`}
     >
-      <Navbar/>
+      Admin
     </div>
   );
 }
