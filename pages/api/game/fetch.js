@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { NextResponse } from 'next/server'
 export default async function handler(req, res) {
 
     const supabase = createClient(
@@ -6,15 +7,8 @@ export default async function handler(req, res) {
         process.env.NEXT_SUPABASE_SERVICE_ROLE_KEY
     )
 
-    if (req.method == 'GET') {
-        return res.status(200).json({
-            status: false,
-            message: 'This Route isn\'t allow GET method...!',
-        });
-    }
-
     const { data, error } = await supabase
-        .from('movies')
+        .from('games')
         .select('*');
 
     if (error) {
@@ -24,7 +18,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
         status: true,
         count: data.length,
-        message: 'Successfully Fetch movies',
+        message: 'Successfully Fetch games',
         data: data
     });
 }
