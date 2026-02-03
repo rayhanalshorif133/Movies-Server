@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
-export default async function  handler(req, res) {
+export default async function handler(req, res) {
 
     const supabase = createClient(
         process.env.NEXT_SUPABASE_URL,
@@ -14,6 +14,11 @@ export default async function  handler(req, res) {
     if (error) {
         return res.status(500).json({ error: error.message });
     }
-    
-    return res.status(200).json({ movies: data });
+
+    return res.status(200).json({
+        status: true,
+        count: data.length,
+        message: 'Successfully Fetch movies',
+        data: data
+    });
 }
