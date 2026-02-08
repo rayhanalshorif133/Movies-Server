@@ -26,11 +26,10 @@ export async function middleware(request) {
     if (user && request.nextUrl.pathname.startsWith('/login')) {
         return NextResponse.redirect(new URL('/dashboard', request.url))
     }
-    // Dashboard-e jaoar chesta korle jodi user na thake
+
     if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
-
 
 
     return response
