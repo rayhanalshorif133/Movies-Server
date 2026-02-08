@@ -2,6 +2,13 @@ import Header from "@/components/public/Header";
 import MovieSection from "@/components/public/MovieSection"; // Notun component
 import { createClient } from '@/utils/supabase/server'
 
+export async function generateMetadata() {
+  return {
+    title: "Movies",
+    description: "Watch this amazing movie",
+  }
+}
+
 export default async function Home() {
   const supabase = await createClient()
 
