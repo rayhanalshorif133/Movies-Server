@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Header() {
     return (
-        <header className='w-full min-h-screen'>
+        <header className='w-full'>
             <nav
                 className="bg-linear-to-r from-indigo-900 via-purple-800 to-teal-700 shadow-lg border-b border-white/10 relative z-50">
                 <div className="px-4 md:px-8 py-4 flex items-center justify-between max-w-400 mx-auto">
@@ -18,7 +18,7 @@ export default function Header() {
                             className="text-xs font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300 flex items-center gap-1">
                             <i className="fa-solid fa-gamepad"></i> Games
                         </Link>
-                        <Link href="/movies"
+                        <Link href="/"
                             className="text-xs font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Movies</Link>
                         <Link href="/login"
                             className="text-xs font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Admin</Link>
@@ -34,7 +34,7 @@ export default function Header() {
                         <Link href="/games"
                             className="text-sm font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300"><i
                                 className="fa-solid fa-gamepad mr-2"></i>Games</Link>
-                        <Link href="/movies"
+                        <Link href="/"
                             className="text-sm font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Movies</Link>
                         <Link href="/login"
                             className="text-sm font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Admin</Link>
@@ -42,7 +42,7 @@ export default function Header() {
                 </div>
             </nav>
 
-            <div className="bg-slate-900 min-h-screen pt-6 pb-8 px-4 flex flex-col items-center shadow-inner">
+            <div className="pt-6 pb-8 px-4 flex flex-col items-center shadow-inner">
                 <div
                     className="movie_filter flex flex-wrap justify-center gap-4 md:gap-6 mb-5 text-[10px] md:text-[11px] font-bold text-gray-400 uppercase tracking-widest">
                     <div className="flex gap-8 px-6 items-center">
