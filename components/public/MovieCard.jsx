@@ -2,8 +2,6 @@ import Image from 'next/image';
 import React from 'react'
 
 export default function MovieCard({ movie }) {
-  // item, isHidden = false
-  console.log(movie);
   return (
     <div className="group playBtn moviePlayModal relative bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-white/5 shadow-md hover:shadow-blue-500/20 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1">
       <div className="relative h-52 overflow-hidden">
