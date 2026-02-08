@@ -22,3 +22,14 @@ export async function login(formData) {
   // Success hole dashboard-e pathabe
   redirect('/dashboard')
 }
+
+
+export async function logout() {
+  const supabase = await createClient()
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    console.log('Error logging out:', error.message)
+  }
+  redirect('/login')
+}
