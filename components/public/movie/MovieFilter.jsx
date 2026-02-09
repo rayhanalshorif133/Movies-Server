@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { IoSearch } from "react-icons/io5";
+import MovieFilterLoading from './MovieFilterLoading';
 
 export default function MovieFilter({ searchType, setSearchType, setSearchTitle }) {
     const [movies, setMovies] = useState();
-    const [loading, setLoading] = useState();
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         const delayDebounceFn = setTimeout(async () => {
             setLoading(true);
@@ -25,29 +26,41 @@ export default function MovieFilter({ searchType, setSearchType, setSearchTitle 
         <div className="pt-2 pb-8 px-4 flex flex-col items-center shadow-inner">
             <div
                 className="movie_filter flex flex-wrap justify-center gap-4 md:gap-6 mb-5 text-[10px] md:text-[11px] font-bold text-gray-400 uppercase tracking-widest">
-                <button className={`text-xs cursor-pointer pb-0.5 uppercase transition hover:text-pink-500 
-                            ${searchType === 'all' ? 'text-pink-500 border-b border-pink-500' : 'text-gray-500 border-none'}`} onClick={(e) => setSearchType('all')}>
-                    All
-                </button>
-                {
-                    movies?.length > 0 && movies.map((type, index) => {
-                        return (
+
+                {loading ? (
+                    <MovieFilterLoading />
+                ) : (
+                    <div className="flex gap-4"> {/* Added a container for layout */}
+                        <button
+                            className={`text-xs cursor-pointer pb-0.5 uppercase transition hover:text-pink-500 
+            ${searchType === 'all' ? 'text-pink-500 border-b border-pink-500' : 'text-gray-500 border-none'}`}
+                            onClick={() => setSearchType('all')}
+                        >
+                            All
+                        </button>
+
+                        {movies?.map((type, index) => (
                             <button
                                 key={index}
                                 onClick={() => setSearchType(type)}
                                 className={`text-xs cursor-pointer pb-0.5 uppercase transition hover:text-pink-500 
-                            ${searchType === type ? 'text-pink-500 border-b border-pink-500' : 'text-gray-500 border-none'}`}
+                                ${searchType === type ? 'text-pink-500 border-b border-pink-500' : 'text-gray-500 border-none'}`}
                             >
                                 {type.replace(/-/g, ' ')}
                             </button>
-                        );
-                    })
-                }
+                        ))}
 
-                <button className={`text-xs cursor-pointer pb-0.5 uppercase transition hover:text-pink-500 
-                            ${searchType === 'series' ? 'text-pink-500 border-b border-pink-500' : 'text-gray-500 border-none'}`} onClick={(e) => setSearchType('series')}>
-                    series
-                </button>
+                        {/* <button
+                            className={`text-xs cursor-pointer pb-0.5 uppercase transition hover:text-pink-500 
+            ${searchType === 'series' ? 'text-pink-500 border-b border-pink-500' : 'text-gray-500 border-none'}`}
+                            onClick={() => setSearchType('series')}
+                        >
+                            Series
+                        </button> */}
+                    </div>
+                )}
+
+
             </div>
             <div className="relative w-full max-w-lg group">
                 <div

@@ -9,7 +9,7 @@ import MovieFilter from "./MovieFilter";
 export default function MovieManager({ initialMovies }) {
     const [movies, setMovies] = useState(initialMovies);
     const [searchTitle, setSearchTitle] = useState("");
-    const [searchType, setSearchType] = useState("");
+    const [searchType, setSearchType] = useState("all");
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
