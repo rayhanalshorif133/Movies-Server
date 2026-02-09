@@ -42,7 +42,7 @@ export default function MovieDetailsModal({ movie, onClose }) {
                     {!isPreviewing ? (
                         <>
                             <div className="w-full md:w-1/2 h-64 md:h-auto relative">
-                                <Image src={movie.poster}
+                                <img src={movie.poster}
                                     alt={movie.title}
                                     className="object-cover w-full h-full"
                                     loading="eager"
