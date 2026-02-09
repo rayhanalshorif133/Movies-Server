@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, Suspense } from 'react'
-import MovieCard from "./MovieCard"
-import LoadingCard from "./LoadingCard"
-import MovieDetailsModal from './MovieDetailsModal'
+import MovieCard from "../movie/MovieCard"
+import LoadingCard from "../LoadingCard"
+import MovieDetailsModal from '../movie/MovieDetailsModal'
 
 export default function MovieSection({ type, items }) {
   const [showAll, setShowAll] = useState(false)
@@ -21,7 +21,7 @@ export default function MovieSection({ type, items }) {
         {items.length > 6 && (
           <button
             onClick={() => setShowAll(!showAll)}
-            className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition underline decoration-dotted underline-offset-4"
+            className="text-blue-400 cursor-pointer hover:text-blue-300 text-sm font-semibold transition underline decoration-dotted underline-offset-4"
           >
             {showAll ? 'Show Less' : `View All (${items.length - 6} more)`}
           </button>

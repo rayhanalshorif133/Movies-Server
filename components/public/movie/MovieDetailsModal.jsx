@@ -38,7 +38,7 @@ export default function MovieDetailsModal({ movie, onClose }) {
                     </button>
                 )}
 
-                <div className="flex flex-col md:flex-row min-h-100">
+                <div className="flex flex-col md:flex-row h-auto sm:min-h-100">
                     {!isPreviewing ? (
                         <>
                             <div className="w-full md:w-1/2 h-64 md:h-auto relative">
