@@ -8,14 +8,15 @@ import MovieFilter from "./MovieFilter";
 
 export default function MovieManager({ initialMovies }) {
     const [movies, setMovies] = useState(initialMovies);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTitle, setSearchTitle] = useState("");
+    const [searchType, setSearchType] = useState("");
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/movies?query=${searchTerm}`);
+                const res = await fetch(`/api/movies?title=${searchTitle}&type=${searchType}`);
                 const data = await res.json();
                 setMovies(data);
             } catch (err) {
@@ -25,8 +26,12 @@ export default function MovieManager({ initialMovies }) {
             }
         }, 500);
 
+        console.log(searchType);
         return () => clearTimeout(delayDebounceFn);
-    }, [searchTerm]);
+    }, [searchTitle, searchType]);
+
+
+    
 
     // Grouping Logic
     const groupedMovies = movies?.reduce((acc, movie) => {
@@ -38,7 +43,7 @@ export default function MovieManager({ initialMovies }) {
 
     return (
         <>
-            <MovieFilter movies={groupedMovies} setSearchTerm={setSearchTerm}/>
+            <MovieFilter searchType={searchType} setSearchType={setSearchType} setSearchTitle={setSearchTitle}/>
             <div className="space-y-12">
                 {loading ? <ScouringMovies /> : Object.keys(groupedMovies || {}).length > 0 ? (
                     Object.entries(groupedMovies).map(([type, items]) => (

@@ -3,13 +3,18 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
-    const searchTerm = searchParams.get('query') || '';
+    const searchByTitle = searchParams.get('title') || '';
+    const searchByType = searchParams.get('type') || '';
 
     const supabase = await createClient();
     let query = supabase.from('movies').select('*');
 
-    if (searchTerm) {
-        query = query.ilike('title', `%${searchTerm}%`);
+    if (searchByTitle) {
+        query = query.ilike('title', `%${searchByTitle}%`);
+    } 
+    
+    if (searchByType && searchByType != 'all' && searchByType != 'series') {
+        query = query.eq('type', searchByType);
     }
 
     const { data, error } = await query;

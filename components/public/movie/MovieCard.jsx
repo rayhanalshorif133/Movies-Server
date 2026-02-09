@@ -12,6 +12,8 @@ export default function MovieCard({ movie }) {
           fill
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 16vw"
           className="object-cover group-hover:scale-110 transition duration-700"
+          loading="eager"
+          fetchPriority="high"
         />
 
         <div

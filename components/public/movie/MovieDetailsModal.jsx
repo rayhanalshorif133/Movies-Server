@@ -42,11 +42,11 @@ export default function MovieDetailsModal({ movie, onClose }) {
                     {!isPreviewing ? (
                         <>
                             <div className="w-full md:w-1/2 h-64 md:h-auto relative">
-                                <img
-                                    src={movie.poster}
+                                <Image src={movie.poster}
                                     alt={movie.title}
                                     className="object-cover w-full h-full"
-                                />
+                                    loading="eager"
+                                    fetchPriority="high" />
                             </div>
                             <div className="p-8 md:w-1/2 flex flex-col justify-center">
                                 <h2 className="text-3xl font-bold text-white">{movie.title}</h2>
@@ -91,7 +91,7 @@ export default function MovieDetailsModal({ movie, onClose }) {
                         <div className="w-full aspect-video md:aspect-auto md:h-125 bg-black overflow-hidden">
                             <iframe
                                 src={getEmbedUrl(movie.url)}
-                                className="w-full h-full border-none" 
+                                className="w-full h-full border-none"
                                 allow="autoplay"
                                 allowFullScreen
                             ></iframe>
