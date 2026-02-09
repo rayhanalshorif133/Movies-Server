@@ -1,4 +1,3 @@
-// app/page.js
 import Header from "@/components/public/Header";
 import MovieManager from "@/components/public/movie/MovieManager";
 import { createClient } from '@/utils/supabase/server';
