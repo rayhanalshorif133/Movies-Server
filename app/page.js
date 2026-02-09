@@ -38,7 +38,7 @@ export default async function Home() {
     <div className="flex flex-col bg-slate-900 min-h-screen font-sans">
       <Header />
 
-      <main className="grow w-full max-w-7xl mx-auto px-4 py-10 space-y-12">
+      <main className="grow w-full max-w-370 mx-auto px-4 py-10 space-y-12">
         {randomizedSections.length > 0 ? (
           randomizedSections.map(([type, items]) => (
             <MovieSection key={type} type={type} items={items} />
