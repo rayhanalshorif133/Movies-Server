@@ -3,9 +3,11 @@
 import { useState, Suspense } from 'react'
 import MovieCard from "./MovieCard"
 import LoadingCard from "./LoadingCard"
+import MovieDetailsModal from './MovieDetailsModal'
 
 export default function MovieSection({ type, items }) {
   const [showAll, setShowAll] = useState(false)
+  const [selectedMovie, setSelectedMovie] = useState(null)
 
   const displayedItems = showAll ? items : items.slice(0, 6)
 
@@ -15,9 +17,9 @@ export default function MovieSection({ type, items }) {
         <h2 className="text-2xl font-bold text-white uppercase tracking-wider">
           {type} <span className="text-sm text-slate-400 font-normal">({items.length})</span>
         </h2>
-        
+
         {items.length > 6 && (
-          <button 
+          <button
             onClick={() => setShowAll(!showAll)}
             className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition underline decoration-dotted underline-offset-4"
           >
@@ -29,10 +31,18 @@ export default function MovieSection({ type, items }) {
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 transition-all duration-500">
         {displayedItems.map((movie) => (
           <Suspense key={movie.id} fallback={<LoadingCard />}>
-            <MovieCard movie={movie} />
+            <div onClick={() => setSelectedMovie(movie)} className="cursor-pointer">
+              <MovieCard movie={movie} />
+            </div>
           </Suspense>
         ))}
       </div>
+      {selectedMovie && (
+        <MovieDetailsModal
+          movie={selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+        />
+      )}
     </section>
   )
 }
