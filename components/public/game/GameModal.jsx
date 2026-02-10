@@ -57,7 +57,7 @@ export default function GameModal({ game, onClose }) {
                             href={`https://drive.google.com/uc?export=download&id=${game.url}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="relative group flex items-center justify-center gap-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-8 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 active:scale-95 overflow-hidden"
+                            className="hidden relative group items-center justify-center gap-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-8 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 active:scale-95 overflow-hidden"
                         >
                             <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
 
@@ -76,7 +76,7 @@ export default function GameModal({ game, onClose }) {
                                 />
                             </svg>
 
-                            <span className="relative hidden">Download Full Assets</span>
+                            <span className="relative">Download Full Assets</span>
                         </a>
                     </div>
                 </div>
