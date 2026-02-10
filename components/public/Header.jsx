@@ -15,12 +15,13 @@ export default function Header() {
                         </Link>
                     </div>
                     <div className="hidden md:flex items-center space-x-6">
+                        <Link href="/"
+                            className="text-xs font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Movies</Link>
                         <Link href="/games"
                             className="text-xs font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300 flex items-center gap-1">
                             <i className="fa-solid fa-gamepad"></i> Games
                         </Link>
-                        <Link href="/"
-                            className="text-xs font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Movies</Link>
+
                         <Link href="/login"
                             className="text-xs font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Admin</Link>
                     </div>
@@ -32,11 +33,12 @@ export default function Header() {
                 </div>
                 <div id="mobile-menu" className="hidden md:hidden bg-purple-900 border-t border-white/10 shadow-xl">
                     <div className="flex flex-col px-4 py-4 space-y-4">
+                        <Link href="/"
+                            className="text-sm font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Movies</Link>
                         <Link href="/games"
                             className="text-sm font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300"><i
                                 className="fa-solid fa-gamepad mr-2"></i>Games</Link>
-                        <Link href="/"
-                            className="text-sm font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Movies</Link>
+
                         <Link href="/login"
                             className="text-sm font-bold text-gray-100 uppercase hover:text-yellow-300 transition duration-300">Admin</Link>
                     </div>

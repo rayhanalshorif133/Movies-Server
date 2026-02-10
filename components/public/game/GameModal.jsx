@@ -4,7 +4,7 @@ import React from "react";
 export default function GameModal({ game, onClose }) {
     const images = JSON.parse(game.asset_images || "[]");
     const gifs = JSON.parse(game.asset_gif_images || "[]");
-    const allMedia = [...images, ...gifs]; // সব মিডিয়া একসাথে
+    const allMedia = [...images, ...gifs];
 
     const getImageUrl = (id) => `https://lh3.googleusercontent.com/u/0/d/${id}`;
 
