@@ -7,9 +7,7 @@ export async function GET(request) {
     let query = supabase
         .from('movies')
         .select('type', { count: 'exact', head: false })
-        .not('type', 'is', null); // null value thakle bad dibe
-
-
+        .not('type', 'is', null);
 
     const { data, error } = await query;
 
