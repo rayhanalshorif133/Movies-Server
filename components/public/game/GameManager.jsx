@@ -4,14 +4,12 @@ import GameSection from "./GameSection";
 import ScouringGames from "./SourchingGames";
 import GameFilter from "./GameFilter";
 import NoGameFound from "./NoGameFound";
-import GameModal from "./GameModal";
 
 export default function GameManager({ initialGames }) {
     const [games, setGames] = useState(initialGames);
     const [searchTitle, setSearchTitle] = useState("");
     const [searchType, setSearchType] = useState("all");
     const [loading, setLoading] = useState(false);
-    const [selectedGame, setSelectedGame] = useState(null);
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(async () => {
@@ -54,20 +52,12 @@ export default function GameManager({ initialGames }) {
                             key={type}
                             type={type}
                             items={items}
-                            onCardClick={(game) => setSelectedGame(game)}
                         />
                     ))
                 ) : (
                     <NoGameFound />
                 )}
             </div>
-
-            {selectedGame && (
-                <GameModal
-                    game={selectedGame}
-                    onClose={() => setSelectedGame(null)}
-                />
-            )}
         </>
     );
 }

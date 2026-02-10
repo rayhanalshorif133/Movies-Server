@@ -12,7 +12,6 @@ export default function GameFilter({ searchType, setSearchType, setSearchTitle }
 
     return (
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-10 p-4 bg-gray-900/50 rounded-2xl border border-gray-800">
-            {/* সার্চ ইনপুট */}
             <div className="relative w-full md:w-1/3">
                 <span className="absolute inset-y-0 left-3 flex items-center text-gray-500">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -27,7 +26,6 @@ export default function GameFilter({ searchType, setSearchType, setSearchTitle }
                 />
             </div>
 
-            {/* ক্যাটাগরি ফিল্টার (ট্যাব স্টাইল) */}
             <div className="flex flex-wrap gap-2 justify-center">
                 {categories.map((cat) => (
                     <button
