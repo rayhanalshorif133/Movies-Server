@@ -38,10 +38,9 @@ export default function GameModal({ game, onClose }) {
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     loading="lazy"
                                 />
-                                {/* যদি এটি একটি GIF হয় তবে ট্যাগ দেখাবে */}
                                 {index >= images.length && (
                                     <>
-                                        <span className="absolute bottom-0 h-6 w-full right-0 bg-[#DEDEDE] inline-block"></span>
+                                        <span className="absolute bottom-0 h-7.5 w-full right-0 bg-[#DEDEDE] inline-block"></span>
                                         <span className="absolute bottom-2 right-2 bg-yellow-500 text-black text-[10px] font-bold px-2 py-0.5 rounded">
                                             Animated
                                         </span>

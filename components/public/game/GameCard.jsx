@@ -8,26 +8,24 @@ export default function GameCard({ game, onClick }) {
 
     return (
         <div 
-            onClick={() => onClick(game)} // কার্ডে ক্লিক করলে মোডাল ডাটা পাস হবে
+            onClick={() => onClick(game)} 
             className="cursor-pointer group bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
         >
             <div className="relative aspect-video overflow-hidden bg-gray-800">
                 <Image
                     src={getImageUrl(game.thumbnail_image)}
                     alt={game.title}
-                    fill // width/height এর বদলে fill ব্যবহার করা ভালো aspect-video এর জন্য
+                    fill 
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    unoptimized={true} // ড্রাইভ ইমেজের ক্ষেত্রে অপ্টিমাইজেশন এরর এড়াতে
+                    unoptimized={true} 
                 />
                 
-                {/* সাইজ ব্যাজ */}
                 <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-tighter">
                     {game.size} MB
                 </div>
             </div>
 
-            {/* ডিটেইলস সেকশন */}
             <div className="p-4 space-y-3">
                 <h3 className="text-md font-semibold text-gray-100 line-clamp-1 group-hover:text-blue-400 transition-colors capitalize">
                     {game.title}
