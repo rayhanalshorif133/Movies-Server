@@ -1,10 +1,24 @@
+import GameManager from "@/components/public/game/GameManager";
 import Header from "@/components/public/Header";
-import Image from "next/image";
+import { createClient } from '@/utils/supabase/server';
 
-export default function Home() {
+export async function generateMetadata() {
+  return {
+    title: "Movies",
+    description: "Watch latest movies online.", 
+  };
+}
+
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: initialGames } = await supabase.from('games').select('*');
+
   return (
-    <div className="flex items-center justify-center font-sans">
-        <Header/>
+    <div className="flex flex-col bg-slate-900 min-h-screen font-sans">
+      <Header />
+      <main className="grow max-w-7xl mx-auto px-4 py-10">
+        <GameManager initialGames={initialGames || []} />
+      </main>
     </div>
   );
 }

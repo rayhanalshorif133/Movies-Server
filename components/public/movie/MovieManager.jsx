@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import MovieSection from "./MovieSection";
-import ScouringMovies from "../_partials/ScouringMovies";
-import NoMovieFound from "../_partials/NoMovieFound";
+import ScouringMovies from "./ScouringMovies";
+import NoMovieFound from "./NoMovieFound";
 import MovieFilter from "./MovieFilter";
 
 
