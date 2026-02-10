@@ -76,7 +76,7 @@ export default function GameModal({ game, onClose }) {
                                 />
                             </svg>
 
-                            <span className="relative">Download Full Assets</span>
+                            <span className="relative hidden">Download Full Assets</span>
                         </a>
                     </div>
                 </div>
