@@ -11,9 +11,8 @@ export default function GameModal({ game, onClose }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
             <div className="relative bg-gray-900 w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-2xl border border-gray-800 shadow-2xl">
-                
-                {/* Close Button */}
-                <button 
+
+                <button
                     onClick={onClose}
                     className="absolute top-4 right-4 z-10 p-2 bg-black/50 text-white rounded-full hover:bg-red-500 transition-colors"
                 >
@@ -21,7 +20,6 @@ export default function GameModal({ game, onClose }) {
                 </button>
 
                 <div className="p-6 md:p-10">
-                    {/* Header Details */}
                     <div className="mb-8">
                         <h2 className="text-3xl font-bold text-white mb-2 uppercase">{game.title}</h2>
                         <div className="flex flex-wrap gap-4 text-sm text-gray-400">
@@ -31,19 +29,23 @@ export default function GameModal({ game, onClose }) {
                         </div>
                     </div>
 
-                    {/* Media Gallery */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {allMedia.map((mediaId, index) => (
                             <div key={index} className="relative group aspect-video rounded-xl overflow-hidden bg-gray-800 border border-gray-700">
-                                <img 
-                                    src={getImageUrl(mediaId)} 
-                                    alt="Game asset" 
+                                <img
+                                    src={getImageUrl(mediaId)}
+                                    alt="Game asset"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     loading="lazy"
                                 />
                                 {/* যদি এটি একটি GIF হয় তবে ট্যাগ দেখাবে */}
                                 {index >= images.length && (
-                                    <span className="absolute bottom-2 right-2 bg-yellow-500 text-black text-[10px] font-bold px-2 py-0.5 rounded">GIF</span>
+                                    <>
+                                        <span className="absolute bottom-0 h-6 w-full right-0 bg-[#DEDEDE] inline-block"></span>
+                                        <span className="absolute bottom-2 right-2 bg-yellow-500 text-black text-[10px] font-bold px-2 py-0.5 rounded">
+                                            Animated
+                                        </span>
+                                    </>
                                 )}
                             </div>
                         ))}
@@ -52,12 +54,30 @@ export default function GameModal({ game, onClose }) {
                     {/* Action Footer */}
                     <div className="mt-10 pt-6 border-t border-gray-800 flex justify-between items-center">
                         <div className="text-gray-500 text-sm italic">Uploaded: {new Date(game.created_at).toLocaleDateString()}</div>
-                        <a 
-                            href={`https://drive.google.com/file/d/${game.url}/view`} 
-                            target="_blank" 
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20"
+                        <a
+                            href={`https://drive.google.com/uc?export=download&id=${game.url}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="relative group flex items-center justify-center gap-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-8 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 active:scale-95 overflow-hidden"
                         >
-                            Download Full Asset Pack
+                            <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
+
+                            {/* Download Icon */}
+                            <svg
+                                className="w-5 h-5 group-hover:animate-bounce"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2.5"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                />
+                            </svg>
+
+                            <span className="relative">Download Full Assets</span>
                         </a>
                     </div>
                 </div>
