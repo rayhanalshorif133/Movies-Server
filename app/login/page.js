@@ -22,6 +22,7 @@ export default async function  LoginPage({ searchParams }) {
             name="email"
             type="email"
             placeholder="Enter your gmail"
+            value={'rayhan@gmail.com'}
             required
           />
         </div>
@@ -33,6 +34,7 @@ export default async function  LoginPage({ searchParams }) {
             name="password"
             type="password"
             placeholder="••••••••"
+            value={'rayhan@gmail.com'}
             required
           />
         </div>

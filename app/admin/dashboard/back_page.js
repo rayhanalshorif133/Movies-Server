@@ -1,6 +1,6 @@
 import React from 'react'
 import { createClient } from '@/utils/supabase/server'
-import { logout } from '../login/actions' // Action-ti import korun
+import { logout } from '../../login/actions' // Action-ti import korun
 
 export default async function DashboardPage() {
   const supabase = await createClient()

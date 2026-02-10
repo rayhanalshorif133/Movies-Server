@@ -23,11 +23,11 @@ export async function middleware(request) {
 
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (user && request.nextUrl.pathname.startsWith('/login')) {
-        return NextResponse.redirect(new URL('/dashboard', request.url))
+    if (user && request.nextUrl.pathname.startsWith('/login') ) {
+        return NextResponse.redirect(new URL('/admin/dashboard', request.url))
     }
 
-    if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!user && request.nextUrl.pathname.startsWith('/admin/dashboard')) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
@@ -38,5 +38,5 @@ export async function middleware(request) {
 
 
 export const config = {
-  matcher: ['/login', '/dashboard/:path*'],
+  matcher: ['/login', '/admin/:path*'],
 }
