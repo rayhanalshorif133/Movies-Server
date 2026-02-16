@@ -2,25 +2,28 @@
 import Image from "next/image";
 
 export default function GameCard({ game, onClick }) {
-    // Google Drive Thumbnail Link Helper
 
-    const getImageUrl = (id) => `https://lh3.googleusercontent.com/u/0/d/${id}=s600`;
+    const getImageUrl = (id) => `https://lh3.googleusercontent.com/d/${id}`;
 
     return (
-        <div 
-            onClick={() => onClick(game)} 
+        <div
+            onClick={() => onClick(game)}
             className="cursor-pointer group bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
         >
             <div className="relative aspect-video overflow-hidden bg-gray-800">
-                <Image
-                    src={getImageUrl(game.thumbnail_image)}
-                    alt={game.title}
-                    fill 
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    unoptimized={true} 
-                />
-                
+                <div className="relative aspect-video overflow-hidden bg-gray-800">
+                    <Image
+                        src={getImageUrl(game.thumbnail_image)}
+                        alt={game.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        placeholder="blur"
+                        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+ZNPQAIXwM4li8X7wAAAABJRU5ErkJggg=="
+                        loading="lazy"
+                    />
+                </div>
+
                 <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-tighter">
                     {game.size} MB
                 </div>
@@ -30,7 +33,7 @@ export default function GameCard({ game, onClick }) {
                 <h3 className="text-md font-semibold text-gray-100 line-clamp-1 group-hover:text-blue-400 transition-colors capitalize">
                     {game.title}
                 </h3>
-                
+
                 <div className="flex justify-between items-center text-xs text-gray-400">
                     <span className="flex items-center gap-1">
                         <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -49,6 +49,7 @@ export default function GameModal({ game, onClose }) {
                                     <img
                                         src={getImageUrl(mediaId)}
                                         alt=""
+                                        loading="lazy"
                                         className="w-full h-full object-cover group-hover:scale-105 transition"
                                     />
                                 </div>
@@ -60,9 +61,8 @@ export default function GameModal({ game, onClose }) {
 
             {/* Lightbox */}
             {selectedIndex !== null && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95">
+                <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/95">
 
-                    {/* Close */}
                     <button
                         onClick={closeLightbox}
                         className="absolute top-6 right-6 text-white text-3xl"
