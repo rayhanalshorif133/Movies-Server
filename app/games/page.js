@@ -4,8 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function generateMetadata() {
   return {
-    title: "Movies",
-    description: "Watch latest movies online.", 
+    title: "Games & Assets",
   };
 }
 
