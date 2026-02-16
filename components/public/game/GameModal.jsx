@@ -10,6 +10,7 @@ export default function GameModal({ game, onClose }) {
     const images = JSON.parse(game.asset_images || "[]");
     const gifs = JSON.parse(game.asset_gif_images || "[]");
     const allMedia = [...images, ...gifs];
+    const [isSelectedGif, setIsSelectedGif] = useState(false);
 
     const [selectedIndex, setSelectedIndex] = useState(null);
 
@@ -18,13 +19,29 @@ export default function GameModal({ game, onClose }) {
 
     const closeLightbox = () => setSelectedIndex(null);
 
-    const nextImage = () =>
-        setSelectedIndex((prev) => (prev + 1) % allMedia.length);
+    const initialSetIndex = (index) => {
+        setSelectedIndex(index);
+        setGifIndexValue();
+    };
 
-    const prevImage = () =>
+    const nextImage = () => {
+        setSelectedIndex((prev) => (prev + 1) % allMedia.length);
+        setGifIndexValue();
+    };
+
+    const prevImage = () => {
         setSelectedIndex((prev) =>
             prev === 0 ? allMedia.length - 1 : prev - 1
         );
+        setGifIndexValue();
+    };
+
+    const setGifIndexValue = () => {
+        const isGif = gifs.includes(selectedIndex);
+        setIsSelectedGif(isGif);
+    };
+
+
 
     return (
         <>
@@ -36,7 +53,7 @@ export default function GameModal({ game, onClose }) {
                         onClick={onClose}
                         className="absolute top-4 right-4 z-10 p-2 bg-black/50 text-white rounded-full hover:bg-red-500"
                     >
-                        <RxCross2/>
+                        <RxCross2 />
                     </button>
 
                     <div className="p-6 md:p-10">
@@ -45,21 +62,36 @@ export default function GameModal({ game, onClose }) {
                         </h2>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            {allMedia.map((mediaId, index) => (
-                                <div
-                                    key={index}
-                                    onClick={() => setSelectedIndex(index)}
-                                    className="cursor-pointer group aspect-video rounded-xl overflow-hidden bg-gray-800"
-                                >
-                                    <img
-                                        src={getImageUrl(mediaId)}
-                                        alt=""
-                                        loading="lazy"
-                                        className="w-full h-full object-cover group-hover:scale-105 transition"
-                                    />
-                                </div>
-                            ))}
+                            {allMedia.map((mediaId, index) => {
+
+                                const isGif = gifs.includes(mediaId);
+
+                                return (
+                                    <div
+                                        key={index}
+                                        onClick={() => initialSetIndex(index)}
+                                        className="relative cursor-pointer group aspect-video rounded-xl overflow-hidden bg-gray-800"
+                                    >
+                                        <img
+                                            src={getImageUrl(mediaId)}
+                                            alt=""
+                                            loading="lazy"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition"
+                                        />
+
+                                        {isGif && (
+                                            <>
+                                                <div className="absolute bottom-2 right-2 bg-yellow-500 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-black text-white uppercase tracking-wider border border-white/20 z-10">
+                                                    GIF
+                                                </div>
+                                                <div className="absolute bottom-0 h-10 w-full gif-hide-placeholder"></div>
+                                            </>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -72,29 +104,35 @@ export default function GameModal({ game, onClose }) {
                         onClick={closeLightbox}
                         className="absolute top-6 bg-red-400 text-black rounded-full hover:bg-red-500 right-6 hover:text-white text-3xl cursor-pointer"
                     >
-                        <RxCross2 className="p-1"/>
+                        <RxCross2 className="p-1" />
                     </button>
 
                     {/* Prev */}
                     <button
                         onClick={prevImage}
-                        className="absolute left-6 hover:text-white text-3xl bg-teal-400 text-black rounded-full hover:bg-teal-700 cursor-pointer"
+                        className="absolute left-6 hover:text-white text-3xl bg-teal-400 text-black rounded-full hover:bg-teal-700 cursor-pointer z-50"
                     >
-                        <FaChevronLeft className="p-2"/>
+                        <FaChevronLeft className="p-2" />
                     </button>
 
-                    <img
-                        src={getImageUrl(allMedia[selectedIndex])}
-                        className="max-h-[85vh] max-w-[90vw] object-contain"
-                        alt=""
-                    />
+                    <div className="relative">
+                        <img
+                            src={getImageUrl(allMedia[selectedIndex])}
+                            className="max-h-[85vh] max-w-[90vw] object-contain"
+                            alt=""
+                        />
+
+                        <div className={`absolute bottom-0 h-18 w-full gif-hide-placeholder ${isSelectedGif ? 'opacity-100' : 'opacity-0'}`}></div>
+
+                    </div>
+
 
                     {/* Next */}
                     <button
                         onClick={nextImage}
                         className="absolute right-6 hover:text-white text-3xl bg-teal-400 text-black rounded-full hover:bg-teal-700 cursor-pointer"
                     >
-                        <FaChevronRight className="p-2"/>
+                        <FaChevronRight className="p-2" />
                     </button>
                 </div>
             )}

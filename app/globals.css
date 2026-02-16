@@ -29,6 +29,10 @@ html {
     background: #F9FAFB;
 }
 
+.gif-hide-placeholder{
+    background-color: #DEDEDE;
+}
+
 .movie_title_logo .title {
     text-shadow: 2px 2px 4px black;
     color: #ff2439;
