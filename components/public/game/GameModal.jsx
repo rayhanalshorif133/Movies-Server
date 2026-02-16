@@ -1,5 +1,10 @@
 "use client";
 import React, { useState } from "react";
+import { RxCross2 } from "react-icons/rx";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+
+
+
 
 export default function GameModal({ game, onClose }) {
     const images = JSON.parse(game.asset_images || "[]");
@@ -31,7 +36,7 @@ export default function GameModal({ game, onClose }) {
                         onClick={onClose}
                         className="absolute top-4 right-4 z-10 p-2 bg-black/50 text-white rounded-full hover:bg-red-500"
                     >
-                        ✕
+                        <RxCross2/>
                     </button>
 
                     <div className="p-6 md:p-10">
@@ -65,20 +70,19 @@ export default function GameModal({ game, onClose }) {
 
                     <button
                         onClick={closeLightbox}
-                        className="absolute top-6 right-6 text-white text-3xl"
+                        className="absolute top-6 bg-red-400 text-black rounded-full hover:bg-red-500 right-6 hover:text-white text-3xl cursor-pointer"
                     >
-                        ✕
+                        <RxCross2 className="p-1"/>
                     </button>
 
                     {/* Prev */}
                     <button
                         onClick={prevImage}
-                        className="absolute left-6 text-white text-4xl"
+                        className="absolute left-6 hover:text-white text-3xl bg-teal-400 text-black rounded-full hover:bg-teal-700 cursor-pointer"
                     >
-                        ‹
+                        <FaChevronLeft className="p-2"/>
                     </button>
 
-                    {/* Image */}
                     <img
                         src={getImageUrl(allMedia[selectedIndex])}
                         className="max-h-[85vh] max-w-[90vw] object-contain"
@@ -88,9 +92,9 @@ export default function GameModal({ game, onClose }) {
                     {/* Next */}
                     <button
                         onClick={nextImage}
-                        className="absolute right-6 text-white text-4xl"
+                        className="absolute right-6 hover:text-white text-3xl bg-teal-400 text-black rounded-full hover:bg-teal-700 cursor-pointer"
                     >
-                        ›
+                        <FaChevronRight className="p-2"/>
                     </button>
                 </div>
             )}
