@@ -1,55 +1,123 @@
 import Sidebar from '@/components/admin/Sidebar'
 import React from 'react'
+import { createClient } from '@/utils/supabase/server';
+// React icons import
+import { HiOutlineFilm, HiOutlineDotsVertical, HiOutlineTrash, HiOutlinePencilAlt } from "react-icons/hi";
+import { IoGameControllerOutline } from "react-icons/io5";
+import { MdOutlineMail } from "react-icons/md";
 
+export default async function Page() {
+    const supabase = await createClient();
 
-export default function page() {
+    // Data Fetching in Parallel using Promise.all
+    const [
+        { count: movieCount },
+        { count: gameCount },
+        { count: gmailCount },
+        { data: movies }
+    ] = await Promise.all([
+        supabase.from('movies').select('*', { count: 'exact', head: true }),
+        supabase.from('games').select('*', { count: 'exact', head: true }),
+        supabase.from('gmail_inventory').select('*', { count: 'exact', head: true }),
+        supabase.from('movies').select('*').order('created_at', { ascending: false })
+    ]);
+
+    // JavaScript logic: Movies thakle map korbe, nahole empty array thakbe
+    const movieData = movies || [];
+
     return (
-        <div className="bg-gray-50 flex">
-
-            <Sidebar/>
+        <div className="bg-gray-50 flex min-h-screen">
+            <Sidebar />
 
             <div className="flex-1 ml-64 p-8">
-
+                {/* Header Section */}
                 <header className="flex justify-between items-center mb-8">
                     <div>
-                        <nav className="text-xs text-gray-500 mb-1">Home / Movies / Upload</nav>
-                        <h2 className="text-2xl font-bold text-gray-800">Media Center</h2>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <button className="p-2 text-gray-400 hover:text-gray-600"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg></button>
-                        <div className="flex items-center gap-2 border-l pl-4">
-                            <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-xs">M</div>
-                            <span className="text-sm font-medium">Movie</span>
-                        </div>
+                        <nav className="text-xs text-gray-400 mb-1 font-medium uppercase tracking-wider">Admin / Dashboard</nav>
+                        <h2 className="text-2xl font-extrabold text-gray-800">Media Management</h2>
                     </div>
                 </header>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm">
-                        <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium text-gray-500">Total Movies</span>
-                            <span className="text-green-500 text-xs">↑ 12%</span>
+                {/* Stat Cards - Grid Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div className="p-3 bg-teal-50 rounded-lg text-teal-600"><HiOutlineFilm size={24}/></div>
+                        <div>
+                            <p className="text-sm text-gray-500 font-medium">Total Movies</p>
+                            <h3 className="text-2xl font-bold text-gray-800">{movieCount ?? 0}</h3>
                         </div>
-                        <div className="text-2xl font-bold mt-2 text-gray-800">1,248</div>
                     </div>
-                    <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm">
-                        <div className="flex justify-between items-center text-sm font-medium text-gray-500">
-                            <span>Games Assets</span>
-                            <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div className="p-3 bg-blue-50 rounded-lg text-blue-600"><IoGameControllerOutline size={24}/></div>
+                        <div>
+                            <p className="text-sm text-gray-500 font-medium">Games Assets</p>
+                            <h3 className="text-2xl font-bold text-gray-800">{gameCount ?? 0}</h3>
                         </div>
-                        <div className="text-2xl font-bold mt-2 text-gray-800">452</div>
                     </div>
-                    <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm border-l-4 border-l-yellow-400">
-                        <div className="text-sm font-medium text-gray-500">Unread Gmails</div>
-                        <div className="text-2xl font-bold mt-2 text-yellow-600">24</div>
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div className="p-3 bg-yellow-50 rounded-lg text-yellow-600"><MdOutlineMail size={24}/></div>
+                        <div>
+                            <p className="text-sm text-gray-500 font-medium">Inventory Gmails</p>
+                            <h3 className="text-2xl font-bold text-gray-800">{gmailCount ?? 0}</h3>
+                        </div>
                     </div>
-                    <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm">
-                        <div className="text-sm font-medium text-gray-500">Active Game Sessions</div>
-                        <div className="text-2xl font-bold mt-2 text-gray-800">5.2k</div>
+                </div>
+
+                {/* Movies Table */}
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div className="p-6 border-b border-gray-50">
+                        <h3 className="font-bold text-gray-800 text-lg">Movies List</h3>
+                    </div>
+                    
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                            <thead className="bg-gray-50/50">
+                                <tr>
+                                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Title</th>
+                                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Genre</th>
+                                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Upload Date</th>
+                                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {movieData.length > 0 ? (
+                                    movieData.map((movie) => (
+                                        <tr key={movie.id} className="hover:bg-gray-50/80 transition-all group">
+                                            <td className="px-6 py-4">
+                                                <div className="font-semibold text-gray-700">{movie.title}</div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                                                    {movie.genre || 'General'}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-sm text-gray-500">
+                                                {new Date(movie.created_at).toLocaleDateString('en-GB')}
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <button title="Edit" className="p-2 hover:bg-blue-50 text-blue-500 rounded-lg transition-colors">
+                                                        <HiOutlinePencilAlt size={18} />
+                                                    </button>
+                                                    <button title="Delete" className="p-2 hover:bg-red-50 text-red-500 rounded-lg transition-colors">
+                                                        <HiOutlineTrash size={18} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={4} className="px-6 py-10 text-center text-gray-400 italic">
+                                            No movies available in your database.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-
         </div>
     )
 }
