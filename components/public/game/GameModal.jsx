@@ -19,27 +19,25 @@ export default function GameModal({ game, onClose }) {
 
     const closeLightbox = () => setSelectedIndex(null);
 
-    const initialSetIndex = (index) => {
-        setSelectedIndex(index);
-        setGifIndexValue();
+    const updateIndex = (newIndex) => {
+        setSelectedIndex(newIndex);
+        const isGif = gifs.includes(allMedia[newIndex]);
+        setIsSelectedGif(isGif);
+
     };
 
+    const initialSetIndex = (index) => updateIndex(index);
+
     const nextImage = () => {
-        setSelectedIndex((prev) => (prev + 1) % allMedia.length);
-        setGifIndexValue();
+        const nextIdx = (selectedIndex + 1) % allMedia.length;
+        updateIndex(nextIdx);
     };
 
     const prevImage = () => {
-        setSelectedIndex((prev) =>
-            prev === 0 ? allMedia.length - 1 : prev - 1
-        );
-        setGifIndexValue();
+        const prevIdx = selectedIndex === 0 ? allMedia.length - 1 : selectedIndex - 1;
+        updateIndex(prevIdx);
     };
 
-    const setGifIndexValue = () => {
-        const isGif = gifs.includes(selectedIndex);
-        setIsSelectedGif(isGif);
-    };
 
 
 
@@ -122,7 +120,7 @@ export default function GameModal({ game, onClose }) {
                             alt=""
                         />
 
-                        <div className={`absolute bottom-0 h-18 w-full gif-hide-placeholder ${isSelectedGif ? 'opacity-100' : 'opacity-0'}`}></div>
+                        <div className={`absolute bottom-0 h-[20%]  w-full gif-hide-placeholder ${isSelectedGif ? 'opacity-100' : 'opacity-0'}`}></div>
 
                     </div>
 
