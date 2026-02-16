@@ -3,9 +3,6 @@ import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
-
-
-
 export default function GameModal({ game, onClose }) {
     const images = JSON.parse(game.asset_images || "[]");
     const gifs = JSON.parse(game.asset_gif_images || "[]");
