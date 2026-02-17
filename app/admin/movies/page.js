@@ -24,46 +24,6 @@ export default async function Page() {
         supabase.from('movies').select('*').order('created_at', { ascending: false })
     ]);
 
-    /* 
-    created_at
-: 
-"2026-02-17T02:56:16.314307+00:00"
-
-: 
-"Bangla"
-id
-: 
-255
-is_show
-: 
-false
-
-: 
-"rayhanalshorifmovie26@gmail.com"
-part_name
-: 
-"single"
-poster
-: 
-"https://bdmzqapfwgohgkctmzht.supabase.co/storage/v1/object/public/movies/posters/1771296959091_Fatafati%20(2023).jpg"
-size
-: 
-2781.83
-subtitle_url
-: 
-null
-title
-: 
-"Fatafati (2023)"
-type
-: 
-"kolkata-bangla"
-url
-: 
-"https://drive.google.com/file/d/1_Zr9Yp0jJYoIR2BORh0VQHK10kpMoH5H/view?usp=sharing"
-    */ 
-    console.log(movies);
-
     const movieData = movies || [];
 
     return (

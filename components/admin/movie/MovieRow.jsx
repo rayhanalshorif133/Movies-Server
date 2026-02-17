@@ -1,9 +1,10 @@
 import Badge from '@/components/common/Badge';
 import DBBadge from '@/components/admin/movie/badge/DBBadge';
 import React from 'react';
-import { HiOutlinePencilAlt, HiOutlineTrash, HiCalendar, HiDatabase } from 'react-icons/hi';
-import { MdOutgoingMail } from "react-icons/md";
+import { HiOutlinePencilAlt, HiOutlineTrash } from 'react-icons/hi';
 import TypeBadge from './badge/TypeBadge';
+import DateBadge from './badge/UploadDateBadge';
+import UploadDateBadge from './badge/UploadDateBadge';
 
 
 export default function MovieRow({ movie }) {
@@ -32,10 +33,10 @@ export default function MovieRow({ movie }) {
             <td className="px-6 py-4">
                 <div className="flex flex-col gap-1.5">
                     <span className="font-bold text-gray-800 text-base leading-tight group-hover:text-blue-600 transition-colors">
-                        {movie.title}
+                        {movie.title}  <TypeBadge type={movie.type} />
                     </span>
                     <div>
-                        <Badge title={movie.part_name} /> <TypeBadge title={movie.type} />
+                        <Badge title={movie.part_name} />
                     </div>
                 </div>
             </td>
@@ -43,7 +44,7 @@ export default function MovieRow({ movie }) {
             {/* Technical Specs */}
             <td className="px-6 py-4">
                 <div className="flex flex-col gap-2">
-                    <DBBadge sourceGmailName={movie.movie_source} movieSize={movie.size}/>
+                    <DBBadge sourceGmailName={movie.movie_source} movieSize={movie.size} />
                 </div>
             </td>
 
@@ -53,15 +54,10 @@ export default function MovieRow({ movie }) {
                 </div>
             </td>
 
-            {/* Date Section */}
             <td className="px-6 py-4">
-                <div className="flex items-center text-gray-500 text-sm">
-                    <HiCalendar className="mr-2 opacity-70" />
-                    {formatDate(movie.created_at)}
-                </div>
+                <UploadDateBadge date={formatDate(movie.created_at)} />
             </td>
 
-            {/* Action Buttons */}
             <td className="px-6 py-4 text-right">
                 <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
                     <button
