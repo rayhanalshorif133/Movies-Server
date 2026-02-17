@@ -15,12 +15,10 @@ export async function login(formData) {
   })
 
   if (error) {
-    // Error hole message pathiye login-ei redirect hobe
     return redirect('/login?error=' + encodeURIComponent(error.message))
   }
 
-  // Success hole dashboard-e pathabe
-  redirect('/dashboard')
+  redirect('/admin/dashboard')
 }
 
 

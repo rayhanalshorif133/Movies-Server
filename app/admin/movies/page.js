@@ -1,28 +1,69 @@
 import Sidebar from '@/components/admin/Sidebar'
 import React from 'react'
 import { createClient } from '@/utils/supabase/server';
-// React icons import
-import { HiOutlineFilm, HiOutlineDotsVertical, HiOutlineTrash, HiOutlinePencilAlt } from "react-icons/hi";
-import { IoGameControllerOutline } from "react-icons/io5";
-import { MdOutlineMail } from "react-icons/md";
+import { HiOutlineFilm, HiOutlineTrash, HiOutlinePencilAlt } from "react-icons/hi";
+import Badge from '@/components/common/Badge';
+import MovieRow from '@/components/admin/movie/MovieRow';
+
+export async function generateMetadata() {
+    return {
+        title: "Movie List | Admin Panel",
+    };
+}
+
+
 
 export default async function Page() {
     const supabase = await createClient();
 
-    // Data Fetching in Parallel using Promise.all
     const [
         { count: movieCount },
-        { count: gameCount },
-        { count: gmailCount },
         { data: movies }
     ] = await Promise.all([
         supabase.from('movies').select('*', { count: 'exact', head: true }),
-        supabase.from('games').select('*', { count: 'exact', head: true }),
-        supabase.from('gmail_inventory').select('*', { count: 'exact', head: true }),
         supabase.from('movies').select('*').order('created_at', { ascending: false })
     ]);
 
-    // JavaScript logic: Movies thakle map korbe, nahole empty array thakbe
+    /* 
+    created_at
+: 
+"2026-02-17T02:56:16.314307+00:00"
+
+: 
+"Bangla"
+id
+: 
+255
+is_show
+: 
+false
+
+: 
+"rayhanalshorifmovie26@gmail.com"
+part_name
+: 
+"single"
+poster
+: 
+"https://bdmzqapfwgohgkctmzht.supabase.co/storage/v1/object/public/movies/posters/1771296959091_Fatafati%20(2023).jpg"
+size
+: 
+2781.83
+subtitle_url
+: 
+null
+title
+: 
+"Fatafati (2023)"
+type
+: 
+"kolkata-bangla"
+url
+: 
+"https://drive.google.com/file/d/1_Zr9Yp0jJYoIR2BORh0VQHK10kpMoH5H/view?usp=sharing"
+    */ 
+    console.log(movies);
+
     const movieData = movies || [];
 
     return (
@@ -41,24 +82,10 @@ export default async function Page() {
                 {/* Stat Cards - Grid Layout */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-                        <div className="p-3 bg-teal-50 rounded-lg text-teal-600"><HiOutlineFilm size={24}/></div>
+                        <div className="p-3 bg-teal-50 rounded-lg text-teal-600"><HiOutlineFilm size={24} /></div>
                         <div>
                             <p className="text-sm text-gray-500 font-medium">Total Movies</p>
                             <h3 className="text-2xl font-bold text-gray-800">{movieCount ?? 0}</h3>
-                        </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-                        <div className="p-3 bg-blue-50 rounded-lg text-blue-600"><IoGameControllerOutline size={24}/></div>
-                        <div>
-                            <p className="text-sm text-gray-500 font-medium">Games Assets</p>
-                            <h3 className="text-2xl font-bold text-gray-800">{gameCount ?? 0}</h3>
-                        </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-                        <div className="p-3 bg-yellow-50 rounded-lg text-yellow-600"><MdOutlineMail size={24}/></div>
-                        <div>
-                            <p className="text-sm text-gray-500 font-medium">Inventory Gmails</p>
-                            <h3 className="text-2xl font-bold text-gray-800">{gmailCount ?? 0}</h3>
                         </div>
                     </div>
                 </div>
@@ -68,13 +95,15 @@ export default async function Page() {
                     <div className="p-6 border-b border-gray-50">
                         <h3 className="font-bold text-gray-800 text-lg">Movies List</h3>
                     </div>
-                    
+
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead className="bg-gray-50/50">
                                 <tr>
+                                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Poster</th>
                                     <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Title</th>
-                                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Genre</th>
+                                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Storage Info</th>
+                                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Dubbed</th>
                                     <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Upload Date</th>
                                     <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Actions</th>
                                 </tr>
@@ -82,29 +111,7 @@ export default async function Page() {
                             <tbody className="divide-y divide-gray-100">
                                 {movieData.length > 0 ? (
                                     movieData.map((movie) => (
-                                        <tr key={movie.id} className="hover:bg-gray-50/80 transition-all group">
-                                            <td className="px-6 py-4">
-                                                <div className="font-semibold text-gray-700">{movie.title}</div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
-                                                    {movie.genre || 'General'}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-sm text-gray-500">
-                                                {new Date(movie.created_at).toLocaleDateString('en-GB')}
-                                            </td>
-                                            <td className="px-6 py-4 text-right">
-                                                <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <button title="Edit" className="p-2 hover:bg-blue-50 text-blue-500 rounded-lg transition-colors">
-                                                        <HiOutlinePencilAlt size={18} />
-                                                    </button>
-                                                    <button title="Delete" className="p-2 hover:bg-red-50 text-red-500 rounded-lg transition-colors">
-                                                        <HiOutlineTrash size={18} />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <MovieRow key={movie.id} movie={movie}/>
                                     ))
                                 ) : (
                                     <tr>

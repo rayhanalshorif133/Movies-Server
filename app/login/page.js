@@ -34,7 +34,6 @@ export default async function  LoginPage({ searchParams }) {
             name="password"
             type="password"
             placeholder="••••••••"
-            value={'rayhan@gmail.com'}
             required
           />
         </div>

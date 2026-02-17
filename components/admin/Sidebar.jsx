@@ -3,25 +3,36 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { logout } from '@/app/login/actions'
+import { MdOutlineDashboard, MdLocalMovies } from "react-icons/md";
+import { BiLogoGmail } from "react-icons/bi";
+import { FaGamepad } from "react-icons/fa6";
+import { FaCloudUploadAlt } from "react-icons/fa";
+
+
+
+
+
 
 export default function Sidebar() {
     const pathname = usePathname();
     const menuItems = [
-        { label: 'Dashboard', href: '/admin/dashboard', icon: 'home', type: 'link' },
+        { label: 'Dashboard', href: '/admin/dashboard', icon: <MdOutlineDashboard/>, type: 'link' },
         { label: 'Entertainment', type: 'header' },
-        { label: 'Movies List', href: '/admin/movies', icon: 'list', type: 'link' },
-        { label: 'Upload Movie', href: '/admin/movies/upload', icon: 'upload', type: 'link' },
+        { label: 'Movies List', href: '/admin/movies', icon: <MdLocalMovies/>, type: 'link' },
+        { label: 'Upload Movie', href: '/admin/movies/upload', icon: <FaCloudUploadAlt/>, type: 'link' },
         { label: 'Gaming', type: 'header' },
-        { label: 'Games & Assets', href: '/admin/games', icon: 'game', type: 'link' },
+        { label: 'Games & Assets', href: '/admin/games', icon: <FaGamepad/>, type: 'link' },
         { label: 'Communication', type: 'header' },
-        { label: 'Gmail List', href: '/admin/gmails', icon: 'mail', type: 'link' },
+        { label: 'Gmail List', href: '/admin/gmails', icon: <BiLogoGmail/>, type: 'link' },
     ];
 
     return (
         <aside className="w-64 bg-white min-h-screen border-r border-gray-200 flex flex-col fixed left-0 top-0">
             <div className="p-6 border-b border-gray-100">
                 <h1 className="text-xl font-bold flex items-center gap-2">
-                    <span className="bg-yellow-400 w-fit px-2 h-8 uppercase rounded-md flex items-center justify-center text-xs">Movie</span>
+                    <span className="bg-yellow-400 w-fit px-2 h-8 uppercase rounded-md flex items-center justify-center text-xs">
+                        Movie
+                    </span>
                     Admin Panel
                 </h1>
             </div>
@@ -42,9 +53,10 @@ export default function Sidebar() {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex items-center gap-3 p-3 rounded-md font-medium transition ${isActive ? "bg-blue-50 text-blue-600" : "text-gray-600 hover:bg-gray-50"
+                            className={`flex items-center gap-3 p-3 rounded-md transition ${isActive ? "bg-blue-50 text-blue-600 font-semibold" : "text-gray-600 hover:bg-gray-50 font-medium"
                                 }`}
                         >
+                            <span className={`${isActive ? 'text-xl rotate-45': 'text-sm'}`}>{item.icon}</span>
                             {item.label}
                         </Link>
                     );
