@@ -2,8 +2,11 @@ import Badge from '@/components/common/Badge';
 import DBBadge from '@/components/admin/movie/badge/DBBadge';
 import React from 'react';
 import { HiOutlinePencilAlt, HiOutlineTrash } from 'react-icons/hi';
+import { FaEye } from "react-icons/fa";
 import TypeBadge from './badge/TypeBadge';
 import UploadDateBadge from './badge/UploadDateBadge';
+import Link from 'next/link';
+import VisualBadge from '@/components/common/VisualBadge';
 
 
 export default function MovieRow({ movie }) {
@@ -33,10 +36,21 @@ export default function MovieRow({ movie }) {
                 <div className="flex flex-col gap-1.5">
                     <span className="font-bold text-gray-800 text-base leading-tight group-hover:text-blue-600 transition-colors">
                         {movie.title}  <TypeBadge type={movie.type} />
+
                     </span>
-                    <div>
+                    <div className='flex space-x-2'>
                         <Badge title={movie.part_name} />
+                        <Link
+                            href={movie.url}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
+                            <VisualBadge title={'View'}/>
+                        </Link>
+
+
                     </div>
+
                 </div>
             </td>
 
