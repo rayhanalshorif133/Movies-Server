@@ -3,7 +3,6 @@ import DBBadge from '@/components/admin/movie/badge/DBBadge';
 import React from 'react';
 import { HiOutlinePencilAlt, HiOutlineTrash } from 'react-icons/hi';
 import TypeBadge from './badge/TypeBadge';
-import DateBadge from './badge/UploadDateBadge';
 import UploadDateBadge from './badge/UploadDateBadge';
 
 
