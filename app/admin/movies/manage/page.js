@@ -1,12 +1,23 @@
+import UpdateMovie from '@/components/admin/movie/UpdateMovie'
+import UploadMovie from '@/components/admin/movie/UploadMovie'
 import Sidebar from '@/components/admin/Sidebar'
-import React from 'react'
+
+export async function generateMetadata() {
+    return {
+        title: "Manage Movie | Admin Panel",
+    };
+}
+
+export default async function page({ searchParams }) {
+    const resolvedSearchParams = await searchParams;
+    const isUpdate = !!resolvedSearchParams.id;
 
 
-export default function page() {
+
     return (
         <div className="bg-gray-50 flex">
 
-            <Sidebar/>
+            <Sidebar />
 
             <div className="flex-1 ml-64 p-8">
 
@@ -48,6 +59,9 @@ export default function page() {
                         <div className="text-2xl font-bold mt-2 text-gray-800">5.2k</div>
                     </div>
                 </div>
+                {
+                    isUpdate ? <UpdateMovie id={resolvedSearchParams.id} /> : <UploadMovie/>
+                }
             </div>
 
         </div>

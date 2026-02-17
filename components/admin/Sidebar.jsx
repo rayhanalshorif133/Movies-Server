@@ -6,7 +6,8 @@ import { logout } from '@/app/login/actions'
 import { MdOutlineDashboard, MdLocalMovies } from "react-icons/md";
 import { BiLogoGmail } from "react-icons/bi";
 import { FaGamepad } from "react-icons/fa6";
-import { FaCloudUploadAlt } from "react-icons/fa";
+import { RiMovie2AiFill } from "react-icons/ri";
+
 
 
 
@@ -19,7 +20,7 @@ export default function Sidebar() {
         { label: 'Dashboard', href: '/admin/dashboard', icon: <MdOutlineDashboard/>, type: 'link' },
         { label: 'Entertainment', type: 'header' },
         { label: 'Movies List', href: '/admin/movies', icon: <MdLocalMovies/>, type: 'link' },
-        { label: 'Upload Movie', href: '/admin/movies/upload', icon: <FaCloudUploadAlt/>, type: 'link' },
+        { label: 'Movies Manage', href: '/admin/movies/manage', icon: <RiMovie2AiFill/>, type: 'link' },
         { label: 'Gaming', type: 'header' },
         { label: 'Games & Assets', href: '/admin/games', icon: <FaGamepad/>, type: 'link' },
         { label: 'Communication', type: 'header' },

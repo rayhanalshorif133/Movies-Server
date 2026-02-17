@@ -73,12 +73,12 @@ export default function MovieRow({ movie }) {
 
             <td className="px-6 py-4 text-right">
                 <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-                    <button
+                    <Link href={`/admin/movies/manage?id=${movie.id}`}
                         title="Edit Movie"
                         className="p-2 hover:bg-blue-100 text-blue-600 rounded-full transition-all active:scale-90"
                     >
                         <HiOutlinePencilAlt size={20} />
-                    </button>
+                    </Link>
                     <button
                         title="Delete Movie"
                         className="p-2 hover:bg-red-100 text-red-500 rounded-full transition-all active:scale-90"

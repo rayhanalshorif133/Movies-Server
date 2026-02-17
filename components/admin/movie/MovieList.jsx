@@ -15,13 +15,10 @@ export default function MovieList({
 
   const totalPages = Math.ceil(totalCount / limit)
 
-  // Auto search logic with Debouncing
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      // Shudhu jodi search text change hoy tokhon e router push hobe
-      // page=1 dewa hoyeche jate search korle results prothom theke dekhay
       router.push(`?search=${searchText}&page=1`)
-    }, 500) // 500ms opekkha korbe type sesh hobar por
+    }, 500) 
 
     return () => clearTimeout(delayDebounceFn)
   }, [searchText, router])
@@ -45,11 +42,9 @@ export default function MovieList({
             onChange={(e) => setSearchText(e.target.value)} // Type korlei state update hobe
             className="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black"
           />
-          {/* Button ekhon ar proyojon nei, tobuo thakte pare design er jonno */}
         </div>
       </div>
 
-      {/* Table Section */}
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead className="bg-gray-50/50">
