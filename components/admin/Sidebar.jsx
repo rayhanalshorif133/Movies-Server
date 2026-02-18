@@ -34,7 +34,7 @@ export default function Sidebar() {
                     <span className="bg-yellow-400 w-fit px-2 h-8 uppercase rounded-md flex items-center justify-center text-xs">
                         Movie
                     </span>
-                    Admin Panel
+                    <span className='font-oswald font-medium'>Admin Panel</span>
                 </h1>
             </div>
 
@@ -54,7 +54,7 @@ export default function Sidebar() {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex items-center gap-3 p-3 rounded-md transition ${isActive ? "bg-blue-50 text-blue-600 font-semibold" : "text-gray-600 hover:bg-gray-50 font-medium"
+                            className={`flex font-roboto font-normal items-center gap-3 p-3 rounded-md transition ${isActive ? "bg-blue-50 text-blue-600 font-semibold" : "text-gray-600 hover:bg-gray-50 font-medium"
                                 }`}
                         >
                             <span className={`${isActive ? 'text-xl rotate-45': 'text-sm'}`}>{item.icon}</span>

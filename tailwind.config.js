@@ -1,4 +1,3 @@
-// tailwind.config.js
 module.exports = {
   theme: {
     extend: {
@@ -12,6 +11,8 @@ module.exports = {
       },
       fontFamily: {
         pacifico: ["var(--font-pacifico)"],
+        roboto: ["var(--font-roboto)"],
+        oswald: ["var(--font-oswald)"],
       },
     },
   },
