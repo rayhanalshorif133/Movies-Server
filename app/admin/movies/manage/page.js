@@ -1,6 +1,7 @@
 import UpdateMovie from '@/components/admin/movie/UpdateMovie'
 import UploadMovie from '@/components/admin/movie/UploadMovie'
 import Sidebar from '@/components/admin/Sidebar'
+import UploadImage from '@/components/common/UploadImage';
 
 export async function generateMetadata() {
     return {
@@ -60,9 +61,11 @@ export default async function page({ searchParams }) {
                     </div>
                 </div>
                 {
-                    isUpdate ? <UpdateMovie id={resolvedSearchParams.id} /> : <UploadMovie/>
+                    isUpdate ? <UpdateMovie id={resolvedSearchParams.id} /> : <UploadMovie />
                 }
+                <UploadImage />
             </div>
+
 
         </div>
     )
