@@ -10,7 +10,7 @@ export default function Header() {
                 <div className="px-4 md:px-8 py-4 flex items-center justify-between max-w-400 mx-auto">
                     <div className="flex items-center">
                         <Link href="index.html"
-                            className="text-2xl md:text-3xl text-white font-cursive tracking-wide drop-shadow-md">
+                            className="font-pacifico text-2xl md:text-3xl text-white font-cursive tracking-wide drop-shadow-md">
                             Entertainment Diary
                         </Link>
                     </div>

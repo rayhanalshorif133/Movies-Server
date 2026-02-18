@@ -10,6 +10,9 @@ module.exports = {
       animation: {
         'shimmer': 'shimmer 1.5s infinite',
       },
+      fontFamily: {
+        pacifico: ["var(--font-pacifico)"],
+      },
     },
   },
 }
