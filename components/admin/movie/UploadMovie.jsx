@@ -1,4 +1,5 @@
 "use client"
+import { getMovieFileInfo } from '@/utils/google/movie-info';
 import React, { useState } from 'react'
 import { MdClear } from "react-icons/md";
 
@@ -20,15 +21,17 @@ export default function UploadMovie() {
 
   const handlePaste = async () => {
     try {
-      const text = await navigator.clipboard.readText();
-      console.log(text);
-      setFormData({ ...formData, movieUrl: text });
+      const URL = await navigator.clipboard.readText();
+      const data = await getMovieFileInfo(URL);
+      const { name, gmail, size } = data;
+      setFormData({ ...formData, title: name, movieUrl: URL, source: gmail, size: size });
+
     } catch (err) {
       console.error('Failed to read clipboard contents: ', err);
     }
   };
   const clearURL = async () => {
-    setFormData({ ...formData, movieUrl: '' });
+    setFormData({ ...formData, title: '', movieUrl: '', source: '', size: '' });
   };
 
   const handleUpload = async (e) => {
@@ -47,7 +50,7 @@ export default function UploadMovie() {
         <div className="grid grid-cols-1">
           <div>
             <label className="text-sm font-semibold text-gray-700 mb-2 flex">
-              Source <button onClick={clearURL} className='h-5 w-5 mx-2 cursor-pointer hover:scale-105 rounded-full bg-gray-300 hover:bg-red-500 hover:text-white flex items-center justify-center'><MdClear size={14} className='flex items-center justify-center'/></button>
+              Source <button onClick={clearURL} className='h-5 w-5 mx-2 cursor-pointer hover:scale-105 rounded-full bg-gray-300 hover:bg-red-500 hover:text-white flex items-center justify-center'><MdClear size={14} className='flex items-center justify-center' /></button>
             </label>
             <input
               type="url"
@@ -85,7 +88,7 @@ export default function UploadMovie() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Size (MB)</label>
               <input
-                type="number"
+                type="text"
                 placeholder="e.g. 700"
                 className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none bg-white"
                 value={formData.size}
@@ -118,10 +121,14 @@ export default function UploadMovie() {
               value={formData.movieType}
               onChange={(e) => setFormData({ ...formData, movieType: e.target.value })}
             >
-              <option value="Action">Action</option>
-              <option value="Drama">Drama</option>
-              <option value="Sci-Fi">Sci-Fi</option>
-              <option value="Horror">Horror</option>
+              <option value="" disabled="" selected="">🎬 Select Movie Type</option>
+              <option value="bangladeshi">Bangladeshi (🇧🇩)</option>
+              <option value="kolkata-bangla">Kolkata Bangla (🇮🇳)</option>
+              <option value="hindi">Hindi (🇮🇳)</option>
+              <option value="english">English</option>
+              <option value="yousuf-zulekha">Yousuf Zulekha</option>
+              <option value="hatim">Hatim</option>
+              <option value="others">Others</option>
             </select>
           </div>
           <div className="flex items-center mt-8">
