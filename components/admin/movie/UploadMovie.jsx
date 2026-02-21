@@ -1,11 +1,13 @@
 "use client"
+import ImageUploader from '@/components/common/ImageUploader';
 import { getMovieFileInfo } from '@/utils/google/movie-info';
 import React, { useState } from 'react'
 import { MdClear } from "react-icons/md";
 
 
 export default function UploadMovie() {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [driveId, setDriveId] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -35,7 +37,11 @@ export default function UploadMovie() {
   };
 
   const handleUpload = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+
+    console.clear();
+    console.log(driveId);
+    return false;
     setLoading(true)
     console.log({ ...formData, videoFile, posterImage })
     setTimeout(() => setLoading(false), 2000) // Demo loading
@@ -145,17 +151,7 @@ export default function UploadMovie() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center hover:border-yellow-400 transition cursor-pointer relative">
-            <input
-              type="file"
-              accept="image/*"
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              onChange={(e) => setPosterImage(e.target.files[0])}
-            />
-            <p className="text-sm font-medium text-gray-700">
-              {posterImage ? posterImage.name : "Upload Poster (JPG/PNG)"}
-            </p>
-          </div>
+          <ImageUploader className="w-full" setDriveId={setDriveId}/>
         </div>
 
         <button
