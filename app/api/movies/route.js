@@ -5,9 +5,14 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const searchByTitle = searchParams.get('title') || '';
     const searchByType = searchParams.get('type') || '';
+    const searchByID = searchParams.get('id') || '';
 
     const supabase = await createClient();
     let query = supabase.from('movies').select('*');
+
+    if(searchByID) {
+        query = query.eq('id', searchByID);
+    }
 
     if (searchByTitle) {
         query = query.ilike('title', `%${searchByTitle}%`);

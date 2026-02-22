@@ -2,6 +2,7 @@ import UpdateMovie from '@/components/admin/movie/UpdateMovie'
 import UploadMovie from '@/components/admin/movie/UploadMovie'
 import Sidebar from '@/components/admin/Sidebar'
 import UploadImage from '@/components/common/ImageUploader';
+import { createClient } from '@/utils/supabase/server';
 
 export async function generateMetadata() {
     return {
@@ -12,6 +13,17 @@ export async function generateMetadata() {
 export default async function page({ searchParams }) {
     const resolvedSearchParams = await searchParams;
     const isUpdate = !!resolvedSearchParams.id;
+    let movie = null;
+
+    if (isUpdate) {
+        const supabase = await createClient();
+        const { data } = await supabase
+            .from('movies')
+            .select('*')
+            .eq('id', resolvedSearchParams.id)
+            .single();
+        movie = data || null;
+    }
 
 
 
@@ -36,7 +48,7 @@ export default async function page({ searchParams }) {
                     </div>
                 </header>
                 {
-                    isUpdate ? <UpdateMovie id={resolvedSearchParams.id} /> : <UploadMovie />
+                    isUpdate ? <UpdateMovie movie={movie} /> : <UploadMovie />
                 }
             </div>
 
