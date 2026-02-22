@@ -3,7 +3,11 @@ import { RxCross2, RxArrowLeft } from "react-icons/rx";
 
 export default function MovieDetailsModal({ movie, onClose }) {
     const [isPreviewing, setIsPreviewing] = useState(false);
-    const [closeBtnPosition, setCloseBtnPosition] = useState('right-4')
+    const [closeBtnPosition, setCloseBtnPosition] = useState('right-4');
+
+    if (movie.poster_in_drive) {
+        movie.poster = `https://lh3.googleusercontent.com/d/${movie.poster}`;
+    }
 
     const getEmbedUrl = (url) => {
         if (!url) return "";

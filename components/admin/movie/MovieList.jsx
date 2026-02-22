@@ -18,7 +18,7 @@ export default function MovieList({
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       router.push(`?search=${searchText}&page=1`)
-    }, 500) 
+    }, 500)
 
     return () => clearTimeout(delayDebounceFn)
   }, [searchText, router])
@@ -26,6 +26,8 @@ export default function MovieList({
   const goToPage = (page) => {
     router.push(`?search=${searchText}&page=${page}`)
   }
+
+
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -60,9 +62,14 @@ export default function MovieList({
 
           <tbody className="divide-y divide-gray-100">
             {movieData.length > 0 ? (
-              movieData.map((movie) => (
-                <MovieRow key={movie.id} movie={movie} />
-              ))
+              movieData.map((movie) => {
+                let updatedMovie = { ...movie };
+                if (movie.poster_in_drive) {
+                  updatedMovie.poster = `https://lh3.googleusercontent.com/d/${movie.poster}`;
+                }
+
+                return <MovieRow key={updatedMovie.id} movie={updatedMovie} />;
+              })
             ) : (
               <tr>
                 <td colSpan={6} className="px-6 py-10 text-center text-gray-400 italic">
@@ -81,11 +88,10 @@ export default function MovieList({
             <button
               key={page}
               onClick={() => goToPage(page)}
-              className={`px-3 cursor-pointer hover:bg-black hover:text-white py-1 rounded-lg text-sm border ${
-                page === currentPage
-                  ? "bg-black text-white"
-                  : "bg-white text-gray-600"
-              }`}
+              className={`px-3 cursor-pointer hover:bg-black hover:text-white py-1 rounded-lg text-sm border ${page === currentPage
+                ? "bg-black text-white"
+                : "bg-white text-gray-600"
+                }`}
             >
               {page}
             </button>
