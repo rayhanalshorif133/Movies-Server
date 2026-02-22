@@ -30,22 +30,6 @@ export async function GET(request) {
 export async function POST(request) {
     const supabase = await createClient();
     const body = await request.json();
-
-    /* 
-    {
-                title: movieTitle,
-                poster: imageUrl,
-                url: movieURL,
-                movie_source: movieSource,
-                type: movieType,
-                size: movieSize ? parseFloat(movieSize) : 'N/A',
-                dubbed_lang: dubbedLanguage,
-                part_name: series_part_name,
-                subtitle_url: subtitleInput,
-                poster_in_drive: true, // Assuming the poster is also in Google Drive
-            }
-    */ 
-
     const { data, error } = await supabase
         .from('movies')
         .insert([body]) 

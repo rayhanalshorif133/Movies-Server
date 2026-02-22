@@ -1,5 +1,6 @@
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBitNkcvoaAK7KFPo2dXZxh9WEeIlRaK1HwZOClAvtNmtUS7p1U7JYqJmnAcWKvNumRw/exec";
+const SCRIPT_URL_DELETE = "https://script.google.com/macros/s/AKfycbzzk_p0ysLCF7SA6yUp6PZO5k62VufN5ER88mj0wd9QhT-iCZPtWo4QGguzZMTq35aUxw/exec";
 
 
 export async function uploadImageInGoogleDrive(file) {
@@ -37,5 +38,38 @@ export async function uploadImageInGoogleDrive(file) {
   } catch (error) {
     console.error("Upload Error:", error);
     return null;
+  }
+}
+
+
+export async function deleteFileFromGoogleDrive(fileId) {
+  if (!fileId) return null;
+
+  try {
+    const payload = {
+      action: 'delete',
+      fileId: fileId,
+    };
+
+    const response = await fetch(SCRIPT_URL_DELETE, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      console.log("File deleted successfully");
+      return true;
+    } else {
+      console.error("Delete Failed:", result.error);
+      return false;
+    }
+  } catch (error) {
+    console.error("Network/API Error:", error);
+    return false;
   }
 }

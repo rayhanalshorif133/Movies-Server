@@ -1,6 +1,6 @@
 "use client";
 
-import { uploadImageInGoogleDrive } from '@/utils/google/upload-image';
+import { uploadImageInGoogleDrive } from '@/utils/google/manage-image';
 import { useState } from 'react';
 
 export default function ImageUploader({setDriveId}) {
@@ -16,7 +16,6 @@ export default function ImageUploader({setDriveId}) {
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
 
-    // ২. ড্রাইভ-এ আপলোড শুরু করা
     setLoading(true);
     const driveId = await uploadImageInGoogleDrive(file);
     setLoading(false);

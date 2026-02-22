@@ -6,11 +6,11 @@ import TypeBadge from './badge/TypeBadge';
 import UploadDateBadge from './badge/UploadDateBadge';
 import Link from 'next/link';
 import VisualBadge from '@/components/common/VisualBadge';
+import Swal from 'sweetalert2'
+import { deleteFileFromGoogleDrive } from '@/utils/google/manage-image';
 
 
 export default function MovieRow({ movie }) {
-
-
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-GB', {
@@ -21,7 +21,52 @@ export default function MovieRow({ movie }) {
     };
 
     const handleDeleteMovieBtn = (movieId) => {
-        console.log(movieId);
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteFileFromGoogleDrive(movie.poster);
+                fetch(`/api/movies?id=${movieId}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.error) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: data.error,
+                                icon: "error"
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "The movie has been deleted.",
+                                icon: "success"
+                            }).then(() => {
+                                window.location.reload();
+                            });
+
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: "Error!",
+                            text: "An error occurred while deleting the movie.",
+                            icon: "error"
+                        });
+                    });
+            }
+        });
     }
 
     return (
@@ -88,6 +133,7 @@ export default function MovieRow({ movie }) {
                         <HiOutlinePencilAlt size={20} />
                     </Link>
                     <button
+                        onClick={() => handleDeleteMovieBtn(movie.id)}
                         title="Delete Movie"
                         className="p-2 hover:bg-red-100 text-red-500 rounded-full transition-all active:scale-90"
                     >
