@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function DBBadge({ sourceGmailName, movieSize }) {
+
+    const [color, setColor] = useState(null);
 
     const colors = [
         "from-teal-600 to-green-600",
@@ -10,7 +12,11 @@ export default function DBBadge({ sourceGmailName, movieSize }) {
         "from-indigo-600 to-violet-700"
     ];
 
-    const randomGradient = colors[Math.floor(Math.random() * colors.length)];
+
+    useEffect(() => {
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        setColor(randomColor);
+    }, []);
 
     return (
         <div className="flex justify-left items-left">
@@ -18,7 +24,7 @@ export default function DBBadge({ sourceGmailName, movieSize }) {
 
 
 
-                <div className={`absolute -top-3 -right-2 bg-linear-to-r ${randomGradient} text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg border-2 border-white`}>
+                <div className={`absolute -top-3 -right-2 bg-linear-to-r ${color} text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg border-2 border-white`}>
                     {movieSize} MB
                 </div>
 

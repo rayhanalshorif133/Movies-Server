@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { use, useEffect } from 'react';
 
 export default function Badge({ title }) {
     const generateRandomColors = () => {
@@ -10,11 +10,15 @@ export default function Badge({ title }) {
         };
     };
 
-    const colors = generateRandomColors();
+    const [color, setColor] = React.useState();
+
+    useEffect(() => {
+        setColor(generateRandomColors());
+    }, []);
 
     return (
         <span
-            style={colors}
+            style={color}
             className="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold border transition-all duration-300 hover:scale-105 cursor-default shadow-sm"
         >
             {title}

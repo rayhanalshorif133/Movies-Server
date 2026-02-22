@@ -33,7 +33,6 @@ export default function TypeBadge({ type }) {
       hover:pl-3 cursor-default overflow-hidden
       ${currentStyle}
     `}>
-      {/* Shimmer Effect */}
       <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]"></span>
 
       {/* Decorative Left Line */}
