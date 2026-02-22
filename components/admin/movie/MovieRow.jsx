@@ -29,7 +29,7 @@ export default function MovieRow({ movie }) {
                         <img
                             src={
                                 movie.poster_in_drive
-                                    ? `http://googleusercontent.com/profile/picture/${movie.poster}`
+                                    ? `https://lh3.googleusercontent.com/d/${movie.poster}`
                                     : movie.poster
                             }
                             alt={movie.title}

@@ -63,12 +63,7 @@ export default function MovieList({
           <tbody className="divide-y divide-gray-100">
             {movieData.length > 0 ? (
               movieData.map((movie) => {
-                let updatedMovie = { ...movie };
-                if (movie.poster_in_drive) {
-                  updatedMovie.poster = `https://lh3.googleusercontent.com/d/${movie.poster}`;
-                }
-
-                return <MovieRow key={updatedMovie.id} movie={updatedMovie} />;
+                return <MovieRow key={movie.id} movie={movie} />;
               })
             ) : (
               <tr>
