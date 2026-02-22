@@ -11,7 +11,7 @@ import VisualBadge from '@/components/common/VisualBadge';
 
 export default function MovieRow({ movie }) {
 
-   
+
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-GB', {
@@ -27,14 +27,13 @@ export default function MovieRow({ movie }) {
                 <div className="flex items-center gap-4">
                     <div className="relative h-16 w-12 shrink-0 overflow-hidden rounded-lg border border-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
                         <img
-                            src={movie.poster}
+                            src={
+                                movie.poster_in_drive
+                                    ? `http://googleusercontent.com/profile/picture/${movie.poster}`
+                                    : movie.poster
+                            }
                             alt={movie.title}
-                            className={`${movie.poster_in_drive && 'hidden'} h-full w-full object-cover transition-transform duration-500 group-hover:scale-110`}
-                        />
-                        <img
-                            src={`https://lh3.googleusercontent.com/d/${movie.poster}`}
-                            alt={movie.title}
-                            className={`${!movie.poster_in_drive && 'hidden'} h-full w-full object-cover transition-transform duration-500 group-hover:scale-110`}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
                     </div>
@@ -53,7 +52,7 @@ export default function MovieRow({ movie }) {
                             target='_blank'
                             rel='noopener noreferrer'
                         >
-                            <VisualBadge title={'View'}/>
+                            <VisualBadge title={'View'} />
                         </Link>
 
 
