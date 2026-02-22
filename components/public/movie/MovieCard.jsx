@@ -3,9 +3,15 @@ import React from 'react'
 import { FaPlay } from "react-icons/fa";
 
 export default function MovieCard({ movie }) {
+
+  if(movie.poster_in_drive){
+    movie.poster = `https://lh3.googleusercontent.com/d/${movie.poster}`;
+  }
+
   return (
     <div className="group cursor-pointer playBtn moviePlayModal relative bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-white/5 shadow-md hover:shadow-blue-500/20 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1">
       <div className="relative h-52 overflow-hidden">
+      
         <Image
           src={movie.poster ? movie.poster : '/images/poster_log.png'}
           alt={movie.title || "Movie Poster"}

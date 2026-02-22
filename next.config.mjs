@@ -9,7 +9,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.googleusercontent.com', // সব সাব-ডোমেইন কভার করবে
+        hostname: '*.googleusercontent.com',
         pathname: '/**',
       },
       {

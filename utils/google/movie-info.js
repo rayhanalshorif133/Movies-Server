@@ -35,7 +35,8 @@ export async function getMovieFileInfo(url) {
         const ownerEmail = data.owners?.[0]?.emailAddress || 'N/A';
 
         return {
-            size: `${sizeInMB} MB`,
+            fileId,
+            size: sizeInMB,
             name: name,
             gmail: ownerEmail
         };
