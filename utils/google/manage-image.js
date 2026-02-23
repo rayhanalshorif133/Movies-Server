@@ -76,10 +76,14 @@ export async function deleteFileFromGoogleDrive(fileId) {
 
 export function getGoogleDriveFileUrl(fileId) {
   if (!fileId) return null;
-  return `https://drive.google.com/uc?export=view&id=${fileId}`;
+  if (fileId.includes("view")) {
+    return fileId;
+  }
+  return `https://drive.google.com/file/d/${fileId}/view`;
 }
 
 export function getGoogleDriveImageUrl(fileId) {
+
   if (!fileId) return null;
   return `https://lh3.googleusercontent.com/d/${fileId}`;
 }

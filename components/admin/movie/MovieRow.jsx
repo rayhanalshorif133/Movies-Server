@@ -7,7 +7,7 @@ import UploadDateBadge from './badge/UploadDateBadge';
 import Link from 'next/link';
 import VisualBadge from '@/components/common/VisualBadge';
 import Swal from 'sweetalert2'
-import { deleteFileFromGoogleDrive } from '@/utils/google/manage-image';
+import { deleteFileFromGoogleDrive, getGoogleDriveFileUrl, getGoogleDriveImageUrl } from '@/utils/google/manage-image';
 
 
 export default function MovieRow({ movie }) {
@@ -19,6 +19,7 @@ export default function MovieRow({ movie }) {
             year: 'numeric',
         });
     };
+
 
     const handleDeleteMovieBtn = (movieId) => {
 
@@ -77,7 +78,7 @@ export default function MovieRow({ movie }) {
                         <img
                             src={
                                 movie.poster_in_drive
-                                    ? `https://lh3.googleusercontent.com/d/${movie.poster}`
+                                    ? getGoogleDriveImageUrl(movie.poster)
                                     : movie.poster
                             }
                             alt={movie.title}
@@ -96,7 +97,7 @@ export default function MovieRow({ movie }) {
                     <div className='flex space-x-2'>
                         <Badge title={movie.part_name} />
                         <Link
-                            href={movie.url}
+                            href={getGoogleDriveFileUrl(movie.url)}
                             target='_blank'
                             rel='noopener noreferrer'
                         >
