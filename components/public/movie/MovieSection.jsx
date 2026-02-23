@@ -31,7 +31,7 @@ export default function MovieSection({ type, items }) {
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 transition-all duration-500">
         {displayedItems.map((movie) => (
           <Suspense key={movie.id} fallback={<LoadingCard />}>
-            <div onClick={() => setSelectedMovie(movie)} className="cursor-pointer">
+            <div onClick={() => setSelectedMovie(movie)} className="cursor-pointer w-48">
               <MovieCard movie={movie} />
             </div>
           </Suspense>

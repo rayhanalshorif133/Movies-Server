@@ -8,8 +8,8 @@ export default function MovieCard({ movie }) {
   
 
   return (
-    <div className="group cursor-pointer playBtn moviePlayModal relative bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-white/5 shadow-md hover:shadow-blue-500/20 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1">
-      <div className="relative h-52 overflow-hidden">
+    <div className="group cursor-pointer playBtn moviePlayModal relative bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-white/5 shadow-md hover:shadow-blue-500/20 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 w-full">
+      <div className="relative h-52 w-full">
       
         <Image
           src={movie.poster_in_drive ? getGoogleDriveImageUrl(movie.poster) : movie.poster}
