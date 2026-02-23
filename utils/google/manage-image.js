@@ -73,3 +73,28 @@ export async function deleteFileFromGoogleDrive(fileId) {
     return false;
   }
 }
+
+export function getGoogleDriveFileUrl(fileId) {
+  if (!fileId) return null;
+  return `https://drive.google.com/uc?export=view&id=${fileId}`;
+}
+
+export function getGoogleDriveImageUrl(fileId) {
+  if (!fileId) return null;
+  return `https://lh3.googleusercontent.com/d/${fileId}`;
+}
+
+export function getGoogleDrivePreviewUrl(fileId) {
+  if (!fileId) return null;
+
+  if (fileId.includes("view")) {
+    return fileId.replace("/view", "/preview");
+  }
+
+  return `https://drive.google.com/file/d/${fileId}/preview`;
+}
+
+export function getGoogleDriveDownloadUrl(fileId) {
+  if (!fileId) return null;
+  return `https://drive.google.com/uc?export=download&id=${fileId}`;
+}

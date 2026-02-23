@@ -1,3 +1,5 @@
+import { getGoogleDriveImageUrl, getGoogleDrivePreviewUrl } from "@/utils/google/manage-image";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { RxCross2, RxArrowLeft } from "react-icons/rx";
 
@@ -5,14 +7,6 @@ export default function MovieDetailsModal({ movie, onClose }) {
     const [isPreviewing, setIsPreviewing] = useState(false);
     const [closeBtnPosition, setCloseBtnPosition] = useState('right-4');
 
-    if (movie.poster_in_drive) {
-        movie.poster = `https://lh3.googleusercontent.com/d/${movie.poster}`;
-    }
-
-    const getEmbedUrl = (url) => {
-        if (!url) return "";
-        return url.replace("/view", "/preview");
-    };
 
     useEffect(() => {
         if (isPreviewing) {
@@ -46,11 +40,16 @@ export default function MovieDetailsModal({ movie, onClose }) {
                     {!isPreviewing ? (
                         <>
                             <div className="w-full md:w-1/2 h-64 md:h-auto relative">
-                                <img src={movie.poster}
-                                    alt={movie.title}
-                                    className="object-cover w-full h-full"
-                                    loading="eager"
-                                    fetchPriority="high" />
+                                <div className="relative aspect-2/3 w-full">
+                                    <Image
+                                        src={movie.poster_in_drive ? getGoogleDriveImageUrl(movie.poster) : movie.poster}
+                                        alt={movie.title || "Movie Poster"}
+                                        fill
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+                                        className="object-cover rounded-lg"
+                                        priority={true} 
+                                    />
+                                </div>
                             </div>
                             <div className="p-8 md:w-1/2 flex flex-col justify-center">
                                 <h2 className="text-3xl font-bold text-white">{movie.title}</h2>
@@ -94,7 +93,7 @@ export default function MovieDetailsModal({ movie, onClose }) {
                     ) : (
                         <div className="w-full aspect-video md:aspect-auto md:h-125 bg-black overflow-hidden">
                             <iframe
-                                src={getEmbedUrl(movie.url)}
+                                src={getGoogleDrivePreviewUrl(movie.url)}
                                 className="w-full h-full border-none"
                                 allow="autoplay"
                                 allowFullScreen

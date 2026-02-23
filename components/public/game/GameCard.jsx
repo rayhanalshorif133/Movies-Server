@@ -1,9 +1,9 @@
 "use client";
+import { getGoogleDriveImageUrl } from "@/utils/google/manage-image";
 import Image from "next/image";
 
 export default function GameCard({ game, onClick }) {
 
-    const getImageUrl = (id) => `https://lh3.googleusercontent.com/d/${id}`;
 
     return (
         <div
@@ -13,7 +13,7 @@ export default function GameCard({ game, onClick }) {
             <div className="relative aspect-video overflow-hidden bg-gray-800">
                 <div className="relative aspect-video overflow-hidden bg-gray-800">
                     <Image
-                        src={getImageUrl(game.thumbnail_image)}
+                        src={getGoogleDriveImageUrl(game.thumbnail_image)}
                         alt={game.title}
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"

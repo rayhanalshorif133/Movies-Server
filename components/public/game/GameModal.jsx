@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import { getGoogleDriveImageUrl } from "@/utils/google/manage-image";
 
 export default function GameModal({ game, onClose }) {
     const images = JSON.parse(game.asset_images || "[]");
@@ -11,8 +12,6 @@ export default function GameModal({ game, onClose }) {
 
     const [selectedIndex, setSelectedIndex] = useState(null);
 
-    const getImageUrl = (id) =>
-        `https://lh3.googleusercontent.com/d/${id}`;
 
     const closeLightbox = () => setSelectedIndex(null);
 
@@ -68,7 +67,7 @@ export default function GameModal({ game, onClose }) {
                                         className="relative cursor-pointer group aspect-video rounded-xl overflow-hidden bg-gray-800"
                                     >
                                         <img
-                                            src={getImageUrl(mediaId)}
+                                            src={getGoogleDriveImageUrl(mediaId)}
                                             alt=""
                                             loading="lazy"
                                             className="w-full h-full object-cover group-hover:scale-105 transition"
