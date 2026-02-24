@@ -1,7 +1,6 @@
 import UpdateMovie from '@/components/admin/movie/UpdateMovie'
 import UploadMovie from '@/components/admin/movie/UploadMovie'
 import Sidebar from '@/components/admin/Sidebar'
-import UploadImage from '@/components/common/ImageUploader';
 import { createClient } from '@/utils/supabase/server';
 
 export async function generateMetadata() {

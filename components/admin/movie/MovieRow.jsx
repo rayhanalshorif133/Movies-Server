@@ -8,6 +8,9 @@ import Link from 'next/link';
 import VisualBadge from '@/components/common/VisualBadge';
 import Swal from 'sweetalert2'
 import { deleteFileFromGoogleDrive, getGoogleDriveFileUrl, getGoogleDriveImageUrl } from '@/utils/google/manage-image';
+import { FaGoogleDrive } from "react-icons/fa";
+import Image from 'next/image';
+
 
 
 export default function MovieRow({ movie }) {
@@ -92,7 +95,6 @@ export default function MovieRow({ movie }) {
                 <div className="flex flex-col gap-1.5">
                     <span className="font-bold text-gray-800 text-base leading-tight group-hover:text-blue-600 transition-colors">
                         {movie.title}  <TypeBadge type={movie.type} />
-
                     </span>
                     <div className='flex space-x-2'>
                         <Badge title={movie.part_name} />
@@ -103,6 +105,21 @@ export default function MovieRow({ movie }) {
                         >
                             <VisualBadge title={'View'} />
                         </Link>
+
+                        <div className={`
+                              text-sm
+                              text-blue-600
+                              text-gredient-to-r from-blue-400 to-blue-600
+                              ${movie.poster_in_drive ? '' : 'hidden'}
+                              flex items-center gap-1
+                            `}>
+                            <FaGoogleDrive
+                                className="text-sm text-blue-600"
+                            />
+                            <span className="bg-linear-to-r from-blue-600 to-green-500 bg-clip-text text-transparent font-bold text-xs">
+                                Google Drive
+                            </span>
+                        </div>
                     </div>
 
                 </div>
