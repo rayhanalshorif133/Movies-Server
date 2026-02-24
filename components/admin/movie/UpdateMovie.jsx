@@ -112,7 +112,6 @@ export default function UpdateMovie({ movie }) {
 
     axios.put('/api/movies/', formData)
       .then(response => {
-        console.log('Updated:', response.data);
         Swal.fire({
           icon: 'success',
           title: 'Movie Updated!',
@@ -124,7 +123,11 @@ export default function UpdateMovie({ movie }) {
       })
       .catch(error => {
         console.error('Error updating movie:', error);
-        alert('Update failed!');
+        Swal.fire({
+          icon: 'error',
+          title: 'Update Failed',
+          text: error.response?.data?.error || 'An error occurred while updating the movie.',
+        });
       })
       .finally(() => setLoading(false));
   }
@@ -150,13 +153,12 @@ export default function UpdateMovie({ movie }) {
               placeholder="Paste Google Drive URL"
               className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none"
               value={formData.url}
-              onFocus={handlePaste} // OnClick er jaygay onFocus better hote pare auto-paste er jonno
+              onFocus={handlePaste} 
               onChange={(e) => setFormData({ ...formData, url: e.target.value })}
             />
           </div>
         </div>
 
-        {/* Auto-Fill Details Box */}
         <div className="bg-gray-50 border border-gray-200 p-6 rounded-xl space-y-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Movie Details</span>

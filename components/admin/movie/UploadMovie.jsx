@@ -70,7 +70,14 @@ export default function UploadMovie() {
     setLoading(true);
     axios.post('/api/movies', formData)
       .then(response => {
-        console.log('Movie uploaded successfully:', response.data);
+        Swal.fire({
+          icon: 'success',
+          title: 'Movie Uploaded!',
+          text: 'The movie has been successfully uploaded.',
+        });
+        setTimeout(() => {
+          window.location.href = `/admin/movies?search=${encodeURIComponent(formData.title)}&page=1`;
+        }, 1500);
       })
       .catch(error => {
         console.error('Error uploading movie:', error);
