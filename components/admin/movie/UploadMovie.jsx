@@ -212,24 +212,25 @@ export default function UploadMovie() {
             />
           </div>
 
-          {/* subtitle_url */}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor='subtitle_url' className="block text-sm font-semibold text-gray-700 mb-2">Subtitle URL</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Movie Poster
+            </label>
+            <ImageUploader className="w-full" setDriveId={setDriveId} />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Subtitle URL</label>
             <input
               type="text"
-              placeholder="Enter Subtitle URL (if any)"
-              className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none bg-white"
+              placeholder="Enter Subtitle URL"
+              className="w-full p-3 border border-gray-200 rounded-lg outline-none bg-white"
               value={formData.subtitle_url}
               onChange={(e) => setFormData({ ...formData, subtitle_url: e.target.value })}
             />
           </div>
-
-
-
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <ImageUploader className="w-full" setDriveId={setDriveId} />
         </div>
 
         <div className={`w-full h-10 flex items-center justify-center bg-red-500 ${!formData.poster ? 'block' : 'hidden'}`}>

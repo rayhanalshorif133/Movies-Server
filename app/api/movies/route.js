@@ -47,14 +47,14 @@ export async function POST(request) {
 export async function PUT(request) {
     const supabase = await createClient();
     const body = await request.json();
-    const { id, ...updates } = body; // ID টা আলাদা করে নিয়ে বাকিগুলো আপডেট হবে
+    const { _id, ...updates } = body; 
 
-    if (!id) return NextResponse.json({ error: "Movie ID is required" }, { status: 400 });
+    if (!_id) return NextResponse.json({ error: "Movie ID is required" }, { status: 400 });
 
     const { data, error } = await supabase
         .from('movies')
         .update(updates)
-        .eq('id', id)
+        .eq('id', _id)
         .select();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
