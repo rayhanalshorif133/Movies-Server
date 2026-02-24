@@ -11,17 +11,23 @@ export default function MovieList({
   limit
 }) {
   const router = useRouter()
-  const [searchText, setSearchText] = useState(search)
+  const [searchText, setSearchText] = useState(search || "")
+
+  useEffect(() => {
+    setSearchText(search || "");
+  }, [search]);
 
   const totalPages = Math.ceil(totalCount / limit)
 
   useEffect(() => {
+    if (searchText === (search || "")) return;
+
     const delayDebounceFn = setTimeout(() => {
       router.push(`?search=${searchText}&page=1`)
     }, 500)
 
     return () => clearTimeout(delayDebounceFn)
-  }, [searchText, router])
+  }, [searchText, router, search])
 
   const goToPage = (page) => {
     router.push(`?search=${searchText}&page=${page}`)
