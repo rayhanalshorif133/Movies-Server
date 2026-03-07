@@ -21,7 +21,7 @@ export async function GET(request) {
 
   // Search filter jodi thake
   if (search) {
-    query = query.ilike('email', `%${search}%`);
+    query = query.ilike('name', `%${search}%`);
   }
 
   const { data, count, error } = await query
