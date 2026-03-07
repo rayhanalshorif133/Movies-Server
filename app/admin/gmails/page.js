@@ -3,6 +3,7 @@ import Header from '@/components/admin/Header';
 import Sidebar from '@/components/admin/Sidebar';
 import { createClient } from '@/utils/supabase/server';
 import StatCard from '@/components/admin/StatCard';
+import GmailList from '@/components/admin/gmail/GmailList';
 
 
 // Metadata for the page
@@ -66,6 +67,9 @@ export default async function AdminGmailsPage() {
             />
           ))}
         </div>
+        <GmailList/>
+
+
 
       </main>
     </div>
