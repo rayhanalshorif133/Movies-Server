@@ -49,12 +49,23 @@ export default function GmailList() {
   useEffect(() => {
     getData();
   }, [currentPage]);
+  
+
+  const updateFUN = () => {
+    console.log('hello');
+  }
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden font-sans">
       {/* Search Header */}
       <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
         <h3 className="text-lg font-bold text-gray-800">Gmail Database</h3>
+
+        <div>
+          <button onClick={updateFUN}>
+            Update
+          </button>
+        </div>
         
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />

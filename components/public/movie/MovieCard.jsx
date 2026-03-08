@@ -1,4 +1,4 @@
-import { getGoogleDriveImageUrl } from '@/utils/google/manage-image';
+import { getGoogleDriveImageUrl } from '@/utils/google/manage';
 import Image from 'next/image';
 import React from 'react'
 import { FaPlay } from "react-icons/fa";

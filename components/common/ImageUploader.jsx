@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteFileFromGoogleDrive, uploadImageInGoogleDrive } from '@/utils/google/manage-image';
+import { deleteFileFromGoogleDrive, uploadImageInGoogleDrive } from '@/utils/google/manage';
 import { useState, useEffect } from 'react';
 import { RxCross2 } from "react-icons/rx";
 import Swal from 'sweetalert2';

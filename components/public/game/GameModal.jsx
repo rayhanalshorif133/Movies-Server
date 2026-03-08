@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
-import { getGoogleDriveImageUrl } from "@/utils/google/manage-image";
+import { getGoogleDriveImageUrl } from "@/utils/google/manage";
 
 export default function GameModal({ game, onClose }) {
     const images = JSON.parse(game.asset_images || "[]");

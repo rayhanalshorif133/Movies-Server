@@ -1,4 +1,4 @@
-import { getGoogleDriveImageUrl, getGoogleDrivePreviewUrl } from "@/utils/google/manage-image";
+import { getGoogleDriveImageUrl, getGoogleDrivePreviewUrl } from "@/utils/google/manage";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { RxCross2, RxArrowLeft } from "react-icons/rx";

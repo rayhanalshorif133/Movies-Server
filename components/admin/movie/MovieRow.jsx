@@ -7,7 +7,7 @@ import UploadDateBadge from './badge/UploadDateBadge';
 import Link from 'next/link';
 import VisualBadge from '@/components/common/VisualBadge';
 import Swal from 'sweetalert2'
-import { deleteFileFromGoogleDrive, getGoogleDriveFileUrl, getGoogleDriveImageUrl } from '@/utils/google/manage-image';
+import { deleteFileFromGoogleDrive, getGoogleDriveFileUrl, getGoogleDriveImageUrl } from '@/utils/google/manage';
 import { FaGoogleDrive } from "react-icons/fa";
 import Image from 'next/image';
 

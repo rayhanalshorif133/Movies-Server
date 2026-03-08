@@ -1,5 +1,5 @@
 "use client";
-import { getGoogleDriveImageUrl } from "@/utils/google/manage-image";
+import { getGoogleDriveImageUrl } from "@/utils/google/manage";
 import Image from "next/image";
 
 export default function GameCard({ game, onClick }) {
