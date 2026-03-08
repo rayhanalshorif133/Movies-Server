@@ -1,3 +1,4 @@
+import { convertMBtoGB } from '@/utils/common';
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
@@ -58,7 +59,7 @@ export async function GET(request) {
           [
             {
               name: item.movie_source,
-              movies: moviesText, // variable, not string literal
+              movies: moviesText, 
               used_space: convertMBtoGB(item.t_size, true),
             },
           ],
