@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronLeft, ChevronRight, Loader2, Inbox, CloudCog } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Loader2, Inbox, Eye } from 'lucide-react';
 import { IoReload } from "react-icons/io5";
-
 import axios from "axios";
+import ShowMovies from './ShowMovies';
+import Badge from '@/components/common/Badge';
 
 export default function GmailList() {
+
   const [emails, setEmails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,23 +17,25 @@ export default function GmailList() {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
+  const [openRow, setOpenRow] = useState(null); // 👈 fix
+
   const ITEMS_PER_PAGE = 10;
 
-  // Fetching Logic using our API
   const getData = async () => {
     setLoading(true);
     try {
       const response = await fetch(
         `/api/gmails?page=${currentPage}&limit=${ITEMS_PER_PAGE}&search=${searchTerm}`
       );
+
       const result = await response.json();
 
       if (response.ok) {
-        console.log(result.data);
         setEmails(result.data || []);
         setTotalCount(result.total || 0);
         setTotalPages(result.totalPages || 0);
       }
+
     } catch (error) {
       console.error("Fetch error:", error);
     } finally {
@@ -39,21 +43,18 @@ export default function GmailList() {
     }
   };
 
-  // Debounced search effect
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      setCurrentPage(0); // Reset page to 0 on new search
+      setCurrentPage(0);
       getData();
     }, 600);
 
     return () => clearTimeout(delayDebounce);
   }, [searchTerm]);
 
-  // Page change hole fetch kora
   useEffect(() => {
     getData();
   }, [currentPage]);
-
 
   const autoGmailUpdateBtn = async () => {
     setAutoUpdating(true);
@@ -67,98 +68,121 @@ export default function GmailList() {
     }
   }
 
+  const toggleMovies = (id) => {
+    if (openRow === id) {
+      setOpenRow(null);
+    } else {
+      setOpenRow(id);
+    }
+  }
+
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden font-sans">
-      {/* Search Header */}
-      <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
-        <h3 className="text-lg font-bold text-gray-800">Gmail Database</h3>
+    <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
-        <div className="flex items-center justify-center p-1">
-          <button
-            onClick={autoGmailUpdateBtn}
-            disabled={autoUpdating}
-            className="text-white flex space-x-1 bg-linear-to-r from-green-500 via-green-600 to-green-700 hover:bg-linear-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5 rounded-2xl cursor-pointer"
-          >
-            {autoUpdating ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                <span>Updating...</span>
-              </>
-            ) : (
-              <>
-                <IoReload size={20} />
-                <span>Auto Update</span>
-              </>
-            )}
-          </button>
-        </div>
+      {/* Header */}
+      <div className="p-6 border-b flex justify-between items-center gap-4">
 
-        <div className="relative w-full md:w-80">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+        <h3 className="text-lg font-bold text-gray-800">
+          Gmail Database
+        </h3>
+
+        <button
+          onClick={autoGmailUpdateBtn}
+          disabled={autoUpdating}
+          className="flex items-center gap-1 bg-green-600 text-white px-4 py-2 rounded-lg"
+        >
+          {autoUpdating ?
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Updating...
+            </>
+            :
+            <>
+              <IoReload size={18} />
+              Auto Update
+            </>
+          }
+        </button>
+
+        <div className="relative w-72">
+          <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
           <input
-            type="text"
-            placeholder="Search by email address..."
-            className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-green-500 transition-all text-sm"
+            className="w-full pl-10 pr-4 py-2 border rounded-lg"
+            placeholder="Search email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
+
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+      <table className="w-full text-left">
+
+        <thead className="bg-gray-50 text-xs uppercase text-gray-500">
+          <tr>
+            <th className="px-6 py-4">Gmail</th>
+            <th className="px-6 py-4">Movies</th>
+            <th className="px-6 py-4">Used Space</th>
+            <th className="px-6 py-4">Last Login</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          {loading ? (
+
             <tr>
-              <th className="px-6 py-4 font-semibold">Gmail</th>
-              <th className="px-6 py-4 font-semibold">Movies</th>
-              <th className="px-6 py-4 font-semibold">Used Space</th>
-              <th className="px-6 py-4 font-semibold">Last Login</th>
+              <td colSpan="4" className="py-20 text-center">
+                <Loader2 className="w-8 h-8 animate-spin mx-auto text-green-600" />
+              </td>
             </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {loading ? (
-              <tr>
-                <td colSpan="3" className="py-20 text-center">
-                  <Loader2 className="w-8 h-8 animate-spin text-green-600 mx-auto" />
-                </td>
-              </tr>
-            ) : emails.length > 0 ? (
-              emails.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-6 py-4 text-sm font-medium text-gray-700">{item.name}</td>
-                  <td className="px-6 py-4">
-                    {item.movies.split(',').map((movie, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-md text-[11px] font-medium"
-                      >
-                        {movie.trim()}
-                      </span>
-                    ))}
+
+          ) : emails.map((item) => {
+
+            const movies = item.movies ? item.movies.split(',') : [];
+
+            return (
+              <React.Fragment key={item.id}>
+
+                <tr className="hover:bg-gray-50">
+
+                  <td className="px-6 py-4 text-sm font-medium">
+                    {item.name}
                   </td>
+
                   <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase ${item.is_used ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-600'
-                      }`}>
-                      {item.is_used ? 'Used' : 'Available'}
-                    </span>
+                    <button
+                      onClick={() => toggleMovies(item.id)}
+                      className="flex cursor-pointer items-center gap-1 bg-gray-100 px-2 py-1 rounded"
+                    >
+                      <Eye size={12} />
+                      <span className="text-xs">{movies.length}</span>
+                    </button>
                   </td>
+
+                  <td className="px-6 py-4 text-sm">
+                    <Badge title={`${item.used_space} GB`} />
+                  </td>
+
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {new Date(item.created_at).toLocaleDateString()}
+                    <Badge title={new Date(item.last_login).toLocaleDateString()}/>
                   </td>
+
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="3" className="py-20 text-center">
-                  <Inbox className="w-10 h-10 text-gray-200 mx-auto mb-2" />
-                  <p className="text-gray-400 text-sm">No data found</p>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+
+                {openRow === item.id && (
+                  <ShowMovies items={item} className="w-full mx-auto flex justify-center"/>
+                )}
+
+              </React.Fragment>
+            )
+
+          })}
+
+        </tbody>
+
+      </table>
 
       {/* Pagination */}
       <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/30">
@@ -188,6 +212,7 @@ export default function GmailList() {
           </button>
         </div>
       </div>
+
     </div>
   );
 }
