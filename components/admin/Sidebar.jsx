@@ -25,6 +25,7 @@ export default function Sidebar() {
         { label: 'Games & Assets', href: '/admin/games', icon: <FaGamepad/>, type: 'link' },
         { label: 'Communication', type: 'header' },
         { label: 'Gmail List', href: '/admin/gmails', icon: <BiLogoGmail/>, type: 'link' },
+        { label: 'Gmail Inventory', href: '/admin/gmails/inventory', icon: <BiLogoGmail/>, type: 'link' },
     ];
 
     return (
