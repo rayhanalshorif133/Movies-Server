@@ -4,6 +4,7 @@ import Sidebar from '@/components/admin/Sidebar';
 import { createClient } from '@/utils/supabase/server';
 import StatCard from '@/components/admin/StatCard';
 import GmailList from '@/components/admin/gmail/GmailList';
+import GmailInventoryList from '@/components/admin/gmail/GmailInventoryList';
 
 
 // Metadata for the page
@@ -67,7 +68,7 @@ export default async function AdminGmailsPage() {
             />
           ))}
         </div>
-        <GmailList/>
+        <GmailInventoryList/>
 
 
 

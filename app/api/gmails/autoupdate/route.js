@@ -45,7 +45,7 @@ export async function GET(request) {
     for (const item of groupedArray) {
       const moviesText = item.titles.title.join(', ');
 
-      const { data:getUpdateEmailData ,error: insertError} = await supabase
+      const { data: getUpdateEmailData, error: insertError } = await supabase
         .from('gmails')
         .upsert(
           [
@@ -63,17 +63,17 @@ export async function GET(request) {
       }
 
 
-      const { error: updateError } = await supabase
+      const { error: deleteError } = await supabase
         .from('gmail_inventory')
-        .update({ 
-          space: convertMBtoGB(item.t_size, true), 
-          last_login:getUpdateEmailData.last_login 
-        })
+        .delete()
         .eq('email', item.movie_source);
 
-      if (updateError) {
-        console.error(`Error updating inventory ${item.movie_source}:`, updateError.message);
+      if (deleteError) {
+        console.error('Error deleting row:', deleteError);
+      } else {
+        console.log('Row deleted successfully');
       }
+
     }
 
   }

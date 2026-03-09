@@ -1,14 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {Loader2, Eye } from 'lucide-react';
+import {Loader2 } from 'lucide-react';
 import axios from "axios";
-import ShowMovies from './ShowMovies';
 import Badge from '@/components/common/Badge';
 import GmailListHeader from './_partials/GmailListHeader';
 import GmailListPagination from './_partials/GmailListPagination';
 
-export default function GmailList() {
+export default function GmailInventoryList() {
 
   const [emails, setEmails] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,6 +17,7 @@ export default function GmailList() {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [color, setColor] = useState();
+  const [colorAddBtn, setColorAddBtn] = useState();
 
   const generateRandomColors = () => {
     const hue = Math.floor(Math.random() * 360);
@@ -30,9 +30,9 @@ export default function GmailList() {
 
   useEffect(() => {
     setColor(generateRandomColors());
+    setColorAddBtn(generateRandomColors());
   }, []);
 
-  const [openRow, setOpenRow] = useState(null); // 👈 fix
 
   const ITEMS_PER_PAGE = 10;
 
@@ -40,7 +40,7 @@ export default function GmailList() {
     setLoading(true);
     try {
       const response = await fetch(
-        `/api/gmails?page=${currentPage}&limit=${ITEMS_PER_PAGE}&search=${searchTerm}`
+        `/api/gmails/inventory?page=${currentPage}&limit=${ITEMS_PER_PAGE}&search=${searchTerm}`
       );
 
       const result = await response.json();
@@ -83,19 +83,13 @@ export default function GmailList() {
     }
   }
 
-  const toggleMovies = (id) => {
-    if (openRow === id) {
-      setOpenRow(null);
-    } else {
-      setOpenRow(id);
-    }
-  }
+
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
       {/* Header */}
-      <GmailListHeader setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
+      <GmailListHeader colorAddBtn={colorAddBtn}  addNewGmail={true} setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
 
       {/* Table */}
       <table className="w-full text-left">
@@ -104,8 +98,6 @@ export default function GmailList() {
           <tr>
             <th className="px-6 py-4">#</th>
             <th className="px-6 py-4">Gmail</th>
-            <th className="px-6 py-4">Movies</th>
-            <th className="px-6 py-4">Used Space</th>
             <th className="px-6 py-4">Last Login</th>
           </tr>
         </thead>
@@ -122,7 +114,6 @@ export default function GmailList() {
 
           ) : emails.map((item,index) => {
 
-            const movies = item.movies ? item.movies.split(',') : [];
 
             return (
               <React.Fragment key={item.id}>
@@ -133,26 +124,9 @@ export default function GmailList() {
                     {index + 1}
                   </td>
                   <td className="px-6 py-4 text-sm font-medium">
-                    {item.name}
+                    {item.email}
                   </td>
 
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => toggleMovies(item.id)}
-                      className="flex items-center gap-2 px-3 py-1.5 
-                        bg-teal-500 text-white text-xs font-medium
-                        rounded-lg shadow-sm
-                        hover:bg-teal-600 hover:shadow-md
-                        transition-all duration-200 cursor-pointer"
-                    >
-                      <Eye size={14} />
-                      <span>{movies.length}</span>
-                    </button>
-                  </td>
-
-                  <td className="px-6 py-4 text-sm">
-                    <Badge title={`${item.used_space} GB`} />
-                  </td>
 
                   <td className="px-6 py-4 text-sm text-gray-500">
                     <Badge title={new Date(item.last_login).toLocaleDateString()} />
@@ -160,9 +134,6 @@ export default function GmailList() {
 
                 </tr>
 
-                {openRow === item.id && (
-                  <ShowMovies items={item} className="w-full mx-auto flex justify-center" />
-                )}
 
               </React.Fragment>
             )
