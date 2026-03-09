@@ -79,11 +79,7 @@ export default function MovieRow({ movie }) {
                 <div className="flex items-center gap-4">
                     <div className="relative h-16 w-12 shrink-0 overflow-hidden rounded-lg border border-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
                         <img
-                            src={
-                                movie.poster_in_drive
-                                    ? getGoogleDriveImageUrl(movie.poster)
-                                    : movie.poster
-                            }
+                            src={getGoogleDriveImageUrl(movie.poster)}
                             alt={movie.title}
                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
@@ -106,20 +102,6 @@ export default function MovieRow({ movie }) {
                             <VisualBadge title={'View'} />
                         </Link>
 
-                        <div className={`
-                              text-sm
-                              text-blue-600
-                              text-gredient-to-r from-blue-400 to-blue-600
-                              ${movie.poster_in_drive ? '' : 'hidden'}
-                              flex items-center gap-1
-                            `}>
-                            <FaGoogleDrive
-                                className="text-sm text-blue-600"
-                            />
-                            <span className="bg-linear-to-r from-blue-600 to-green-500 bg-clip-text text-transparent font-bold text-xs">
-                                Google Drive
-                            </span>
-                        </div>
                     </div>
 
                 </div>

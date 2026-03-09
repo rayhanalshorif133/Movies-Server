@@ -12,7 +12,7 @@ export default function MovieCard({ movie }) {
       <div className="relative h-52 w-full">
       
         <Image
-          src={movie.poster_in_drive ? getGoogleDriveImageUrl(movie.poster) : movie.poster}
+          src={getGoogleDriveImageUrl(movie.poster)}
           alt={movie.title || "Movie Poster"}
           fill
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 16vw"

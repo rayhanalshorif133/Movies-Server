@@ -20,7 +20,6 @@ export default function UploadMovie() {
     dubbed_lang: '',
     part_name: 'single',
     subtitle_url: '',
-    poster_in_drive: true,
   });
 
 

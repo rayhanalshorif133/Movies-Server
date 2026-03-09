@@ -20,7 +20,6 @@ export default function UpdateMovie({ movie }) {
     dubbed_lang: '',
     part_name: '',
     subtitle_url: '',
-    poster_in_drive: false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -41,7 +40,6 @@ export default function UpdateMovie({ movie }) {
         dubbed_lang: movie.dubbed_lang || '',
         part_name: movie.part_name || '',
         subtitle_url: movie.subtitle_url || '',
-        poster_in_drive: movie.poster_in_drive || false,
       });
       if (movie.part_name) setIsSeries(true);
 
@@ -52,7 +50,7 @@ export default function UpdateMovie({ movie }) {
 
   useEffect(() => {
     if (driveId) {
-      setFormData(prev => ({ ...prev, poster: driveId, poster_in_drive: true }));
+      setFormData(prev => ({ ...prev, poster: driveId }));
     }
   }, [driveId]);
 

@@ -42,7 +42,7 @@ export default function MovieDetailsModal({ movie, onClose }) {
                             <div className="w-full md:w-1/2 h-64 md:h-auto relative">
                                 <div className="relative aspect-2/3 w-full">
                                     <Image
-                                        src={movie.poster_in_drive ? getGoogleDriveImageUrl(movie.poster) : movie.poster}
+                                        src={getGoogleDriveImageUrl(movie.poster)}
                                         alt={movie.title || "Movie Poster"}
                                         fill
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
