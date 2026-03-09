@@ -43,7 +43,7 @@ export default function UpdateMovie({ movie }) {
       });
       if (movie.part_name) setIsSeries(true);
 
-      const driveURL = beautifyDriveURL(movie.url); 
+      const driveURL = beautifyDriveURL(movie.url);
       setFormData(prev => ({ ...prev, url: driveURL }));
     }
   }, [movie]);
@@ -136,6 +136,14 @@ export default function UpdateMovie({ movie }) {
         {movie ? 'Edit Movie' : 'Upload New Movie'}
       </h3>
 
+      <div className='my-5 flex justify-center mx-auto'>
+        <img
+          alt={movie.title}
+          className="h-50 w-50 object-cover transition-transform duration-500 group-hover:scale-110"
+          src={`https://lh3.googleusercontent.com/d/${movie.poster}`}
+        />
+      </div>
+
       <form onSubmit={handleUpdate} className="space-y-6">
         {/* Source Input */}
         <div className="grid grid-cols-1">
@@ -151,7 +159,7 @@ export default function UpdateMovie({ movie }) {
               placeholder="Paste Google Drive URL"
               className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none"
               value={formData.url}
-              onFocus={handlePaste} 
+              onFocus={handlePaste}
               onChange={(e) => setFormData({ ...formData, url: e.target.value })}
             />
           </div>
@@ -259,6 +267,7 @@ export default function UpdateMovie({ movie }) {
               Movie Poster
             </label>
             <ImageUploader className="w-full" setDriveId={setDriveId} />
+
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">Subtitle URL</label>

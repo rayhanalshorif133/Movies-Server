@@ -103,6 +103,7 @@ export default function GmailList() {
 
         <thead className="bg-gray-50 text-xs uppercase text-gray-500">
           <tr>
+            <th className="px-6 py-4">#</th>
             <th className="px-6 py-4">Gmail</th>
             <th className="px-6 py-4">Movies</th>
             <th className="px-6 py-4">Used Space</th>
@@ -120,7 +121,7 @@ export default function GmailList() {
               </td>
             </tr>
 
-          ) : emails.map((item) => {
+          ) : emails.map((item,index) => {
 
             const movies = item.movies ? item.movies.split(',') : [];
 
@@ -130,15 +131,23 @@ export default function GmailList() {
                 <tr className="hover:bg-gray-50">
 
                   <td className="px-6 py-4 text-sm font-medium">
+                    {index + 1}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-medium">
                     {item.name}
                   </td>
 
                   <td className="px-6 py-4">
                     <button
                       onClick={() => toggleMovies(item.id)}
+                      className="flex items-center gap-2 px-3 py-1.5 
+                        bg-teal-500 text-white text-xs font-medium
+                        rounded-lg shadow-sm
+                        hover:bg-teal-600 hover:shadow-md
+                        transition-all duration-200 cursor-pointer"
                     >
-                      <Eye size={12} />
-                      <span className="text-xs">{movies.length}</span>
+                      <Eye size={14} />
+                      <span>{movies.length}</span>
                     </button>
                   </td>
 
