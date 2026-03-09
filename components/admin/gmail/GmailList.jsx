@@ -95,7 +95,7 @@ export default function GmailList() {
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
       {/* Header */}
-      <GmailListHeader setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
+      <GmailListHeader addNewGmail={false} setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
 
       {/* Table */}
       <table className="w-full text-left">

@@ -52,7 +52,7 @@ export default function GmailListHeader(props) {
             <button
                 style={colorAddBtn}
                 onClick={openModal}
-                className={`inline-flex items-center px-3 py-2 rounded-full text-xs font-bold border transition-all duration-300 hover:scale-105 cursor-pointer shadow-sm  ${addNewGmail ? '' : 'hidden'}`}
+                className={` items-center px-3 py-2 rounded-full text-xs font-bold border transition-all duration-300 hover:scale-105 cursor-pointer shadow-sm  ${addNewGmail ? 'inline-flex' : 'hidden'}`}
             >
                 Add New
             </button>
