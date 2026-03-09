@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Search, Loader2 } from 'lucide-react';
 import { IoReload } from "react-icons/io5";
-import Badge from '@/components/common/Badge';
 
 export default function GmailListHeader(props) {
     const {
@@ -11,27 +10,24 @@ export default function GmailListHeader(props) {
         autoGmailUpdateBtn,
         autoUpdating,
         color,
-        addNewGmail = false
+        addNewGmail = false,
+        handleNewGmailAdd = false,
+        newGmail,
+        setNewGmail,
+        isModalOpen,
+        openModal,
+        closeModal
     } = props;
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newGmail, setNewGmail] = useState('');
+  
 
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
-
-    const handleNewGmailAdd = () => {
-        console.log("New Gmail Added:", newGmail);
-        // here you can call your API or Supabase upsert
-        setNewGmail(''); // clear input
-        closeModal();
-    }
+   
 
     return (
         <div className="p-6 border-b flex justify-between items-center gap-4">
 
             <h3 className="text-lg font-bold text-gray-800">
-                Gmail Database
+                { addNewGmail? 'Manage Inventory' : 'Gmail Database'  }
             </h3>
 
             <button

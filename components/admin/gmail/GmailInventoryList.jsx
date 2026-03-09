@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import axios from "axios";
 import Badge from '@/components/common/Badge';
 import GmailListHeader from './_partials/GmailListHeader';
 import GmailListPagination from './_partials/GmailListPagination';
+
 
 export default function GmailInventoryList() {
 
@@ -18,6 +19,13 @@ export default function GmailInventoryList() {
   const [totalPages, setTotalPages] = useState(0);
   const [color, setColor] = useState();
   const [colorAddBtn, setColorAddBtn] = useState();
+  const [newGmail, setNewGmail] = useState('');
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const generateRandomColors = () => {
     const hue = Math.floor(Math.random() * 360);
@@ -83,13 +91,27 @@ export default function GmailInventoryList() {
     }
   }
 
+  const handleNewGmailAdd = () => {
+    axios.post('/api/gmails/inventory/create-new', {
+      emailTitle: newGmail
+    }).then((res) => {
+      console.log(res);
+    });
+    // here you can call your API or Supabase upsert
+    setNewGmail(''); // clear input
+    closeModal();
+    setTimeout(() => {
+      getData();
+    }, 500);
+  }
+
 
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
       {/* Header */}
-      <GmailListHeader colorAddBtn={colorAddBtn}  addNewGmail={true} setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
+      <GmailListHeader closeModal={closeModal} openModal={openModal} isModalOpen={isModalOpen} newGmail={newGmail} setNewGmail={setNewGmail} handleNewGmailAdd={handleNewGmailAdd} colorAddBtn={colorAddBtn} addNewGmail={true} setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
 
       {/* Table */}
       <table className="w-full text-left">
@@ -112,7 +134,7 @@ export default function GmailInventoryList() {
               </td>
             </tr>
 
-          ) : emails.map((item,index) => {
+          ) : emails.map((item, index) => {
 
 
             return (
