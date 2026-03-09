@@ -15,15 +15,6 @@ export async function GET(request) {
     return [];
   }
 
-  const { data: gmails, error: gmailError } = await supabase
-    .from('gmails')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (gmailError) {
-    console.error('Error fetching gmails:', error.message);
-    return [];
-  }
 
   if (movies.length > 0) {
     const groupedData = {};
@@ -43,6 +34,7 @@ export async function GET(request) {
 
     const groupedArray = Object.entries(groupedData).map(([source, titles]) => ({
       movie_source: source,
+      last_login: source,
       titles: titles.reduce((acc, item) => { acc.title.push(item.title); return acc; }, { title: [] }),
       t_size: titles.reduce((acc, item) => acc + (item.size || 0), 0),
     }));
@@ -53,21 +45,34 @@ export async function GET(request) {
     for (const item of groupedArray) {
       const moviesText = item.titles.title.join(', ');
 
-      const { error: insertError } = await supabase
+      const { data:getUpdateEmailData ,error: insertError} = await supabase
         .from('gmails')
         .upsert(
           [
             {
               name: item.movie_source,
-              movies: moviesText, 
+              movies: moviesText,
               used_space: convertMBtoGB(item.t_size, true),
             },
           ],
           { onConflict: 'name', update: ['movies'] }
-        );
+        ).select().single();
 
       if (insertError) {
         console.error(`Error inserting ${item.movie_source}:`, insertError.message);
+      }
+
+
+      const { error: updateError } = await supabase
+        .from('gmail_inventory')
+        .update({ 
+          space: convertMBtoGB(item.t_size, true), 
+          last_login:getUpdateEmailData.last_login 
+        })
+        .eq('email', item.movie_source);
+
+      if (updateError) {
+        console.error(`Error updating inventory ${item.movie_source}:`, updateError.message);
       }
     }
 
