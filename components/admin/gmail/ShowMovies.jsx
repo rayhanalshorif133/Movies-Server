@@ -7,7 +7,7 @@ export default function ShowMovies({ items }) {
 
   return (
     <tr>
-      <td colSpan={4} className="px-6 py-4 bg-gray-50">
+      <td colSpan={5} className="px-6 py-4 bg-gray-50">
         <div className="flex flex-wrap gap-2 justify-center">
           {movies.map((movie, index) => (
             <Badge key={index} title={movie.trim()} />
