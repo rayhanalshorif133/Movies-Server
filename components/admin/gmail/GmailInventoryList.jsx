@@ -6,6 +6,7 @@ import axios from "axios";
 import Badge from '@/components/common/Badge';
 import GmailListHeader from './_partials/GmailListHeader';
 import GmailListPagination from './_partials/GmailListPagination';
+import { daysAgoCalculate } from '@/utils/google/manage';
 
 
 export default function GmailInventoryList() {
@@ -136,6 +137,7 @@ export default function GmailInventoryList() {
 
           ) : emails.map((item, index) => {
 
+            const daysAgo = daysAgoCalculate(item.last_login);
 
             return (
               <React.Fragment key={item.id}>
@@ -151,7 +153,7 @@ export default function GmailInventoryList() {
 
 
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    <Badge title={new Date(item.last_login).toLocaleDateString()} />
+                    <Badge title={daysAgo} />
                   </td>
 
                 </tr>

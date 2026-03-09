@@ -103,4 +103,13 @@ export function getGoogleDriveDownloadUrl(fileId) {
   return `https://drive.google.com/uc?export=download&id=${fileId}`;
 }
 
+export function daysAgoCalculate(date) {
+  if (!date) return 0;
+  const givenDate = new Date(date);
+  const today = new Date();
+  const diffTime = today - givenDate;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays + " Days Ago";
+};
+
 
