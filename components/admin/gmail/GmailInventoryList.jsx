@@ -3,11 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import axios from "axios";
-import Badge from '@/components/common/Badge';
 import GmailListHeader from './_partials/GmailListHeader';
 import GmailListPagination from './_partials/GmailListPagination';
-import { daysAgoCalculate } from '@/utils/google/manage';
-
+import LastLoginTime from './_partials/LastLoginTime';
 
 export default function GmailInventoryList() {
 
@@ -137,7 +135,7 @@ export default function GmailInventoryList() {
 
           ) : emails.map((item, index) => {
 
-            const daysAgo = daysAgoCalculate(item.last_login);
+            
 
             return (
               <React.Fragment key={item.id}>
@@ -152,8 +150,8 @@ export default function GmailInventoryList() {
                   </td>
 
 
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    <Badge title={daysAgo} />
+                  <td className="px-6 py-4 text-sm text-gray-500 flex space-x-1">
+                    <LastLoginTime getData={getData} id={item.id} last_login={item.last_login} type={'indentory'}/>
                   </td>
 
                 </tr>

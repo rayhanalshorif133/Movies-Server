@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {Loader2, Eye } from 'lucide-react';
+import { Loader2, Eye } from 'lucide-react';
 import axios from "axios";
 import ShowMovies from './ShowMovies';
 import Badge from '@/components/common/Badge';
 import GmailListHeader from './_partials/GmailListHeader';
 import GmailListPagination from './_partials/GmailListPagination';
-import { daysAgoCalculate } from '@/utils/google/manage';
+import LastLoginTime from './_partials/LastLoginTime';
 
 export default function GmailList() {
 
@@ -92,6 +92,7 @@ export default function GmailList() {
     }
   }
 
+
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
@@ -116,16 +117,15 @@ export default function GmailList() {
           {loading ? (
 
             <tr>
-              <td colSpan="4" className="py-20 text-center">
+              <td colSpan={5} className="py-20 text-center">
                 <Loader2 className="w-8 h-8 animate-spin mx-auto text-green-600" />
               </td>
             </tr>
 
-          ) : emails.map((item,index) => {
+          ) : emails.map((item, index) => {
 
             const movies = item.movies ? item.movies.split(',') : [];
 
-            const daysAgo = daysAgoCalculate(item.last_login);
 
             return (
               <React.Fragment key={item.id}>
@@ -157,8 +157,8 @@ export default function GmailList() {
                     <Badge title={`${item.used_space} GB`} />
                   </td>
 
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    <Badge title={daysAgo} />
+                  <td className="px-6 py-4 text-sm text-gray-500 flex space-x-1">
+                    <LastLoginTime getData={getData} id={item.id} last_login={item.last_login} type={'gmails'} />
                   </td>
 
                 </tr>
