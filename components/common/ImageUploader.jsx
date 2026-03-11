@@ -29,12 +29,10 @@ export default function ImageUploader({ setDriveId }) {
 
     try {
       const driveId = await uploadImageInGoogleDrive(file);
-      const fileType = await getFileType(file);
       if (driveId) {
         setFileUrl(`https://drive.google.com/uc?id=${driveId}`);
         const data = {
           "drive_id": driveId,
-          "file_type": fileType,
           "url": `https://drive.google.com/uc?id=${driveId}`
         };
         axios.post('/api/images/',data);
