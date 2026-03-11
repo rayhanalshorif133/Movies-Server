@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { logout } from '@/app/login/actions'
-import { MdOutlineDashboard, MdLocalMovies } from "react-icons/md";
+import { MdOutlineDashboard, MdLocalMovies, MdOutlinePhotoLibrary } from "react-icons/md";
 import { BiLogoGmail } from "react-icons/bi";
 import { FaGamepad } from "react-icons/fa6";
 import { RiMovie2AiFill } from "react-icons/ri";
@@ -21,11 +21,13 @@ export default function Sidebar() {
         { label: 'Entertainment', type: 'header' },
         { label: 'Movies List', href: '/admin/movies', icon: <MdLocalMovies/>, type: 'link' },
         { label: 'Movies Manage', href: '/admin/movies/manage', icon: <RiMovie2AiFill/>, type: 'link' },
-        { label: 'Gaming', type: 'header' },
+        { label: 'Gaming Zone', type: 'header' },
         { label: 'Games & Assets', href: '/admin/games', icon: <FaGamepad/>, type: 'link' },
-        { label: 'Communication', type: 'header' },
+        { label: 'Gmail Managemanet', type: 'header' },
         { label: 'Gmail List', href: '/admin/gmails', icon: <BiLogoGmail/>, type: 'link' },
         { label: 'Gmail Inventory', href: '/admin/gmails/inventory', icon: <BiLogoGmail/>, type: 'link' },
+        { label: 'Media Library', type: 'header' },
+        { label: 'Image Repository', href: '/admin/images', icon: <MdOutlinePhotoLibrary/>, type: 'link' },
     ];
 
     return (
