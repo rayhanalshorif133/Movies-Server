@@ -1,4 +1,5 @@
 "use client"
+import { getGoogleDriveImageUrl } from '@/utils/google/manage';
 import React, { useState } from 'react';
 
 export default function ImageList() {
@@ -49,7 +50,7 @@ export default function ImageList() {
         {imageIds.map((id, index) => (
           <div key={index} style={styles.card} onClick={() => openSlider(index)}>
             <img 
-              src={`https://drive.google.com/uc?id=${id}`} 
+              src={getGoogleDriveImageUrl(id)} 
               alt={`Item ${index + 1}`} 
               style={styles.image}
               loading="lazy"
@@ -67,7 +68,7 @@ export default function ImageList() {
           
           <div style={styles.modalContent}>
             <img 
-              src={`https://drive.google.com/uc?id=${imageIds[selectedIdx]}`} 
+              src={getGoogleDriveImageUrl(imageIds[selectedIdx])} 
               alt="Preview" 
               style={styles.fullImage}
             />
