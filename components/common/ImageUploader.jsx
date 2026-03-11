@@ -47,11 +47,11 @@ export default function ImageUploader({ setDriveId }) {
       setLoading(false);
     }
   };
-
+  
   const handleFileDelete = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
+    
     Swal.fire({
       title: 'Are you sure?',
       text: "This will remove the selected image.",
@@ -62,6 +62,7 @@ export default function ImageUploader({ setDriveId }) {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
+        axios.delete(`/api/images/?drive_id=${getDriveId}`);
         const deleteImageFromDrive = deleteFileFromGoogleDrive(getDriveId);
         if (deleteImageFromDrive) {
           Swal.fire('Deleted!', 'Your image has been deleted.', 'success');
