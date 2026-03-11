@@ -41,6 +41,14 @@ export async function uploadImageInGoogleDrive(file) {
   }
 }
 
+export function getFileType(file) {
+  if (!file) return "No file";
+
+  const typeFromMime = file.type.split('/').pop();
+  const typeFromName = file.name.split('.').pop().toLowerCase();
+  return file.type ? typeFromMime : typeFromName;
+};
+
 
 export async function deleteFileFromGoogleDrive(fileId) {
   if (!fileId) return null;
