@@ -1,21 +1,21 @@
 "use client"
-import { getGoogleDriveImageUrl } from '@/utils/google/manage';
+import { deleteFileFromGoogleDrive, getGoogleDriveImageUrl } from '@/utils/google/manage';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { RxCross2 } from 'react-icons/rx';
+import Swal from 'sweetalert2';
 
 export default function ImageList({ images }) {
 
   const [imageIds, setImageIds] = useState([]);
+  const [selectedIdx, setSelectedIdx] = useState(null);
 
   useEffect(() => {
     if (images && images.length > 0) {
       const ids = images.map((item) => item.drive_id);
       setImageIds(ids);
     }
-  }, [images]); 
-
-
-  // Logic states
-  const [selectedIdx, setSelectedIdx] = useState(null);
+  }, [images]);
 
   const openSlider = (index) => setSelectedIdx(index);
   const closeSlider = () => setSelectedIdx(null);
@@ -30,83 +30,121 @@ export default function ImageList({ images }) {
     setSelectedIdx((prev) => (prev - 1 + imageIds.length) % imageIds.length);
   };
 
-  return (
-    <div style={styles.container}>
-      <h2 style={{ textAlign: 'center' }}>Google Drive Gallery</h2>
+  const deleteImageBtn = (targetId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "This will remove the selected image.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#3b82f6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
 
-      <div style={styles.grid}>
+        axios.delete(`/api/images/?drive_id=${targetId}`);
+
+        const deleteImageFromDrive = deleteFileFromGoogleDrive(targetId);
+
+        if (deleteImageFromDrive) {
+          setImageIds(prevIds => prevIds.filter(id => id !== targetId));
+
+          Swal.fire('Deleted!', 'Your image has been deleted.', 'success');
+        } else {
+          Swal.fire('Error!', 'Failed to delete the image from Drive.', 'error');
+        }
+      }
+    });
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto p-6">
+
+      <h2 className="text-3xl font-bold text-center mb-10">
+        Google Drive Gallery
+      </h2>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+
         {imageIds.map((id, index) => (
-          <div key={index} style={styles.card} onClick={() => openSlider(index)}>
+
+          <div
+            key={index}
+            className="group relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 cursor-pointer"
+          >
+
             <img
+              onClick={() => openSlider(index)}
               src={getGoogleDriveImageUrl(id)}
               alt={`Item ${index + 1}`}
-              style={styles.image}
+              className="w-full h-44 object-cover group-hover:scale-110 transition duration-500"
               loading="lazy"
             />
+
+            {/* Delete Button */}
+            <div
+              onClick={() => deleteImageBtn(id)}
+              className="absolute top-2 right-2 backdrop-blur-md bg-white/60 hover:bg-red-500 hover:text-white text-red-500 transition p-1.5 rounded-full shadow cursor-pointer"
+            >
+              <RxCross2 size={14} />
+            </div>
+
           </div>
+
         ))}
+
       </div>
 
+      {/* MODAL SLIDER */}
       {selectedIdx !== null && (
-        <div style={styles.overlay} onClick={closeSlider}>
-          <button style={styles.closeBtn} onClick={closeSlider}>✕</button>
 
-          <button style={{ ...styles.navBtn, left: '20px' }} onClick={prevSlide}>◀</button>
+        <div
+          onClick={closeSlider}
+          className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50"
+        >
 
-          <div style={styles.modalContent}>
+          {/* CLOSE */}
+          <button
+            onClick={closeSlider}
+            className="absolute top-6 right-10 text-white text-4xl hover:text-red-400"
+          >
+            <RxCross2 size={14} />
+          </button>
+
+          {/* PREV */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-6 text-white text-3xl bg-white/20 hover:bg-white/40 p-4 rounded-full"
+          >
+            ◀
+          </button>
+
+          {/* IMAGE */}
+          <div className="text-center">
+
             <img
               src={getGoogleDriveImageUrl(imageIds[selectedIdx])}
               alt="Preview"
-              style={styles.fullImage}
+              className="max-h-[80vh] max-w-[90vw] rounded-lg shadow-2xl"
             />
-            <p style={styles.counter}>{selectedIdx + 1} / {imageIds.length}</p>
+
+            <p className="text-white mt-4 text-lg">
+              {selectedIdx + 1} / {imageIds.length}
+            </p>
+
           </div>
 
-          <button style={{ ...styles.navBtn, right: '20px' }} onClick={nextSlide}>▶</button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-6 text-white text-3xl bg-white/20 hover:bg-white/40 p-4 rounded-full"
+          >
+            ▶
+          </button>
+
         </div>
+
       )}
+
     </div>
   );
 }
-
-const styles = {
-  container: { padding: '20px', maxWidth: '1200px', margin: '0 auto' },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-    gap: '15px'
-  },
-  card: {
-    borderRadius: '10px',
-    overflow: 'hidden',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-    cursor: 'pointer',
-    transition: 'transform 0.2s'
-  },
-  image: { width: '100%', height: '200px', objectFit: 'cover' },
-
-  // Slider Styles
-  overlay: {
-    position: 'fixed',
-    top: 0, left: 0,
-    width: '100%', height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.9)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000
-  },
-  modalContent: { textAlign: 'center', position: 'relative' },
-  fullImage: { maxWidth: '90vw', maxHeight: '80vh', borderRadius: '5px' },
-  closeBtn: {
-    position: 'absolute', top: '20px', right: '30px',
-    background: 'none', border: 'none', color: 'white',
-    fontSize: '30px', cursor: 'pointer'
-  },
-  navBtn: {
-    position: 'absolute',
-    background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white',
-    padding: '15px', cursor: 'pointer', fontSize: '20px', borderRadius: '50%'
-  },
-  counter: { color: 'white', marginTop: '10px' }
-};
