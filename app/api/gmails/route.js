@@ -11,7 +11,6 @@ export async function GET(request) {
 
   const supabase = await createClient();
 
-  // Range calculate kora
   const from = page * limit;
   const to = from + limit - 1;
 

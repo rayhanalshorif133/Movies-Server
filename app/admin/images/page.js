@@ -16,7 +16,11 @@ export async function generateMetadata() {
 export default async function AdminGmailsPage() {
 
   const supabase = await createClient();
-  const { data: images } = await supabase.from('galleries').select('*');
+  
+  const { data: images, error } = await supabase
+    .from('galleries')
+    .select('*')
+    .order('id', { ascending: false });
 
   const statsConfig = [
     {
@@ -47,7 +51,7 @@ export default async function AdminGmailsPage() {
           ))}
         </div>
 
-        <ImageList images={images}/>
+        <ImageList images={images} />
 
 
 

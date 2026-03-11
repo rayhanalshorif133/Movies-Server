@@ -4,10 +4,9 @@ import { NextResponse } from 'next/server';
 export async function GET(request) {
   const supabase = await createClient();
 
-  // 1. Fetch data from source table
   const { data: gmailsData, error: fetchError } = await supabase
     .from('gmails')
-    .select('*'); // Only select what you actually need
+    .select('*'); 
 
   if (fetchError) {
     return NextResponse.json({ error: fetchError.message }, { status: 500 });
