@@ -100,7 +100,6 @@ export async function GET(request) {
       }
 
       if (!movieCheck || movieCheck.length === 0) {
-        // GOTO Inventory
         const { data, error } = await supabase
           .from('gmail_inventory')
           .insert([{ email: gmail.name, last_login: gmail.last_login }]);
@@ -119,6 +118,9 @@ export async function GET(request) {
         }
       }
     }
+
+
+    // insert Games
   }
 
 
