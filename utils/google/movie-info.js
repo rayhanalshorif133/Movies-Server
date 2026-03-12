@@ -31,7 +31,8 @@ export async function getMovieFileInfo(url) {
 
         // Calculations
         const sizeInMB = (parseFloat(data.size) / (1024 * 1024)).toFixed(2);
-        const name = data.name.replace(/\.(mp4|mkv|avi|mov)$/i, "");
+        var name = data.name.replace(/\.(mp4|mkv|avi|zip|mov)$/i, "");
+        name = name.replace(/-/g, " ");
         const ownerEmail = data.owners?.[0]?.emailAddress || 'N/A';
 
         return {
