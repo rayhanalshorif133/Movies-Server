@@ -23,6 +23,7 @@ export default function Sidebar() {
         { label: 'Movies Manage', href: '/admin/movies/manage', icon: <RiMovie2AiFill/>, type: 'link' },
         { label: 'Gaming Zone', type: 'header' },
         { label: 'Games & Assets', href: '/admin/games', icon: <FaGamepad/>, type: 'link' },
+        { label: 'Manage', href: '/admin/games/manage', icon: <FaGamepad/>, type: 'link' },
         { label: 'Gmail Managemanet', type: 'header' },
         { label: 'Gmail List', href: '/admin/gmails', icon: <BiLogoGmail/>, type: 'link' },
         { label: 'Gmail Inventory', href: '/admin/gmails/inventory', icon: <BiLogoGmail/>, type: 'link' },
