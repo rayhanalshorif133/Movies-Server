@@ -117,9 +117,7 @@ export default function UploadGame() {
 
       .then(response => {
 
-        console.log(response.data);
-
-        return false;
+       
         Swal.fire({
           icon: 'success',
           title: 'Asset Uploaded!',
