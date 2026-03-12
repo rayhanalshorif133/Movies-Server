@@ -11,14 +11,31 @@ export default function UploadGame() {
 
   const [loading, setLoading] = useState(false);
   const [driveId, setDriveId] = useState('');
+  const [type, setTypes] = useState('');
   const [driveIds, setDriveIds] = useState([]);
+
+  const API_URL = "/api/games/type";
+
+  const fetchTypes = async () => {
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      if (res.ok) setTypes(data);
+    } catch (error) {
+      console.error("Failed to fetch types:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTypes();
+  }, []);
 
   const [formData, setFormData] = useState({
     title: '',
     url: '',
     size: 0,
     asset_type: '',
-    game_engine: '',
+    game_type: '',
     gmail: '',
     thumbnail_image: '',
     asset_images: [],
@@ -45,16 +62,16 @@ export default function UploadGame() {
     }
   };
 
-  
+
 
   const clearURL = () => {
 
     setFormData(prev => ({
       ...prev,
-      title:'',
-      url:'',
-      gmail:'',
-      size:0
+      title: '',
+      url: '',
+      gmail: '',
+      size: 0
     }));
 
   };
@@ -77,18 +94,18 @@ export default function UploadGame() {
 
   useEffect(() => {
 
-    if(driveIds.length === 0) return;
+    if (driveIds.length === 0) return;
 
     const images = [];
     const gifs = [];
 
     console.clear();
-    console.log("driveIds",driveIds);
+    console.log("driveIds", driveIds);
     driveIds.forEach(file => {
 
-      if(file.type.includes("gif")){
+      if (file.type.includes("gif")) {
         gifs.push(file.id);
-      }else{
+      } else {
         images.push(file.id);
       }
 
@@ -100,7 +117,7 @@ export default function UploadGame() {
       asset_gif_images: gifs
     }));
 
-  },[driveIds]);
+  }, [driveIds]);
 
 
   const handleUpload = async (e) => {
@@ -117,7 +134,7 @@ export default function UploadGame() {
 
       .then(response => {
 
-       
+
         Swal.fire({
           icon: 'success',
           title: 'Asset Uploaded!',
@@ -129,7 +146,7 @@ export default function UploadGame() {
           window.location.href =
             `/admin/games?search=${encodeURIComponent(formData.title)}&page=1`;
 
-        },1500);
+        }, 1500);
 
       })
 
@@ -137,7 +154,7 @@ export default function UploadGame() {
         console.error('Error uploading asset:', error);
       })
 
-      .finally(()=>setLoading(false));
+      .finally(() => setLoading(false));
   }
 
 
@@ -164,7 +181,7 @@ export default function UploadGame() {
               onClick={clearURL}
               className="h-5 w-5 mx-2 cursor-pointer hover:scale-105 rounded-full bg-gray-300 hover:bg-red-500 hover:text-white flex items-center justify-center"
             >
-              <MdClear size={14}/>
+              <MdClear size={14} />
             </button>
 
           </label>
@@ -175,7 +192,7 @@ export default function UploadGame() {
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
             value={formData.url}
             onClick={handlePaste}
-            onChange={(e)=>setFormData({...formData,url:e.target.value})}
+            onChange={(e) => setFormData({ ...formData, url: e.target.value })}
           />
 
         </div>
@@ -198,7 +215,7 @@ export default function UploadGame() {
                 type="text"
                 className="w-full p-3 border border-gray-200 rounded-lg"
                 value={formData.title}
-                onChange={(e)=>setFormData({...formData,title:e.target.value})}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               />
 
             </div>
@@ -215,7 +232,7 @@ export default function UploadGame() {
                 step="0.01"
                 className="w-full p-3 border border-gray-200 rounded-lg"
                 value={formData.size}
-                onChange={(e)=>setFormData({...formData,size:e.target.value})}
+                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
               />
 
             </div>
@@ -231,7 +248,7 @@ export default function UploadGame() {
                 type="text"
                 className="w-full p-3 border border-gray-200 rounded-lg"
                 value={formData.gmail}
-                onChange={(e)=>setFormData({...formData,gmail:e.target.value})}
+                onChange={(e) => setFormData({ ...formData, gmail: e.target.value })}
               />
 
             </div>
@@ -248,30 +265,29 @@ export default function UploadGame() {
           <select
             className="p-3 border rounded-lg"
             value={formData.asset_type}
-            onChange={(e)=>setFormData({...formData,asset_type:e.target.value})}
+            onChange={(e) => setFormData({ ...formData, asset_type: e.target.value })}
           >
 
-            <option value="">Select Type</option>
-            <option value="3d-model">3D Model</option>
-            <option value="2d-asset">2D Asset</option>
-            <option value="source-code">Source Code</option>
-            <option value="plugin">Plugin</option>
-            <option value="ui-kit">UI Kit</option>
-
+            <option value="" disabled selected>Select Type</option>
+            <option value="game">Game</option>
+            <option value="asset">Asset</option>
           </select>
 
 
           <select
             className="p-3 border rounded-lg"
-            value={formData.game_engine}
-            onChange={(e)=>setFormData({...formData,game_engine:e.target.value})}
+            value={formData.game_type}
+            onChange={(e) => setFormData({ ...formData, game_type: e.target.value })}
           >
 
-            <option value="">Game Engine</option>
-            <option value="unity">Unity</option>
-            <option value="unreal">Unreal</option>
-            <option value="godot">Godot</option>
-            <option value="construct">Construct 3</option>
+            <option value="" disabled selected>Game Type</option>
+            {
+              type.length > 0 && type.map((item) => (
+                <option key={item.id} value={item.name}>
+                  {item.name}
+                </option>
+              ))
+            }
 
           </select>
 
@@ -289,7 +305,7 @@ export default function UploadGame() {
               Main Thumbnail
             </label>
 
-            <ImageUploader setDriveId={setDriveId}/>
+            <ImageUploader setDriveId={setDriveId} />
 
           </div>
 
@@ -328,11 +344,10 @@ export default function UploadGame() {
 
         <button
           disabled={loading || !formData.thumbnail_image}
-          className={`w-full py-4 rounded-lg font-bold text-white ${
-            loading || !formData.thumbnail_image
-              ? "bg-gray-400"
-              : "bg-blue-600 hover:bg-blue-700"
-          }`}
+          className={`w-full py-4 rounded-lg font-bold text-white ${loading || !formData.thumbnail_image
+            ? "bg-gray-400"
+            : "bg-blue-600 hover:bg-blue-700"
+            }`}
         >
 
           {loading ? "Uploading Assets..." : "Publish Game Asset"}

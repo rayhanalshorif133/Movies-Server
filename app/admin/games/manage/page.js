@@ -1,59 +1,82 @@
+"use client";
+
+import { useState } from "react";
+// Icons er jonno (npm install lucide-react jodi na thake)
+import { LayoutGrid, UploadCloud, ChevronRight } from "lucide-react"; 
+
 import UpdateGame from '@/components/admin/game/UpdateGame';
 import UploadGame from '@/components/admin/game/UploadGame';
-import UpdateMovie from '@/components/admin/movie/UpdateMovie'
-import UploadMovie from '@/components/admin/movie/UploadMovie'
-import Sidebar from '@/components/admin/Sidebar'
-import { createClient } from '@/utils/supabase/server';
+import Sidebar from '@/components/admin/Sidebar';
+import GameType from "@/components/admin/game/GameType";
 
-export async function generateMetadata() {
-    return {
-        title: "Manage Games and Assets | Admin Panel",
-    };
-}
-
-export default async function page({ searchParams }) {
-    const resolvedSearchParams = await searchParams;
-    const isUpdate = !!resolvedSearchParams.id;
-    let game = null;
-
-    if (isUpdate) {
-        const supabase = await createClient();
-        const { data } = await supabase
-            .from('games')
-            .select('*')
-            .eq('id', resolvedSearchParams.id)
-            .single();
-        game = data || null;
-    }
-
-
+export default function Page({ game, isUpdate, movie }) {
+    const [activeTab, setActiveTab] = useState("upload");
 
     return (
-        <div className="bg-gray-50 flex">
-
+        <div className="bg-gray-50 min-h-screen flex">
             <Sidebar />
 
-            <div className="flex-1 ml-64 p-8">
-
-                <header className="flex justify-between items-center mb-8">
-                    <div>
-                        <nav className="text-xs text-gray-500 mb-1">Home / Games / Upload</nav>
-                        <h2 className="text-2xl font-bold text-gray-800">Gaming Center</h2>
+            <div className="flex-1 ml-64 p-10">
+                {/* Header Section */}
+                <header className="mb-10">
+                    <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
+                        <span>Admin</span>
+                        <ChevronRight size={14} />
+                        <span>Gaming Center</span>
+                        <ChevronRight size={14} />
+                        <span className="text-blue-600 font-medium">
+                            {isUpdate ? "Update" : "Upload"}
+                        </span>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <button className="p-2 text-gray-400 hover:text-gray-600"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg></button>
-                        <div className="flex items-center gap-2 border-l pl-4">
-                            <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-xs">M</div>
-                            <span className="text-sm font-medium">Movie</span>
-                        </div>
-                    </div>
+                    <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">
+                        Gaming Management
+                    </h2>
                 </header>
-                {
-                    isUpdate ? <UpdateGame movie={movie} /> : <UploadGame />
-                }
+
+                {/* Modern Tabs Design */}
+                <div className="flex p-1 bg-gray-200/50 rounded-xl w-fit mb-8">
+                    <button
+                        onClick={() => setActiveTab("type")}
+                        className={`flex cursor-pointer items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 
+                        ${activeTab === "type"
+                                ? "bg-white text-blue-600 shadow-md"
+                                : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                            }`}
+                    >
+                        <LayoutGrid size={18} />
+                        Game Type
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab("upload")}
+                        className={`flex cursor-pointer items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 
+                        ${activeTab === "upload"
+                                ? "bg-white text-blue-600 shadow-md"
+                                : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                            }`}
+                    >
+                        <UploadCloud size={18} />
+                        {isUpdate ? "Update Details" : "Upload Content"}
+                    </button>
+                </div>
+
+                {/* Tab Content Area */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="p-8">
+                        {activeTab === "type" && <GameType/>}
+
+                        {activeTab === "upload" && (
+                            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                                {isUpdate ? (
+                                    <UpdateGame game={game} /> 
+                                ) : (
+                                    <UploadGame />
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
-
-
         </div>
-    )
+    );
 }

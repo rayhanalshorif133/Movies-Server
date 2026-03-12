@@ -36,12 +36,11 @@ export async function POST(request) {
             url,
             size,
             asset_type,
-            game_engine,
+            game_type,
             gmail,
             thumbnail_image,
             asset_images,
             asset_gif_images,
-            part_name
         } = body;
 
         // Validation (Optional but recommended)
@@ -58,7 +57,7 @@ export async function POST(request) {
                     url,
                     size: size ? parseFloat(size) : 0,
                     asset_type: asset_type || 'asset',
-                    game_type: game_engine, 
+                    game_type: game_type, 
                     gmail: gmail,
                     thumbnail_image: thumbnail_image,
                     asset_images: Array.isArray(asset_images) ? asset_images : [],
