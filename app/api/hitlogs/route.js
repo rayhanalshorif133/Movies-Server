@@ -15,7 +15,7 @@ export async function GET(request) {
         .from('hitlogs')
         .select('*')
         .eq('ip_address', ip)
-        .eq('pagename', pagename)
+        .eq('page_name', pagename)
         .single();
 
     if (findError && findError.code !== 'PGRST116') {
@@ -29,7 +29,7 @@ export async function GET(request) {
             .from('hitlogs')
             .update({ counter: existing.counter + 1 })
             .eq('ip_address', ip)
-            .eq('pagename', pagename)
+            .eq('page_name', pagename)
             .select()
             .single();
 
@@ -43,7 +43,7 @@ export async function GET(request) {
             .from('hitlogs')
             .insert({
                 ip_address: ip,
-                pagename: pagename,
+                page_name: pagename,
                 counter: 1
             })
             .select()
