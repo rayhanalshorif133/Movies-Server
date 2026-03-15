@@ -19,7 +19,7 @@ export default function GmailInventoryList() {
   const [color, setColor] = useState();
   const [colorAddBtn, setColorAddBtn] = useState();
   const [newGmail, setNewGmail] = useState('');
-
+  const [orderBy, setOrderBy] = useState('created_at');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
@@ -47,7 +47,7 @@ export default function GmailInventoryList() {
     setLoading(true);
     try {
       const response = await fetch(
-        `/api/gmails/inventory?page=${currentPage}&limit=${ITEMS_PER_PAGE}&search=${searchTerm}`
+        `/api/gmails/inventory?page=${currentPage}&limit=${ITEMS_PER_PAGE}&search=${searchTerm}&order_by=${orderBy}`
       );
 
       const result = await response.json();
@@ -77,6 +77,10 @@ export default function GmailInventoryList() {
   useEffect(() => {
     getData();
   }, [currentPage]);
+
+  useEffect(() => {
+    getData();
+  }, [orderBy]);
 
   const autoGmailUpdateBtn = async () => {
     setAutoUpdating(true);
@@ -110,7 +114,7 @@ export default function GmailInventoryList() {
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
       {/* Header */}
-      <GmailListHeader closeModal={closeModal} openModal={openModal} isModalOpen={isModalOpen} newGmail={newGmail} setNewGmail={setNewGmail} handleNewGmailAdd={handleNewGmailAdd} colorAddBtn={colorAddBtn} addNewGmail={true} setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
+      <GmailListHeader orderBy={orderBy} setOrderBy={setOrderBy} closeModal={closeModal} openModal={openModal} isModalOpen={isModalOpen} newGmail={newGmail} setNewGmail={setNewGmail} handleNewGmailAdd={handleNewGmailAdd} colorAddBtn={colorAddBtn} addNewGmail={true} setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
 
       {/* Table */}
       <table className="w-full text-left">
@@ -135,7 +139,7 @@ export default function GmailInventoryList() {
 
           ) : emails.map((item, index) => {
 
-            
+
 
             return (
               <React.Fragment key={item.id}>
@@ -151,7 +155,7 @@ export default function GmailInventoryList() {
 
 
                   <td className="px-6 py-4 text-sm text-gray-500 flex space-x-1">
-                    <LastLoginTime getData={getData} id={item.id} last_login={item.last_login} type={'indentory'}/>
+                    <LastLoginTime getData={getData} id={item.id} last_login={item.last_login} type={'indentory'} />
                   </td>
 
                 </tr>

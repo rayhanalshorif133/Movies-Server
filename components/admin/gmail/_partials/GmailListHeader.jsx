@@ -52,7 +52,7 @@ export default function GmailListHeader(props) {
                 }
             </button>
 
-            <GmailOrderByToggle orderBy={orderBy} setOrderBy={setOrderBy}/>
+            <GmailOrderByToggle hasSpaceBtn={addNewGmail ? false : true} orderBy={orderBy} setOrderBy={setOrderBy} />
 
             <button
                 style={colorAddBtn}

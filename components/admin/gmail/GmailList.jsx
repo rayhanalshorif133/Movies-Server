@@ -36,7 +36,7 @@ export default function GmailList() {
 
   const [openRow, setOpenRow] = useState(null); // 👈 fix
 
-  const ITEMS_PER_PAGE = 40;
+  const ITEMS_PER_PAGE = 10;
 
   const getData = async () => {
     setLoading(true);

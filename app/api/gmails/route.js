@@ -13,7 +13,6 @@ export async function GET(request) {
   const to = from + limit - 1;
 
   const supabase = await createClient();
-
   let query = supabase
     .from('gmails')
     .select('*', { count: 'exact' });
