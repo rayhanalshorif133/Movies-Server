@@ -19,6 +19,7 @@ export default function GmailList() {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [color, setColor] = useState();
+  const [orderBy, setOrderBy] = useState('created_at');
 
   const generateRandomColors = () => {
     const hue = Math.floor(Math.random() * 360);
@@ -35,13 +36,13 @@ export default function GmailList() {
 
   const [openRow, setOpenRow] = useState(null); // 👈 fix
 
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 40;
 
   const getData = async () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `/api/gmails?page=${currentPage}&limit=${ITEMS_PER_PAGE}&search=${searchTerm}`
+        `/api/gmails?page=${currentPage}&limit=${ITEMS_PER_PAGE}&search=${searchTerm}&order_by=${orderBy}`
       );
 
       const result = await response.json();
@@ -72,6 +73,10 @@ export default function GmailList() {
     getData();
   }, [currentPage]);
 
+  useEffect(() => {
+    getData();
+  }, [orderBy]);
+
   const autoGmailUpdateBtn = async () => {
     setAutoUpdating(true);
     try {
@@ -97,7 +102,7 @@ export default function GmailList() {
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
       {/* Header */}
-      <GmailListHeader addNewGmail={false} setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
+      <GmailListHeader orderBy={orderBy} setOrderBy={setOrderBy} addNewGmail={false} setSearchTerm={setSearchTerm} searchTerm={searchTerm} autoGmailUpdateBtn={autoGmailUpdateBtn} autoUpdating={autoUpdating} color={color} />
 
       {/* Table */}
       <table className="w-full text-left">

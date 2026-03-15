@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Search, Loader2 } from 'lucide-react';
 import { IoReload } from "react-icons/io5";
+import GmailOrderByToggle from './GmailOrderByToggle';
 
 export default function GmailListHeader(props) {
     const {
@@ -16,18 +17,20 @@ export default function GmailListHeader(props) {
         setNewGmail,
         isModalOpen,
         openModal,
-        closeModal
+        closeModal,
+        orderBy,
+        setOrderBy
     } = props;
 
-  
 
-   
+
+
 
     return (
         <div className="p-6 border-b flex justify-between items-center gap-4">
 
             <h3 className="text-lg font-bold text-gray-800">
-                { addNewGmail? 'Manage Inventory' : 'Gmail Database'  }
+                {addNewGmail ? 'Manage Inventory' : 'Gmail Database'}
             </h3>
 
             <button
@@ -48,6 +51,8 @@ export default function GmailListHeader(props) {
                     </>
                 }
             </button>
+
+            <GmailOrderByToggle orderBy={orderBy} setOrderBy={setOrderBy}/>
 
             <button
                 style={colorAddBtn}
