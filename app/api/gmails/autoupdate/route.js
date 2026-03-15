@@ -100,7 +100,7 @@ export async function GET(request) {
       }
 
       if (!movieCheck || movieCheck.length === 0) {
-        const { data, error } = await supabase
+        await supabase
           .from('gmail_inventory')
           .insert([{ email: gmail.name, last_login: gmail.last_login }]);
 

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { MdClear } from "react-icons/md";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import GameUploadErrorMessage from './_partials/GameUploadErrorMessage';
 
 export default function UploadGame() {
 
@@ -13,6 +14,7 @@ export default function UploadGame() {
   const [driveId, setDriveId] = useState('');
   const [type, setTypes] = useState('');
   const [driveIds, setDriveIds] = useState([]);
+  const [errorMsg, setErrorMsg] = useState();
 
   const API_URL = "/api/games/type";
 
@@ -49,13 +51,27 @@ export default function UploadGame() {
 
       const { fileId, name, gmail, size } = data;
 
-      setFormData(prev => ({
-        ...prev,
-        title: name,
-        url: fileId,
-        gmail: gmail,
-        size: size
-      }));
+      axios.get(`/api/games/check-duplicate-entry?title=${name}&url=${fileId}`)
+        .then((response) => {
+          const data = response.data;
+          setErrorMsg(data.message);
+          if (data.status == 'success') {
+            setFormData(prev => ({
+              ...prev,
+              title: name,
+              url: fileId,
+              gmail: gmail,
+              size: size
+            }));
+          }
+
+
+        });
+
+
+
+
+
 
     } catch (err) {
       console.error('Failed to read clipboard contents: ', err);
@@ -66,6 +82,7 @@ export default function UploadGame() {
 
   const clearURL = () => {
 
+    setErrorMsg('');
     setFormData(prev => ({
       ...prev,
       title: '',
@@ -194,6 +211,9 @@ export default function UploadGame() {
             onClick={handlePaste}
             onChange={(e) => setFormData({ ...formData, url: e.target.value })}
           />
+          <div className="mt-4">
+            {errorMsg && <GameUploadErrorMessage errorMsg={errorMsg}/>}
+          </div>
 
         </div>
 
