@@ -10,35 +10,51 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const pagename = searchParams.get('pagename');
 
-    const { data, error } = await supabase
+    // check existing row
+    const { data: existing, error: findError } = await supabase
         .from('hitlogs')
-        .upsert(
-            { 
-                ip_address: ip,
-                page_name: pagename
-            }, 
-            { onConflict: 'ip_address,page_name' }
-        )
-        .select('counter')
-        .single();
-
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    const currentCounter = data?.counter || 0;
-
-    const { data: updatedData, error: updateError } = await supabase
-        .from('hitlogs')
-        .update({ counter: currentCounter + 1 })
+        .select('*')
         .eq('ip_address', ip)
-        .eq('page_name', pagename)
-        .select()
+        .eq('pagename', pagename)
         .single();
 
-    if (updateError) {
-        return NextResponse.json({ error: updateError.message }, { status: 500 });
+    if (findError && findError.code !== 'PGRST116') {
+        return NextResponse.json({ error: findError.message }, { status: 500 });
     }
 
-    return NextResponse.json(updatedData);
+    let result;
+
+    if (existing) {
+        const { data, error } = await supabase
+            .from('hitlogs')
+            .update({ counter: existing.counter + 1 })
+            .eq('ip_address', ip)
+            .eq('pagename', pagename)
+            .select()
+            .single();
+
+        if (error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        result = data;
+    } else {
+        const { data, error } = await supabase
+            .from('hitlogs')
+            .insert({
+                ip_address: ip,
+                pagename: pagename,
+                counter: 1
+            })
+            .select()
+            .single();
+
+        if (error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        result = data;
+    }
+
+    return NextResponse.json(result);
 }
