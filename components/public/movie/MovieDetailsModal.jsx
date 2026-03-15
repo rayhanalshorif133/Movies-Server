@@ -1,28 +1,19 @@
-import { getGoogleDriveImageUrl, getGoogleDrivePreviewUrl } from "@/utils/google/manage";
+import { getGoogleDriveImageUrl, getGoogleDrivePreviewUrl, googleDriveToDownload } from "@/utils/google/manage";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { RxCross2, RxArrowLeft } from "react-icons/rx";
+import { useState } from "react";
+import { RxCross2, RxArrowLeft, RxDownload } from "react-icons/rx"; // Added RxDownload
 
 export default function MovieDetailsModal({ movie, onClose }) {
     const [isPreviewing, setIsPreviewing] = useState(false);
-    const [closeBtnPosition, setCloseBtnPosition] = useState('right-4');
-
-
-    useEffect(() => {
-        if (isPreviewing) {
-            setCloseBtnPosition('right-15');
-        } else {
-            setCloseBtnPosition('right-4');
-        }
-    }, [isPreviewing]);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
             <div className="relative bg-slate-900 border border-white/10 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl animate-in zoom-in duration-300">
 
+                {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className={`absolute cursor-pointer top-4 ${closeBtnPosition} z-20 bg-black/50 hover:bg-red-500 text-white p-2 rounded-full transition hover:rotate-90`}
+                    className={`absolute cursor-pointer top-4 ${isPreviewing ? 'right-15' : 'right-4'} z-20 bg-black/50 hover:bg-red-500 text-white p-2 rounded-full transition hover:rotate-90`}
                 >
                     <RxCross2 />
                 </button>
@@ -30,7 +21,7 @@ export default function MovieDetailsModal({ movie, onClose }) {
                 {isPreviewing && (
                     <button
                         onClick={() => setIsPreviewing(false)}
-                        className="absolute cursor-pointer top-4 left-4 z-20  hover:bg-red-700 text-white px-3 py-1.5 rounded-sm flex items-center gap-2 text-sm transition"
+                        className="absolute cursor-pointer top-4 left-4 z-20 hover:bg-red-700 text-white px-3 py-1.5 rounded-sm flex items-center gap-2 text-sm transition"
                     >
                         <RxArrowLeft />
                     </button>
@@ -47,7 +38,7 @@ export default function MovieDetailsModal({ movie, onClose }) {
                                         fill
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                                         className="object-cover rounded-lg"
-                                        priority={true} 
+                                        priority={true}
                                     />
                                 </div>
                             </div>
@@ -66,28 +57,35 @@ export default function MovieDetailsModal({ movie, onClose }) {
                                     You are about to watch <b>{movie.title}</b>. This movie is categorized as {movie.type}.
                                     Make sure you have a stable internet connection for the best experience.
                                 </p>
-                                <button
-                                    onClick={() => setIsPreviewing(true)}
-                                    className="relative cursor-pointer group mt-8 w-full h-16 overflow-hidden rounded-xl p-0.5 transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(37,99,235,0.3)]"
-                                >
-                                    <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#3b82f6_0%,#a855f7_50%,#3b82f6_100%)] group-hover:opacity-100 opacity-40 transition-opacity"></div>
 
-                                    <div className="relative flex h-full w-full items-center justify-center gap-3 rounded-[10px] bg-slate-900 px-7 py-2 text-white transition-all duration-300 group-hover:bg-slate-900/80 backdrop-blur-xl">
+                                {/* Button Group */}
+                                <div className="mt-8 flex flex-col gap-3">
+                                    {/* Watch Now Button */}
+                                    <button
+                                        onClick={() => setIsPreviewing(true)}
+                                        className="relative cursor-pointer group w-full h-16 overflow-hidden rounded-xl p-0.5 transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(37,99,235,0.3)]"
+                                    >
+                                        <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#3b82f6_0%,#a855f7_50%,#3b82f6_100%)] group-hover:opacity-100 opacity-40 transition-opacity"></div>
+                                        <div className="relative flex h-full w-full items-center justify-center gap-3 rounded-[10px] bg-slate-900 px-7 py-2 text-white transition-all duration-300 group-hover:bg-slate-900/80 backdrop-blur-xl">
+                                            <svg className="w-6 h-6 fill-current text-blue-400 group-hover:text-blue-300 transition-colors" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                            <span className="text-sm font-bold tracking-widest uppercase">Watch Now</span>
+                                        </div>
+                                    </button>
 
-                                        <svg
-                                            className="w-6 h-6 fill-current text-blue-400 group-hover:text-blue-300 transition-colors"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path d="M8 5v14l11-7z" />
-                                        </svg>
+                                    {/* Download Button */}
 
-                                        <span className="text-sm font-bold tracking-widest uppercase">
-                                            Watch Now
-                                        </span>
-
-                                        <div className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                                    </div>
-                                </button>
+                                    <button
+                                        onClick={() => { googleDriveToDownload(movie.url) }}
+                                        className="relative  cursor-pointer group w-full h-16 overflow-hidden rounded-xl p-0.5 transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(37,99,235,0.3)]"
+                                    >
+                                        <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#3b82f6_0%,#a855f7_50%,#3b82f6_100%)] group-hover:opacity-100 opacity-40 transition-opacity"></div>
+                                        <div className="relative flex h-full w-full items-center justify-center gap-3 rounded-[10px] bg-slate-900 px-7 py-2 text-white transition-all duration-300 group-hover:bg-slate-900/80 backdrop-blur-xl">
+                                            <span className="text-sm font-bold tracking-widest uppercase flex"><RxDownload className="text-lg mx-2" /> Download Now</span>
+                                        </div>
+                                    </button>
+                                </div>
                             </div>
                         </>
                     ) : (

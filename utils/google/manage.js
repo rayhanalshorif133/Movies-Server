@@ -120,4 +120,9 @@ export function daysAgoCalculate(date) {
   return diffDays + " Days Ago";
 };
 
+export function googleDriveToDownload(fileId) {
+  const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+  window.open(downloadUrl, "_blank");
+};
+
 
