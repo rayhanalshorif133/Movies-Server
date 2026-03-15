@@ -8,6 +8,7 @@ import UpdateGame from '@/components/admin/game/UpdateGame';
 import UploadGame from '@/components/admin/game/UploadGame';
 import Sidebar from '@/components/admin/Sidebar';
 import GameType from "@/components/admin/game/GameType";
+import Header from "@/components/admin/Header";
 
 export default function Page({ game, isUpdate, movie }) {
     const [activeTab, setActiveTab] = useState("upload");
@@ -18,20 +19,7 @@ export default function Page({ game, isUpdate, movie }) {
 
             <div className="flex-1 ml-64 p-10">
                 {/* Header Section */}
-                <header className="mb-10">
-                    <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
-                        <span>Admin</span>
-                        <ChevronRight size={14} />
-                        <span>Gaming Center</span>
-                        <ChevronRight size={14} />
-                        <span className="text-blue-600 font-medium">
-                            {isUpdate ? "Update" : "Upload"}
-                        </span>
-                    </div>
-                    <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">
-                        Gaming Management
-                    </h2>
-                </header>
+                <Header title={'Manage Games'} publicURL={'/games'} pageTitle={'Games'}/>
 
                 {/* Modern Tabs Design */}
                 <div className="flex p-1 bg-gray-200/50 rounded-xl w-fit mb-8">
