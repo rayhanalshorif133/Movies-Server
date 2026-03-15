@@ -7,11 +7,17 @@ export async function GET(request) {
     const forwarded = request.headers.get('x-forwarded-for');
     const ip = forwarded ? forwarded.split(',')[0] : '127.0.0.1';
 
+    const { searchParams } = new URL(request.url);
+    const pagename = searchParams.get('pagename');
+
     const { data, error } = await supabase
         .from('hitlogs')
         .upsert(
-            { ip_address: ip }, 
-            { onConflict: 'ip_address' }
+            { 
+                ip_address: ip,
+                page_name: pagename
+            }, 
+            { onConflict: 'ip_address,page_name' }
         )
         .select('counter')
         .single();
@@ -21,11 +27,12 @@ export async function GET(request) {
     }
 
     const currentCounter = data?.counter || 0;
-    
+
     const { data: updatedData, error: updateError } = await supabase
         .from('hitlogs')
         .update({ counter: currentCounter + 1 })
         .eq('ip_address', ip)
+        .eq('page_name', pagename)
         .select()
         .single();
 

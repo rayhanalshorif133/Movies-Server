@@ -14,7 +14,7 @@ export default function MovieManager({ initialMovies }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        axios.get('/api/hitlogs');
+        axios.get('/api/hitlogs?pagename=movies');
     }, [])
 
     useEffect(() => {
