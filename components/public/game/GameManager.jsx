@@ -4,12 +4,17 @@ import GameSection from "./GameSection";
 import ScouringGames from "./SourchingGames";
 import GameFilter from "./GameFilter";
 import NoGameFound from "./NoGameFound";
+import axios from "axios";
 
 export default function GameManager({ initialGames }) {
     const [games, setGames] = useState(initialGames);
     const [searchTitle, setSearchTitle] = useState("");
     const [searchType, setSearchType] = useState("all");
     const [loading, setLoading] = useState(false);
+
+   useEffect(() => {
+      axios.get('/api/hitlogs');
+   },[])
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(async () => {

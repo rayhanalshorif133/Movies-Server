@@ -4,6 +4,7 @@ import MovieSection from "./MovieSection";
 import ScouringMovies from "./ScouringMovies";
 import NoMovieFound from "./NoMovieFound";
 import MovieFilter from "./MovieFilter";
+import axios from "axios";
 
 
 export default function MovieManager({ initialMovies }) {
@@ -11,6 +12,10 @@ export default function MovieManager({ initialMovies }) {
     const [searchTitle, setSearchTitle] = useState("");
     const [searchType, setSearchType] = useState("all");
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        axios.get('/api/hitlogs');
+    }, [])
 
     useEffect(() => {
         if (!searchTitle.trim()) {
@@ -44,7 +49,7 @@ export default function MovieManager({ initialMovies }) {
     }, [searchTitle]);
 
     useEffect(() => {
-       
+
         let active = true; // Flag to prevent race conditions
 
         const delayDebounceFn = setTimeout(async () => {

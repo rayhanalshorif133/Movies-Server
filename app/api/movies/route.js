@@ -9,7 +9,6 @@ export async function GET(request) {
     const searchByID = searchParams.get('id') || '';
 
 
-    axios.get('/api/hitlogs');
 
     const supabase = await createClient();
     let query = supabase.from('movies').select('*');
