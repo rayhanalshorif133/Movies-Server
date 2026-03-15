@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
+import axios from 'axios';
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
@@ -6,6 +7,9 @@ export async function GET(request) {
     const searchByTitle = searchParams.get('title') || '';
     const searchByType = searchParams.get('type') || '';
     const searchByID = searchParams.get('id') || '';
+
+
+    axios.get('/api/hitlogs');
 
     const supabase = await createClient();
     let query = supabase.from('movies').select('*');
