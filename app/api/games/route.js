@@ -5,9 +5,29 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const searchByTitle = searchParams.get('title') || '';
     const searchByType = searchParams.get('type') || '';
+    const game_id = searchParams.get('id') || '';
 
     const supabase = await createClient();
+
+
     let query = supabase.from('games').select('*');
+    if (game_id) {
+        
+        query = supabase.from('games').select('*').eq('id', game_id).single();
+        const { data: DataByID, error: errorByID } = await query;
+        if (errorByID) {
+            return NextResponse.json({ error: errorByID.message }, { status: 500 });
+        }
+
+        const formattedData = {
+            ...DataByID,
+            asset_images: DataByID.asset_images ? JSON.parse(DataByID.asset_images) : [],
+            asset_gif_images: DataByID.asset_gif_images ? JSON.parse(DataByID.asset_gif_images) : []
+        };
+
+        return NextResponse.json(formattedData);
+    }
+
 
     if (searchByTitle) {
         query = query.ilike('title', `%${searchByTitle}%`);
@@ -57,7 +77,7 @@ export async function POST(request) {
                     url,
                     size: size ? parseFloat(size) : 0,
                     asset_type: asset_type || 'asset',
-                    game_type: game_type, 
+                    game_type: game_type,
                     gmail: gmail,
                     thumbnail_image: thumbnail_image,
                     asset_images: Array.isArray(asset_images) ? asset_images : [],

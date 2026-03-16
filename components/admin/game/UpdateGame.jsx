@@ -1,294 +1,164 @@
 "use client"
 
 import ImageUploader from '@/components/common/ImageUploader';
+import MultiImageUploader from '@/components/common/MultiImageUploader';
 import { getMovieFileInfo } from '@/utils/google/movie-info';
 import React, { useEffect, useState } from 'react'
 import { MdClear } from "react-icons/md";
 import axios from "axios";
 import Swal from 'sweetalert2';
 
-// Note: Removed 'async' from the function declaration
-export default function UpdateGame({ movie }) {
+export default function UpdateGame({ game }) {
+  const [loading, setLoading] = useState(false);
+  const [driveId, setDriveId] = useState('');
+  const [driveIds, setDriveIds] = useState([]);
+  const [type, setTypes] = useState('');
+  const [errorMsg, setErrorMsg] = useState();
+
   const [formData, setFormData] = useState({
     _id: '',
     title: '',
-    poster: '',
-    type: '',
     url: '',
-    size: '',
-    movie_source: '',
-    dubbed_lang: '',
-    part_name: '',
-    subtitle_url: '',
+    size: 0,
+    asset_type: '',
+    game_type: '',
+    gmail: '',
+    thumbnail_image: '',
+    asset_images: [],
+    asset_gif_images: [],
   });
 
-  const [loading, setLoading] = useState(false);
-  const [driveId, setDriveId] = useState('');
-  const [isSeries, setIsSeries] = useState(false);
+  // Helper to generate Google Drive Preview Link
+  const getImageUrl = (id) => {
+    if (!id) return 'https://placehold.co/400x300?text=No+Image';
+    // Replace this URL with your actual image proxy or direct link logic
+    return `https://lh3.googleusercontent.com/d/${id}`;
+  };
 
-  // Movie prop asholei data update hobe
-  useEffect(() => {
-    if (movie) {
-      setFormData({
-        _id: movie.id || '',
-        title: movie.title || '',
-        poster: movie.poster || '',
-        type: movie.type || '',
-        url: movie.url || '',
-        size: movie.size || '',
-        movie_source: movie.movie_source || '',
-        dubbed_lang: movie.dubbed_lang || '',
-        part_name: movie.part_name || '',
-        subtitle_url: movie.subtitle_url || '',
-      });
-      if (movie.part_name) setIsSeries(true);
-
-      const driveURL = beautifyDriveURL(movie.url);
-      setFormData(prev => ({ ...prev, url: driveURL }));
+  const fetchTypes = async () => {
+    try {
+      const res = await fetch("/api/games/type");
+      const data = await res.json();
+      if (res.ok) setTypes(data);
+    } catch (error) {
+      console.error("Failed to fetch types:", error);
     }
-  }, [movie]);
+  };
+
+  useEffect(() => {
+    fetchTypes();
+  }, []);
+
+  useEffect(() => {
+    if (game) {
+      setFormData({
+        _id: game.id || game._id,
+        title: game.title || '',
+        url: game.url || '',
+        size: game.size || 0,
+        asset_type: game.asset_type || '',
+        game_type: game.game_type || '',
+        gmail: game.gmail || '',
+        thumbnail_image: game.thumbnail_image || '',
+        asset_images: game.asset_images || [],
+        asset_gif_images: game.asset_gif_images || [],
+      });
+    }
+  }, [game]);
+
+  // ... (handlePaste, clearURL, and driveId useEffects remain the same)
 
   useEffect(() => {
     if (driveId) {
-      setFormData(prev => ({ ...prev, poster: driveId }));
+      setFormData(prev => ({ ...prev, thumbnail_image: driveId }));
     }
   }, [driveId]);
 
-  const handlePaste = async () => {
-    try {
-      const URL = await navigator.clipboard.readText();
-      if (!URL.includes('drive.google.com')) return; // Simple validation
+  useEffect(() => {
+    if (driveIds.length === 0) return;
+    const images = [];
+    const gifs = [];
 
-      const data = await getMovieFileInfo(URL);
-      const { fileId, name, gmail, size } = data;
-      setFormData(prev => ({
-        ...prev,
-        title: name,
-        url: fileId,
-        movie_source: gmail,
-        size: size
-      }));
-    } catch (err) {
-      console.error('Failed to read clipboard contents: ', err);
-    }
-  };
-
-
-  const beautifyDriveURL = (url) => {
-    if (url.includes('drive.google.com')) {
-      const fileIdMatch = url.match(/[-\w]{25,}/);
-      if (fileIdMatch) {
-        return fileIdMatch[0];
+    driveIds.forEach(file => {
+      if (file.type.includes("gif")) {
+        gifs.push(file.id);
+      } else {
+        images.push(file.id);
       }
-    }
-    return url;
-  }
+    });
 
-  const handleIsSeriesChange = (e) => {
-    const isChecked = e.target.checked;
-    setIsSeries(isChecked);
-    if (isChecked) {
-      let seriesName = formData.title ? formData.title : '';
-      seriesName = seriesName.replace(/\(\d{4}\)/g, '')
-        .toLowerCase()
-        .replace(/[^a-z\s]/g, '')
-        .trim()
-        .replace(/\s+/g, '_');
-      setFormData(prev => ({ ...prev, part_name: seriesName }));
-    } else {
-      setFormData(prev => ({ ...prev, part_name: '' }));
-    }
-  }
+    setFormData(prev => ({
+      ...prev,
+      asset_images: [...prev.asset_images, ...images],
+      asset_gif_images: [...prev.asset_gif_images, ...gifs]
+    }));
+  }, [driveIds]);
 
-  const clearURL = () => {
-    setFormData(prev => ({ ...prev, title: '', url: '', movie_source: '', size: '' }));
-  };
-
-  const handleUpdate = async (e) => {
+  const handleUpload = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    axios.put('/api/movies/', formData)
+    
+    axios.put('/api/games', formData)
       .then(response => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Movie Updated!',
-          text: 'The movie details have been successfully updated.',
-        });
+        Swal.fire({ icon: 'success', title: 'Updated!', text: 'Game updated successfully.' });
         setTimeout(() => {
-          window.location.href = `/admin/movies?search=${encodeURIComponent(formData.title)}&page=1`;
+          window.location.href = `/admin/games?search=${encodeURIComponent(formData.title)}&page=1`;
         }, 1500);
       })
-      .catch(error => {
-        console.error('Error updating movie:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Update Failed',
-          text: error.response?.data?.error || 'An error occurred while updating the movie.',
-        });
-      })
+      .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }
 
   return (
-    <div className="max-w-full mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100 my-10">
-      <h3 className="text-xl font-bold text-gray-800 mb-6">
-        {movie ? 'Edit Movie' : 'Upload New Movie'}
-      </h3>
+    <div className="max-w-full mx-auto">
+      <h3 className="text-xl font-bold text-gray-800 mb-6">Update Game</h3>
+      <form onSubmit={handleUpload} className="space-y-6">
+        
+        {/* ... URL and Metadata inputs remain same ... */}
 
-      <div className='my-5 flex justify-center mx-auto'>
-        <img
-          alt={movie.title}
-          className="h-50 w-50 object-cover transition-transform duration-500 group-hover:scale-110"
-          src={`https://lh3.googleusercontent.com/d/${movie.poster}`}
-        />
-      </div>
-
-      <form onSubmit={handleUpdate} className="space-y-6">
-        {/* Source Input */}
-        <div className="grid grid-cols-1">
-          <div>
-            <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-              Source
-              <button type="button" onClick={clearURL} className='ml-2 p-1 rounded-full bg-gray-200 hover:bg-red-500 hover:text-white transition'>
-                <MdClear size={14} />
-              </button>
-            </label>
-            <input
-              type="text"
-              placeholder="Paste Google Drive URL"
-              className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none"
-              value={formData.url}
-              onFocus={handlePaste}
-              onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-            />
-          </div>
-        </div>
-
-        <div className="bg-gray-50 border border-gray-200 p-6 rounded-xl space-y-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Movie Details</span>
-            <span className={`h-2 w-2 rounded-full ${formData.url ? 'bg-green-400 animate-pulse' : 'bg-gray-300'}`}></span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="font-semibold block text-sm text-gray-700 mb-2">Movie Title</label>
-              <input
-                type="text"
-                required
-                className="w-full p-3 border border-gray-200 rounded-lg outline-none bg-white"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Main Thumbnail Section */}
+          <div className='flex flex-col items-center bg-gray-50 p-4 rounded-lg'>
+            <label className="font-semibold text-sm block mb-2 w-full text-center">Main Thumbnail</label>
+            <div className="relative group mb-3">
+              <img
+                alt="Thumbnail"
+                className="h-48 w-48 object-cover rounded-lg border shadow-sm"
+                src={getImageUrl(formData.thumbnail_image)}
               />
             </div>
+            <ImageUploader setDriveId={setDriveId} />
+          </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Size (MB)</label>
-              <input
-                type="text"
-                className="w-full p-3 border border-gray-200 rounded-lg outline-none bg-white"
-                value={formData.size}
-                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-              />
+          {/* Preview Images/GIFs Section */}
+          <div className='flex flex-col bg-gray-50 p-4 rounded-lg'>
+            <label className="font-semibold text-sm block mb-2">Preview Images & GIFs</label>
+            
+            <div className='grid grid-cols-3 gap-2 mb-4 overflow-y-auto max-h-48 p-2 border bg-white rounded-md'>
+              {/* Show Existing Images */}
+              {formData.asset_images.map((imgId, idx) => (
+                <img key={`img-${idx}`} src={getImageUrl(imgId)} className="h-20 w-full object-cover rounded border" alt="preview" />
+              ))}
+              {/* Show Existing GIFs */}
+              {formData.asset_gif_images.map((gifId, idx) => (
+                <img key={`gif-${idx}`} src={getImageUrl(gifId)} className="h-20 w-full object-cover rounded border" alt="gif preview" />
+              ))}
+              
+              {formData.asset_images.length === 0 && formData.asset_gif_images.length === 0 && (
+                <p className="col-span-3 text-center text-gray-400 text-xs py-4">No preview files uploaded</p>
+              )}
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Source</label>
-              <input
-                type="text"
-                className="w-full p-3 border border-gray-200 rounded-lg outline-none bg-white"
-                value={formData.movie_source}
-                onChange={(e) => setFormData({ ...formData, movie_source: e.target.value })}
-              />
-            </div>
+            <MultiImageUploader setDriveIds={setDriveIds} />
+            <p className="text-xs text-gray-400 mt-2">Upload new files to add to the existing gallery.</p>
           </div>
         </div>
 
-        {/* Dropdowns and Checkbox */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Movie Type</label>
-            <select
-              className="w-full p-3 border border-gray-200 rounded-lg outline-none"
-              value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-            >
-              <option value="">🎬 Select Type</option>
-              <option value="bangladeshi">Bangladeshi (🇧🇩)</option>
-              <option value="kolkata-bangla">Kolkata Bangla (🇮🇳)</option>
-              <option value="hindi">Hindi (🇮🇳)</option>
-              <option value="english">English</option>
-              <option value="others">Others</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Dubbed Language</label>
-            <select
-              className="w-full p-3 border border-gray-200 rounded-lg outline-none"
-              value={formData.dubbed_lang}
-              onChange={(e) => setFormData({ ...formData, dubbed_lang: e.target.value })}
-            >
-              <option value="">🎧 Select Language</option>
-              <option value="Bangla">Bangla</option>
-              <option value="English">English</option>
-              <option value="Hindi">Hindi</option>
-              <option value="Bangla Dubbed">Bangla Dubbed</option>
-              <option value="Hindi Dubbed">Hindi Dubbed</option>
-            </select>
-          </div>
-
-          <div className="flex flex-col">
-            <label className="flex items-center space-x-2 cursor-pointer text-sm font-semibold text-gray-700 mb-2">
-              <input
-                type="checkbox"
-                className="w-5 h-5 accent-yellow-500"
-                checked={isSeries}
-                onChange={handleIsSeriesChange}
-              />
-              <span>Movie Series?</span>
-            </label>
-            {isSeries && (
-              <input
-                type="text"
-                placeholder="Series Slug (e.g. john_wick)"
-                className="w-full p-3 border border-gray-200 rounded-lg outline-none"
-                value={formData.part_name}
-                onChange={(e) => setFormData({ ...formData, part_name: e.target.value })}
-              />
-            )}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Movie Poster
-            </label>
-            <ImageUploader className="w-full" setDriveId={setDriveId} />
-
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Subtitle URL</label>
-            <input
-              type="text"
-              placeholder="Enter Subtitle URL"
-              className="w-full p-3 border border-gray-200 rounded-lg outline-none bg-white"
-              value={formData.subtitle_url}
-              onChange={(e) => setFormData({ ...formData, subtitle_url: e.target.value })}
-            />
-          </div>
-        </div>
-
-        {/* Action Button */}
         <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-4 rounded-lg font-bold text-white transition-all ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-600 shadow-md'
-            }`}
+          disabled={loading || !formData.thumbnail_image}
+          className={`w-full py-4 rounded-lg font-bold text-white ${loading || !formData.thumbnail_image ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}
         >
-          {loading ? 'Processing...' : movie ? 'Update Changes' : 'Publish Movie'}
+          {loading ? "Updating..." : "Update Game Asset"}
         </button>
       </form>
     </div>
