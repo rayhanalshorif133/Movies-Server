@@ -60,7 +60,9 @@ export default function UpdateGame({ game }) {
     }).then(async (result) => {
       if (result.isConfirmed) {
 
-       await deleteFileFromGoogleDrive(id);
+
+        axios.delete(`/api/images/?drive_id=${id}`);
+        await deleteFileFromGoogleDrive(id);
 
         setFormData(prev => ({
           ...prev,
