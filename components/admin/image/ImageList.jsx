@@ -74,6 +74,7 @@ export default function ImageList({ images }) {
         setDeleteMessage('');
 
         Swal.fire('Deleted!', 'Selected images have been removed.', 'success');
+        window.location.reload(); 
       } catch (error) {
         setDeleteMessage('');
         Swal.fire('Error!', 'Something went wrong while deleting.', 'error');
