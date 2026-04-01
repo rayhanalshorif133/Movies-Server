@@ -84,13 +84,13 @@ export default function ImageList({ images }) {
   return (
     <div className="max-w-7xl mx-auto p-6 min-h-screen">
       {/* Header & Uploader Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <div>
+      <div className="flex w-full flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div className='w-1/2'>
           <h2 className="text-3xl font-extrabold text-gray-800">Google Drive Gallery</h2>
           <p className="text-gray-500 mt-1">Manage and view your uploaded media</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="w-1/2 flex flex-wrap items-center gap-4">
           {/* MultiImageUploader integrated here */}
           <MultiImageUploader setDriveIds={handleUploadSuccess} />
 
@@ -136,7 +136,6 @@ export default function ImageList({ images }) {
                   loading="lazy"
                 />
 
-                {/* Selection Overlay & Icon */}
                 <div 
                   onClick={() => toggleSelect(id)}
                   className={`absolute top-3 left-3 w-7 h-7 rounded-full flex items-center justify-center cursor-pointer transition-all border-2 ${
