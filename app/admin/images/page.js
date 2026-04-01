@@ -16,7 +16,7 @@ export async function generateMetadata() {
 export default async function AdminGmailsPage() {
 
   const supabase = await createClient();
-  
+
   const { data: images, error } = await supabase
     .from('galleries')
     .select('*')
