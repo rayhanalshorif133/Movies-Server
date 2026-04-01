@@ -123,7 +123,7 @@ export default function GameModal({ game, onClose }) {
 
                     <div className="relative">
                         <img
-                            src={getImageUrl(allMedia[selectedIndex])}
+                            src={getGoogleDriveImageUrl(allMedia[selectedIndex])}
                             className="max-h-[85vh] max-w-[90vw] object-contain"
                             alt=""
                         />
