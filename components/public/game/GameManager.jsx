@@ -7,24 +7,35 @@ import NoGameFound from "./NoGameFound";
 import axios from "axios";
 
 export default function GameManager({ initialGames }) {
-    const [games, setGames] = useState(initialGames);
+    const [games, setGames] = useState(Array.isArray(initialGames) ? initialGames : []);
     const [searchTitle, setSearchTitle] = useState("");
     const [searchType, setSearchType] = useState("all");
     const [loading, setLoading] = useState(false);
 
-   useEffect(() => {
-      axios.get('/api/hitlogs?pagename=games');
-   },[])
+    // Page hit log
+    useEffect(() => {
+        axios.get('/api/hitlogs?pagename=games').catch(err => console.error("Hitlog error:", err));
+    }, []);
 
+    // Fetch Games with Debounce
     useEffect(() => {
         const delayDebounceFn = setTimeout(async () => {
             setLoading(true);
             try {
                 const res = await fetch(`/api/games?title=${searchTitle}&type=${searchType}`);
                 const data = await res.json();
-                setGames(data);
+
+            
+                if (Array.isArray(data)) {
+                    setGames(data);
+                } else if (data && Array.isArray(data.games)) {
+                    setGames(data.games);
+                } else {
+                    setGames([]); 
+                }
             } catch (err) {
                 console.error("Failed to fetch games:", err);
+                setGames([]); 
             } finally {
                 setLoading(false);
             }
@@ -33,12 +44,16 @@ export default function GameManager({ initialGames }) {
         return () => clearTimeout(delayDebounceFn);
     }, [searchTitle, searchType]);
 
-    const groupedGames = games?.reduce((acc, game) => {
+    const safeGames = Array.isArray(games) ? games : [];
+    
+    const groupedGames = safeGames.reduce((acc, game) => {
         const type = game.game_type || 'Other Assets';
         if (!acc[type]) acc[type] = [];
         acc[type].push(game);
         return acc;
     }, {});
+
+    const hasGroups = Object.keys(groupedGames).length > 0;
 
     return (
         <>
@@ -51,7 +66,7 @@ export default function GameManager({ initialGames }) {
             <div className="space-y-12">
                 {loading ? (
                     <ScouringGames />
-                ) : Object.keys(groupedGames || {}).length > 0 ? (
+                ) : hasGroups ? (
                     Object.entries(groupedGames).map(([type, items]) => (
                         <GameSection
                             key={type}

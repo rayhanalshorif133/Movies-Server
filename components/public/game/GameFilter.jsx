@@ -5,9 +5,6 @@ export default function GameFilter({ searchType, setSearchType, setSearchTitle }
     const categories = [
         { label: "All Assets", value: "all" },
         { label: "Defense", value: "defense" },
-        { label: "Action", value: "action" },
-        { label: "RPG", value: "rpg" },
-        { label: "UI Kits", value: "ui" },
     ];
 
     return (

@@ -34,7 +34,7 @@ export async function GET(request) {
     }
 
     if (searchByType && searchByType != 'all' && searchByType != 'series') {
-        query = query.eq('type', searchByType);
+        query = query.eq('game_type', searchByType);
     }
 
     const { data, error } = await query;
