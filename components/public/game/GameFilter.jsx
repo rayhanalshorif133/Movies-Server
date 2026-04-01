@@ -1,10 +1,13 @@
 "use client";
 import React from "react";
 
-export default function GameFilter({ searchType, setSearchType, setSearchTitle }) {
+export default function GameFilter({ gameTypes, searchType, setSearchType, setSearchTitle }) {
     const categories = [
         { label: "All Assets", value: "all" },
-        { label: "Defense", value: "defense" },
+        ...(gameTypes?.map((type) => ({
+            label: type.name.charAt(0).toUpperCase() + type.name.slice(1), // First letter uppercase korar jonno
+            value: type.name.toLowerCase(),
+        })) || []),
     ];
 
     return (

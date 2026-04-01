@@ -6,7 +6,7 @@ import GameFilter from "./GameFilter";
 import NoGameFound from "./NoGameFound";
 import axios from "axios";
 
-export default function GameManager({ initialGames }) {
+export default function GameManager({ initialGames, gameTypes }) {
     const [games, setGames] = useState(Array.isArray(initialGames) ? initialGames : []);
     const [searchTitle, setSearchTitle] = useState("");
     const [searchType, setSearchType] = useState("all");
@@ -58,6 +58,7 @@ export default function GameManager({ initialGames }) {
     return (
         <>
             <GameFilter
+                gameTypes={gameTypes}
                 searchType={searchType}
                 setSearchType={setSearchType}
                 setSearchTitle={setSearchTitle}
