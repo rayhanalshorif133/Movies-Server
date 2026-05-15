@@ -3,11 +3,9 @@
 import { useState, Suspense } from 'react'
 import MovieCard from "../movie/MovieCard"
 import LoadingCard from "../LoadingCard"
-import MovieDetailsModal from '../movie/MovieDetailsModal'
 
-export default function MovieSection({ type, items }) {
+export default function MovieSection({ type, items, onMovieSelect }) {
   const [showAll, setShowAll] = useState(false)
-  const [selectedMovie, setSelectedMovie] = useState(null)
 
   const displayedItems = showAll ? items : items.slice(0, 6)
 
@@ -31,18 +29,12 @@ export default function MovieSection({ type, items }) {
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 transition-all duration-500">
         {displayedItems.map((movie) => (
           <Suspense key={movie.id} fallback={<LoadingCard />}>
-            <div onClick={() => setSelectedMovie(movie)} className="cursor-pointer w-48">
+            <div onClick={() => onMovieSelect(movie)} className="cursor-pointer w-48">
               <MovieCard movie={movie} />
             </div>
           </Suspense>
         ))}
       </div>
-      {selectedMovie && (
-        <MovieDetailsModal
-          movie={selectedMovie}
-          onClose={() => setSelectedMovie(null)}
-        />
-      )}
     </section>
   )
 }

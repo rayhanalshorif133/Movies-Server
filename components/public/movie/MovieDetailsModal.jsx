@@ -1,10 +1,52 @@
 import { getGoogleDriveImageUrl, getGoogleDrivePreviewUrl, googleDriveToDownload } from "@/utils/google/manage";
 import Image from "next/image";
 import { useState } from "react";
-import { RxCross2, RxArrowLeft, RxDownload } from "react-icons/rx"; // Added RxDownload
+import { RxCross2, RxArrowLeft, RxDownload, RxShare1 } from "react-icons/rx";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function MovieDetailsModal({ movie, onClose }) {
     const [isPreviewing, setIsPreviewing] = useState(false);
+
+    const handleShare = async () => {
+        let shareUrl = window.location.href;
+
+        try {
+            const response = await axios.post('/api/movies/share', {
+                movieId: movie.id,
+                movieTitle: movie.title,
+            });
+            
+            if (response.data?.data?.share_data) {
+                shareUrl = `${window.location.origin}/?s=${response.data.data.share_data}`;
+            }
+        } catch (apiError) {
+            console.error("Error triggering share API:", apiError);
+        }
+
+        const shareData = {
+            title: movie.title,
+            text: `Check out ${movie.title} on Movies-Server!`,
+            url: shareUrl,
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+            } catch (error) {
+                console.error("Error sharing:", error);
+            }
+        } else {
+            await navigator.clipboard.writeText(shareUrl);
+            Swal.fire({
+                title: "Link Copied!",
+                text: "The movie link has been copied to your clipboard.",
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false,
+            });
+        }
+    };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
@@ -83,6 +125,17 @@ export default function MovieDetailsModal({ movie, onClose }) {
                                         <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#3b82f6_0%,#a855f7_50%,#3b82f6_100%)] group-hover:opacity-100 opacity-40 transition-opacity"></div>
                                         <div className="relative flex h-full w-full items-center justify-center gap-3 rounded-[10px] bg-slate-900 px-7 py-2 text-white transition-all duration-300 group-hover:bg-slate-900/80 backdrop-blur-xl">
                                             <span className="text-sm font-bold tracking-widest uppercase flex"><RxDownload className="text-lg mx-2" /> Download Now</span>
+                                        </div>
+                                    </button>
+
+                                    {/* Share Button */}
+                                    <button
+                                        onClick={handleShare}
+                                        className="relative cursor-pointer group w-full h-16 overflow-hidden rounded-xl p-0.5 transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(37,99,235,0.3)]"
+                                    >
+                                        <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#3b82f6_0%,#a855f7_50%,#3b82f6_100%)] group-hover:opacity-100 opacity-40 transition-opacity"></div>
+                                        <div className="relative flex h-full w-full items-center justify-center gap-3 rounded-[10px] bg-slate-900 px-7 py-2 text-white transition-all duration-300 group-hover:bg-slate-900/80 backdrop-blur-xl">
+                                            <span className="text-sm font-bold tracking-widest uppercase flex"><RxShare1 className="text-lg mx-2" /> Share Movie</span>
                                         </div>
                                     </button>
                                 </div>

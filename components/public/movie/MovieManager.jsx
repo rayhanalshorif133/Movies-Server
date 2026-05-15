@@ -1,17 +1,37 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import MovieSection from "./MovieSection";
 import ScouringMovies from "./ScouringMovies";
 import NoMovieFound from "./NoMovieFound";
 import MovieFilter from "./MovieFilter";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
+import MovieDetailsModal from "./MovieDetailsModal";
 
-
-export default function MovieManager({ initialMovies }) {
+function MovieManagerContent({ initialMovies }) {
     const [movies, setMovies] = useState(initialMovies);
     const [searchTitle, setSearchTitle] = useState("");
     const [searchType, setSearchType] = useState("all");
     const [loading, setLoading] = useState(false);
+    const [selectedMovie, setSelectedMovie] = useState(null);
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const shareToken = searchParams.get('s');
+        if (shareToken) {
+            const fetchSharedMovie = async () => {
+                try {
+                    const res = await axios.get(`/api/movies/share?s=${shareToken}`);
+                    if (res.data) {
+                        setSelectedMovie(res.data);
+                    }
+                } catch (err) {
+                    console.error("Failed to fetch shared movie:", err);
+                }
+            };
+            fetchSharedMovie();
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         axios.get('/api/hitlogs?pagename=movies');
@@ -92,10 +112,30 @@ export default function MovieManager({ initialMovies }) {
             <div className="space-y-12">
                 {loading ? <ScouringMovies /> : Object.keys(groupedMovies || {}).length > 0 ? (
                     Object.entries(groupedMovies).map(([type, items]) => (
-                        <MovieSection key={type} type={type} items={items} />
+                        <MovieSection 
+                            key={type} 
+                            type={type} 
+                            items={items} 
+                            onMovieSelect={setSelectedMovie} 
+                        />
                     ))
                 ) : <NoMovieFound />}
             </div>
+
+            {selectedMovie && (
+                <MovieDetailsModal
+                    movie={selectedMovie}
+                    onClose={() => setSelectedMovie(null)}
+                />
+            )}
         </>
+    );
+}
+
+export default function MovieManager(props) {
+    return (
+        <Suspense fallback={<ScouringMovies />}>
+            <MovieManagerContent {...props} />
+        </Suspense>
     );
 }
