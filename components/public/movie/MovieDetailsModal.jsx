@@ -9,6 +9,8 @@ export default function MovieDetailsModal({ movie, onClose }) {
     const [isPreviewing, setIsPreviewing] = useState(false);
 
     const handleShare = async () => {
+        document.title = movie.title;
+
         let shareUrl = window.location.href;
 
         try {
