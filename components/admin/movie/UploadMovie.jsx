@@ -175,6 +175,7 @@ export default function UploadMovie() {
               <option value="english">English</option>
               <option value="yousuf-zulekha">Yousuf Zulekha</option>
               <option value="hatim">Hatim</option>
+              <option value="alif-laila">Alif Laila</option>
               <option value="others">Others</option>
             </select>
           </div>

@@ -219,6 +219,8 @@ export default function UpdateMovie({ movie }) {
               <option value="kolkata-bangla">Kolkata Bangla (🇮🇳)</option>
               <option value="hindi">Hindi (🇮🇳)</option>
               <option value="english">English</option>
+              <option value="hatim">Hatim</option>
+              <option value="alif-laila">Alif Laila</option>
               <option value="others">Others</option>
             </select>
           </div>
