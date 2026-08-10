@@ -57,7 +57,7 @@ export async function POST(request) {
             size,
             asset_type,
             game_type,
-            gif_hidden_bar,
+            hidden_bar_gif,
             gmail,
             thumbnail_image,
             asset_images,
@@ -69,6 +69,7 @@ export async function POST(request) {
             return NextResponse.json({ error: "Title and URL are required" }, { status: 400 });
         }
 
+
         // Supabase-e data insert kora
         const { data, error } = await supabase
             .from('games')
@@ -76,12 +77,12 @@ export async function POST(request) {
                 {
                     title,
                     url,
-                    hidden_bar_gif : gif_hidden_bar || false,
+                    hidden_bar_gif: Boolean(hidden_bar_gif),
                     size: size ? parseFloat(size) : 0,
                     asset_type: asset_type || 'asset',
-                    game_type: game_type,
-                    gmail: gmail,
-                    thumbnail_image: thumbnail_image,
+                    game_type,
+                    gmail,
+                    thumbnail_image,
                     asset_images: Array.isArray(asset_images) ? asset_images : [],
                     asset_gif_images: Array.isArray(asset_gif_images) ? asset_gif_images : [],
                 }
@@ -93,6 +94,57 @@ export async function POST(request) {
         }
 
         return NextResponse.json({ message: "Asset created successfully", data }, { status: 201 });
+
+    } catch (err) {
+        return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    }
+}
+
+export async function PUT(request) {
+    try {
+        const supabase = await createClient();
+        const body = await request.json();
+
+        const {
+            id, // আপডেট করার জন্য আইডি অবশ্যই লাগবে
+            title,
+            url,
+            size,
+            asset_type,
+            game_type,
+            hidden_bar_gif,
+            gmail,
+            thumbnail_image,
+            asset_images,
+            asset_gif_images,
+        } = body;
+
+        if (!id) {
+            return NextResponse.json({ error: "Game ID is required for update" }, { status: 400 });
+        }
+
+        const { data, error } = await supabase
+            .from('games')
+            .update({
+                title,
+                url,
+                hidden_bar_gif: hidden_bar_gif || false,
+                size: size ? parseFloat(size) : 0,
+                asset_type: asset_type || 'asset',
+                game_type,
+                gmail,
+                thumbnail_image,
+                asset_images: Array.isArray(asset_images) ? asset_images : [],
+                asset_gif_images: Array.isArray(asset_gif_images) ? asset_gif_images : [],
+            })
+            .eq('id', id)
+            .select();
+
+        if (error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json({ message: "Asset updated successfully", data }, { status: 200 });
 
     } catch (err) {
         return NextResponse.json({ error: "Invalid request body" }, { status: 400 });

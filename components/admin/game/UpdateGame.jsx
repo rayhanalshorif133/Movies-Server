@@ -39,7 +39,7 @@ export default function UpdateGame({ game }) {
     size: 0,
     asset_type: '',
     game_type: '',
-    gif_hidden_bar: false,
+    hidden_bar_gif: false,
     gmail: '',
     thumbnail_image: '',
     asset_images: [],
@@ -82,7 +82,7 @@ export default function UpdateGame({ game }) {
         size: game.size || 0,
         asset_type: game.asset_type || '',
         game_type: game.game_type || '',
-        gif_hidden_bar: game.gif_hidden_bar ?? false,
+        hidden_bar_gif: game.hidden_bar_gif ?? false,
         gmail: game.gmail || '',
         thumbnail_image: game.thumbnail_image || '',
         asset_images: game.asset_images || [],
@@ -162,12 +162,23 @@ export default function UpdateGame({ game }) {
 
   }, [driveIds]);
 
+
   const handleUpload = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     const payload = {
-      ...formData
+      id: formData._id, // _id কে id হিসেবে রিনেম করা হলো
+      title: formData.title,
+      url: formData.url,
+      size: formData.size,
+      asset_type: formData.asset_type,
+      game_type: formData.game_type,
+      hidden_bar_gif: formData.hidden_bar_gif,
+      gmail: formData.gmail,
+      thumbnail_image: formData.thumbnail_image,
+      asset_images: formData.asset_images,
+      asset_gif_images: formData.asset_gif_images,
     };
 
     axios.put('/api/games', payload)
@@ -185,6 +196,11 @@ export default function UpdateGame({ game }) {
       })
       .catch(error => {
         console.error('Error updating asset:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Update Failed',
+          text: error.response?.data?.error || 'Something went wrong!',
+        });
       })
       .finally(() => setLoading(false));
   }
@@ -298,12 +314,12 @@ export default function UpdateGame({ game }) {
           <div className="flex items-center space-x-3 p-3 border rounded-lg bg-white">
             <input
               type="checkbox"
-              id="gif_hidden_bar"
+              id="hidden_bar_gif"
               className="w-5 h-5 accent-blue-600 rounded cursor-pointer"
-              checked={!!formData.gif_hidden_bar}
-              onChange={(e) => setFormData({ ...formData, gif_hidden_bar: e.target.checked })}
+              checked={!!formData.hidden_bar_gif}
+              onChange={(e) => setFormData({ ...formData, hidden_bar_gif: e.target.checked })}
             />
-            <label htmlFor="gif_hidden_bar" className="cursor-pointer font-medium select-none text-sm text-gray-700">
+            <label htmlFor="hidden_bar_gif" className="cursor-pointer font-medium select-none text-sm text-gray-700">
               Gif Hidden Bar
             </label>
           </div>
