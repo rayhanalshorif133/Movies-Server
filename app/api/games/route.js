@@ -57,6 +57,7 @@ export async function POST(request) {
             size,
             asset_type,
             game_type,
+            gif_hidden_bar,
             gmail,
             thumbnail_image,
             asset_images,
@@ -75,6 +76,7 @@ export async function POST(request) {
                 {
                     title,
                     url,
+                    hidden_bar_gif : gif_hidden_bar || false,
                     size: size ? parseFloat(size) : 0,
                     asset_type: asset_type || 'asset',
                     game_type: game_type,

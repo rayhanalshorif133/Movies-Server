@@ -8,17 +8,15 @@ import { MdClear } from "react-icons/md";
 import axios from "axios";
 import Swal from 'sweetalert2';
 import { deleteFileFromGoogleDrive } from '@/utils/google/manage';
+import GameUploadErrorMessage from './_partials/GameUploadErrorMessage';
 
-// Note: Removed 'async' from the function declaration
 export default function UpdateGame({ game }) {
-
 
   const [loading, setLoading] = useState(false);
   const [driveId, setDriveId] = useState('');
   const [type, setTypes] = useState('');
   const [driveIds, setDriveIds] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
-
 
   const fetchTypes = async () => {
     try {
@@ -41,12 +39,12 @@ export default function UpdateGame({ game }) {
     size: 0,
     asset_type: '',
     game_type: '',
+    gif_hidden_bar: false,
     gmail: '',
     thumbnail_image: '',
     asset_images: [],
     asset_gif_images: [],
   });
-
 
   const handleDeleteImage = (id) => {
     Swal.fire({
@@ -59,8 +57,6 @@ export default function UpdateGame({ game }) {
       confirmButtonText: 'Yes, delete it!'
     }).then(async (result) => {
       if (result.isConfirmed) {
-
-
         axios.delete(`/api/images/?drive_id=${id}`);
         await deleteFileFromGoogleDrive(id);
 
@@ -81,13 +77,14 @@ export default function UpdateGame({ game }) {
       console.log(game)
       setFormData({
         _id: game.id,
-        title: game.title || null,
-        url: game.url || null,
-        size: game.size || null,
-        asset_type: game.asset_type || null,
-        game_type: game.game_type || null,
-        gmail: game.gmail || null,
-        thumbnail_image: game.thumbnail_image || null,
+        title: game.title || '',
+        url: game.url || '',
+        size: game.size || 0,
+        asset_type: game.asset_type || '',
+        game_type: game.game_type || '',
+        gif_hidden_bar: game.gif_hidden_bar ?? false,
+        gmail: game.gmail || '',
+        thumbnail_image: game.thumbnail_image || '',
         asset_images: game.asset_images || [],
         asset_gif_images: game.asset_gif_images || [],
       });
@@ -114,24 +111,13 @@ export default function UpdateGame({ game }) {
               size: size
             }));
           }
-
-
         });
-
-
-
-
-
-
     } catch (err) {
       console.error('Failed to read clipboard contents: ', err);
     }
   };
 
-
-
   const clearURL = () => {
-
     setErrorMsg('');
     setFormData(prev => ({
       ...prev,
@@ -140,27 +126,19 @@ export default function UpdateGame({ game }) {
       gmail: '',
       size: 0
     }));
-
   };
 
   useEffect(() => {
-
     if (driveId) {
-
       setFormData(prev => ({
         ...prev,
         thumbnail_image: driveId
       }));
-
     }
-
   }, [driveId]);
 
-
   /* auto split image & gif */
-
   useEffect(() => {
-
     if (driveIds.length === 0) return;
 
     const images = [];
@@ -169,13 +147,11 @@ export default function UpdateGame({ game }) {
     console.clear();
     console.log("driveIds", driveIds);
     driveIds.forEach(file => {
-
       if (file.type.includes("gif")) {
         gifs.push(file.id);
       } else {
         images.push(file.id);
       }
-
     });
 
     setFormData(prev => ({
@@ -186,50 +162,36 @@ export default function UpdateGame({ game }) {
 
   }, [driveIds]);
 
-
   const handleUpload = async (e) => {
-
     e.preventDefault();
-
     setLoading(true);
 
     const payload = {
       ...formData
     };
 
-    console.log(payload);
-    return false;
-
     axios.put('/api/games', payload)
-
       .then(response => {
-
-
         Swal.fire({
           icon: 'success',
-          title: 'Asset Uploaded!',
-          text: 'The game asset has been successfully listed.',
+          title: 'Asset Updated!',
+          text: 'The game asset has been successfully updated.',
         });
 
         setTimeout(() => {
-
           window.location.href =
             `/admin/games?search=${encodeURIComponent(formData.title)}&page=1`;
-
         }, 1500);
-
       })
-
       .catch(error => {
-        console.error('Error uploading asset:', error);
+        console.error('Error updating asset:', error);
       })
-
       .finally(() => setLoading(false));
   }
 
   const getImageUrl = (id) => {
     if (!id) return 'https://placehold.co/400x300?text=No+Image';
-    return `https://lh3.googleusercontent.com/d/${id}`; // G-Drive direct display link format
+    return `https://lh3.googleusercontent.com/d/${id}`;
   };
 
   return (
@@ -237,12 +199,9 @@ export default function UpdateGame({ game }) {
       <h3 className="text-xl font-bold text-gray-800 mb-6">Update Game</h3>
       <form onSubmit={handleUpload} className="space-y-6">
 
-
         <div>
-
           <label className="text-sm font-semibold text-gray-700 mb-2 flex">
             Asset File URL (G-Drive)
-
             <button
               type="button"
               onClick={clearURL}
@@ -250,7 +209,6 @@ export default function UpdateGame({ game }) {
             >
               <MdClear size={14} />
             </button>
-
           </label>
 
           <input
@@ -264,22 +222,15 @@ export default function UpdateGame({ game }) {
           <div className="mt-4">
             {errorMsg && <GameUploadErrorMessage errorMsg={errorMsg} />}
           </div>
-
         </div>
 
-
         {/* Metadata */}
-
         <div className="bg-blue-50 border-2 border-dashed border-blue-100 p-6 rounded-xl space-y-4">
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
             <div>
-
               <label className="font-semibold text-sm text-gray-700 mb-2 block">
                 Asset Name
               </label>
-
               <input
                 required
                 type="text"
@@ -287,16 +238,12 @@ export default function UpdateGame({ game }) {
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               />
-
             </div>
 
-
             <div>
-
               <label className="text-sm font-semibold text-gray-700 mb-2 block">
                 Size (MB)
               </label>
-
               <input
                 type="number"
                 step="0.01"
@@ -304,52 +251,39 @@ export default function UpdateGame({ game }) {
                 value={formData.size}
                 onChange={(e) => setFormData({ ...formData, size: e.target.value })}
               />
-
             </div>
 
-
             <div>
-
               <label className="text-sm font-semibold text-gray-700 mb-2 block">
                 Uploader Email
               </label>
-
               <input
                 type="text"
                 className="w-full p-3 border border-gray-200 rounded-lg"
                 value={formData.gmail}
                 onChange={(e) => setFormData({ ...formData, gmail: e.target.value })}
               />
-
             </div>
-
           </div>
-
         </div>
 
-
-        {/* Asset type + Engine */}
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
+        {/* Asset type + Engine + Checkbox */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
           <select
             className="p-3 border rounded-lg"
             value={formData.asset_type}
             onChange={(e) => setFormData({ ...formData, asset_type: e.target.value })}
           >
-
             <option value="" disabled>Select Type</option>
             <option value="game">Game</option>
             <option value="asset">Asset</option>
           </select>
-
 
           <select
             className="p-3 border rounded-lg"
             value={formData.game_type}
             onChange={(e) => setFormData({ ...formData, game_type: e.target.value })}
           >
-
             <option value="" disabled>Game Type</option>
             {
               type.length > 0 && type.map((item) => (
@@ -358,19 +292,26 @@ export default function UpdateGame({ game }) {
                 </option>
               ))
             }
-
           </select>
 
-
+          {/* Gif Hidden Bar Checkbox */}
+          <div className="flex items-center space-x-3 p-3 border rounded-lg bg-white">
+            <input
+              type="checkbox"
+              id="gif_hidden_bar"
+              className="w-5 h-5 accent-blue-600 rounded cursor-pointer"
+              checked={!!formData.gif_hidden_bar}
+              onChange={(e) => setFormData({ ...formData, gif_hidden_bar: e.target.checked })}
+            />
+            <label htmlFor="gif_hidden_bar" className="cursor-pointer font-medium select-none text-sm text-gray-700">
+              Gif Hidden Bar
+            </label>
+          </div>
         </div>
 
-
         {/* Media Upload */}
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
           <div className='flex justify-center flex-col'>
-
             <div className="relative group w-48 h-48 mb-4">
               <img
                 alt="Thumbnail"
@@ -391,16 +332,11 @@ export default function UpdateGame({ game }) {
             <label className="font-semibold text-sm block mb-2">
               Main Thumbnail
             </label>
-
             <ImageUploader setDriveId={setDriveId} />
-
           </div>
 
-
           <div className='flex justify-center flex-col'>
-
             <div className='grid grid-cols-3 gap-3 mb-4 overflow-y-auto max-h-60 p-2 border bg-white rounded-md'>
-              {/* Combine images and gifs for mapping */}
               {[...formData.asset_images, ...formData.asset_gif_images].map((imgId, idx) => (
                 <div key={idx} className="relative group">
                   <img
@@ -423,36 +359,25 @@ export default function UpdateGame({ game }) {
               )}
             </div>
 
-
             <label className="font-semibold text-sm block mb-2">
               Preview Images / GIFs
             </label>
-
             <MultiImageUploader
               setDriveIds={setDriveIds}
             />
-
             <p className="text-xs text-gray-400 mt-2">
               Upload images or gifs together. They will auto separate.
             </p>
-
           </div>
-
         </div>
 
-
         {!formData.thumbnail_image && (
-
           <div className="w-full h-10 flex items-center justify-center bg-amber-500 rounded-lg">
-
             <p className="text-xs text-white">
               Please upload a thumbnail to enable publishing
             </p>
-
           </div>
-
         )}
-
 
         <button
           disabled={loading || !formData.thumbnail_image}
@@ -461,11 +386,8 @@ export default function UpdateGame({ game }) {
             : "bg-blue-600 hover:bg-blue-700"
             }`}
         >
-
-          {loading ? "Uploading Assets..." : "Publish Game Asset"}
-
+          {loading ? "Updating Assets..." : "Update Game Asset"}
         </button>
-
 
       </form>
     </div>

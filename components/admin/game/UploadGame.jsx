@@ -38,6 +38,7 @@ export default function UploadGame() {
     size: 0,
     asset_type: '',
     game_type: '',
+    gif_hidden_bar: false,
     gmail: '',
     thumbnail_image: '',
     asset_images: [],
@@ -212,7 +213,7 @@ export default function UploadGame() {
             onChange={(e) => setFormData({ ...formData, url: e.target.value })}
           />
           <div className="mt-4">
-            {errorMsg && <GameUploadErrorMessage errorMsg={errorMsg}/>}
+            {errorMsg && <GameUploadErrorMessage errorMsg={errorMsg} />}
           </div>
 
         </div>
@@ -310,6 +311,19 @@ export default function UploadGame() {
             }
 
           </select>
+
+          <div className="flex items-center space-x-3 p-3 border rounded-lg">
+            <input
+              type="checkbox"
+              id="gif_hidden_bar"
+              className="w-5 h-5 accent-blue-600 rounded cursor-pointer"
+              checked={!!formData.gif_hidden_bar}
+              onChange={(e) => setFormData({ ...formData, gif_hidden_bar: e.target.checked })}
+            />
+            <label htmlFor="gif_hidden_bar" className="cursor-pointer font-medium select-none">
+              Gif Hidden Bar
+            </label>
+          </div>
 
 
         </div>
