@@ -7,6 +7,7 @@ import { getGoogleDriveImageUrl, googleDriveToDownload } from "@/utils/google/ma
 export default function GameModal({ game, onClose }) {
     const images = JSON.parse(game.asset_images || "[]");
     const gifs = JSON.parse(game.asset_gif_images || "[]");
+    const isGifHiddenBar =  game.hidden_bar_gif || false;
     const allMedia = [...images, ...gifs];
     const [isSelectedGif, setIsSelectedGif] = useState(false);
 
@@ -88,9 +89,10 @@ export default function GameModal({ game, onClose }) {
                                         {isGif && (
                                             <>
                                                 <div className="absolute bottom-2 right-2 bg-yellow-500 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-black text-white uppercase tracking-wider border border-white/20 z-10">
-                                                    GIF
+                                                    GIF 
                                                 </div>
-                                                <div className="absolute bottom-0 h-10 w-full gif-hide-placeholder"></div>
+                                                { isGifHiddenBar && <div className="absolute bottom-0 h-10 w-full gif-hide-placeholder"></div> }
+                                                
                                             </>
                                         )}
                                     </div>
